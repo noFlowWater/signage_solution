@@ -14,6 +14,18 @@ model User {
   user_id String @id @default(uuid())
   user_name String @db.VarChar(255)
   phoneNumber String @db.Char(255)
+  infos MenuOrderInfo[]
+  relationToAllergy Relation_user_allergy[]
+}
+
+model MenuOrderInfo {
+  order_count Int
+  last_order_time DateTime
+  userID String  //FK
+  menuID String  //FK
+  user User @relation(fields: [userID], references: [user_id])
+  menu Menu @relation(fields: [menuID], references: [menu_id])
+  @@id([userID, menuID])
 }
 
 model Menu{
@@ -23,19 +35,37 @@ model Menu{
   price Int
   file_path String? @db.VarChar(2058)
   is_soldout Boolean
-  category_id Int 
+  category_id String //FK
+  category Category @relation(fields: [category_id], references: [category_id])
+  info MenuOrderInfo[]
+  relationToAllergy Realtion_menu_allergy[]
 }
 
 model Category{
   category_id String @id @default(uuid())
   category_name String
+  menus Menu[]
 }
 
 model Allergy{
   allergy_id String @id @default(uuid())
   allergy_name String @db.VarChar(255)
+  relationToUser Relation_user_allergy[]
+  reltationToMenu Realtion_menu_allergy[]
 }
 
+model Relation_user_allergy{
+  userID String //FK
+  allergyID String  //FK
+  users User @relation(fields: [userID], references: [user_id])
+  allergies Allergy @relation(fields: [allergyID], references: [allergy_id])
+  @@id([userID, allergyID])  //PK
+}
 
-
-
+model Realtion_menu_allergy{
+  menuID String  //FK
+  allergyID String  //FK
+  menus Menu @relation(fields: [menuID], references: [menu_id])
+  allergies Allergy @relation(fields: [allergyID], references: [allergy_id])
+  @@id([menuID, allergyID]) //PK
+}
