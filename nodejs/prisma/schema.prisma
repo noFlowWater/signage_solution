@@ -11,28 +11,28 @@ datasource db {
 }
 
 model User {
-  user_id int @id @default(uuid())
+  user_id String @id @default(uuid())
   user_name String @db.VarChar(255)
   phoneNumber String @db.Char(255)
 }
 
 model Menu{
-  menu_id int @id @default(uuid())
+  menu_id String @id @default(uuid())
   menu_name String @db.VarChar(255)
   menu_description String @db.VarChar(255)
-  price int
+  price Int
   file_path String? @db.VarChar(2058)
-  is_soldout Boolean @defyault(false)
-  category_id int 
+  is_soldout Boolean
+  category_id Int 
 }
 
 model Category{
-  category_id int @id @default(uuid())
+  category_id String @id @default(uuid())
   category_name String
 }
 
 model Allergy{
-  allergy_id int @id @default(uuid())
+  allergy_id String @id @default(uuid())
   allergy_name String @db.VarChar(255)
 }
 
