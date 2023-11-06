@@ -7,6 +7,7 @@ const database = require('./database')
 
 app.use(express.json());
 
+// test
 //db 연결
 database.$connect()
     .then(() => {
