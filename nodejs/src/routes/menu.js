@@ -45,9 +45,9 @@ router.get('/:menuID', async(req,res,error) => { //<- :menuID는 req.params.menu
         }
     });
     console.log("menu_name : ",result.menu_name);
-    console.log("menu_name : ",result.menu_discription);
-    console.log("menu_name : ",result.menu_);
-    console.log("menu_name : ",result.menu_name);     
+    console.log("menu_description : ",result.menu_description);
+    console.log("price : ",result.price);
+    console.log("file_path : ",result.file_path);     
     //res.json() 해서 메뉴표시에 필요한것들 보내주면 된다.
     res.json(result);
 })
