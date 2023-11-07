@@ -7,7 +7,7 @@ const database = require('./database')
 
 app.use(express.json());
 
-// test
+
 //db 연결
 database.$connect()
     .then(() => {
@@ -20,8 +20,11 @@ database.$connect()
 //admin 관련 api 요청은 routes/admin 에서 처리
 app.use('/admin', require('./routes/admin'));
 
-// // '/menu' 관련 api 요청은 routes/menu에서 처리
-// app.use('/menu', require('./routes/menu'))
+// '/menu' 관련 api 요청은 routes/menu에서 처리
+app.use('/menu', require('./routes/menu'));
+
+// app.use('/api', require('./routes/api'));
+// '/api' 관련 요청은 routes/api에서 처리 -> /api는 메뉴등록,수정,삭제 등을 <요청>함
 
 app.use((error, req, res, next) => {
     res.status(error.status || 500); //express에서 제공하는 errorstatus가 있다면 그걸 클라이언트한테 보내주고 없다면 임의로 500을 보낸다
