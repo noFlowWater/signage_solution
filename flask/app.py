@@ -31,7 +31,7 @@ print("Model Training Complete!!!!!")
 
 app = Flask(__name__, static_folder="./templates/static")
 app.config["SECRET_KEY"] = "secret!"
-socketio = SocketIO(app)
+socketio = SocketIO(app, ssl_verify=False)
 
 def face_detector(img, size = 0.5):
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -143,4 +143,7 @@ def index():
 
 
 if __name__ == "__main__":
-    socketio.run(app, debug=True, port=5001, host='0.0.0.0', certfile="./cert.pem", keyfile="./key.pem")
+    try:
+        socketio.run(app, debug=True, port=5001, host='0.0.0.0', certfile="./cert.pem", keyfile="./key.pem")
+    except Exception as e:  # Catch all exceptions
+        print(f"An error occurred: {e}")

@@ -36,8 +36,8 @@ setInterval(() => {
     context.clearRect(0, 0, width, height);
     socket.emit('image', data);
 }, 1000 / FPS);
-
 socket.on('processed_image', function (image) {
+
     photo.setAttribute('src', image);
 
 });
