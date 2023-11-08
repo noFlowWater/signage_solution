@@ -25,6 +25,8 @@ router.get('/menu/recommend', async(req,res,error) => {
     git /menu/recommend
 })*/ //<- 이거는 알고리즘이 필요하기 때문에 조금 더 생각을 해 보아요.
 
+
+
 //선택한 메뉴 상세보기
 router.get('/:menuID', async(req,res,error) => { //<- :menuID는 req.params.menuID내에 존재
     const thismenuID = req.params.menuID; //menuID를 가져와서
@@ -53,11 +55,14 @@ router.get('/:menuID', async(req,res,error) => { //<- :menuID는 req.params.menu
     res.json(result);
 })
 
+
+
 //카테고리 별로 메뉴리스트보기
 router.get('/category/:categoryID', async(req,res,error) => {
     const thisCategoryID = req.params.categoryID; //categoryID를 가져와서
     console.log("categoryID : ",thisCategoryID);
 
+    //카테고리 같은거 추출후 보내줌.
     const result = await prisma.Menu.findMany({
         where: {
             categoryId: thisCategoryID
