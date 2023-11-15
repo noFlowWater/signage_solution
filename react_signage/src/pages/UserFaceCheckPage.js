@@ -2,7 +2,7 @@ import { Link } from "react-router-dom/cjs/react-router-dom.min";
 import BacktoHome from "../components/BacktoHome";
 import { Modal } from "../components/Modal";
 
-const FaceCheckPage = () => {
+const UserFaceCheckPage = () => {
     return (
         <div style={{padding : '200px'}}>
             <div className="container d-flex align-items-center justify-content-center vh-50">
@@ -12,7 +12,7 @@ const FaceCheckPage = () => {
                         <BacktoHome />
                         </div>
                     <div>
-                        <Link to="/menu" style={{ textDecoration: 'none'}}>
+                        <Link to="/user/menu" style={{ textDecoration: 'none'}}>
                             <button className="btn btn-danger mt-5">
                             얼굴 인증 완료   
                             </button>
@@ -25,4 +25,4 @@ const FaceCheckPage = () => {
     )
 }
 
-export default FaceCheckPage;
+export default UserFaceCheckPage;

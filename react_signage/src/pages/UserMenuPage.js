@@ -1,6 +1,6 @@
 import UserNavBar from "../components/UserNavBar";
 
-const MenuPage = () => {
+const UserMenuPage = () => {
     return (
         <div>
             <UserNavBar />
@@ -13,4 +13,4 @@ const MenuPage = () => {
     )
 }
 
-export default MenuPage;
+export default UserMenuPage;
