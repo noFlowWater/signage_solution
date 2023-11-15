@@ -16,7 +16,7 @@ router.post('/login', async(req,res,error) => {
         }
         else {
             console.log('login failed');
-            is_auth = false;ß
+            is_auth = false;
         }
     } catch(error) {
         console.log(`error : ${error}`);
