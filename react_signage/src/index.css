@@ -15,3 +15,24 @@ code {
 .navbar-height{
   height: 100px;
 }
+
+@font-face {
+  font-family: 'SansL';
+  src: url('./font/GmarketSansTTFLight.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'SansM';
+  src: url('./font/GmarketSansTTFMedium.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'SansB';
+  src: url('./font/GmarketSansTTFBold.ttf') format('truetype');
+}
+
+:root {
+	--font-SansL: "SansL";
+	--font-SansM: "SansM";
+  --font-SansB: "SansB";
+}

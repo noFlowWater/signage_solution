@@ -1,8 +1,13 @@
 import HomePage from './pages/HomePage';
-import FaceCheckPage from './pages/FaceCheckPage';
-import MenuPage from './pages/MenuPage';
+
 import AdminLogin from './pages/AdminLogin';
 import AdminMenu from './pages/AdminMenu';
+import AdminMenuReg from './pages/AdminMenuReg';
+
+import UserFaceCheckPage from './pages/UserFaceCheckPage';
+import UserMenuPage from './pages/UserMenuPage';
+import UserModeSelectPage from './pages/UserModeSelectPage';
+import UserRegPage from './pages/UserRegPage';
 
 const routes = [
     {
@@ -10,12 +15,20 @@ const routes = [
         component : HomePage
     },
     {
-        path : '/face',
-        component : FaceCheckPage
+        path : '/user/mode',
+        component : UserModeSelectPage
     },
     {
-        path : '/menu',
-        component : MenuPage
+        path : '/user/face',
+        component : UserFaceCheckPage
+    },
+    {
+        path : '/user/reg',
+        component : UserRegPage
+    },
+    {
+        path : '/user/menu',
+        component : UserMenuPage
     },
     {
         path : '/admin/login',
@@ -24,7 +37,13 @@ const routes = [
     {
         path : '/admin/menu',
         component : AdminMenu
+    },
+    {
+        path : '/admin/menu/reg',
+        component : AdminMenuReg
     }
+
 ]
 
 export default routes;
+
