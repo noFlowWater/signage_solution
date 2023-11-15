@@ -1,6 +1,6 @@
 import {Link,NavLink} from 'react-router-dom';
 // navbar-dark bg-dark
-const NbMenu = () => {
+const AdminNavBar = () => {
     return (
         <nav className="navbar navbar-tranparent">
             <div className="container">
@@ -15,15 +15,6 @@ const NbMenu = () => {
                         HOME</NavLink>
                     </li>
                     
-                    <li className="nav-item me-5">
-                        <NavLink 
-                        activeClassName = "active"
-                        className="nav-link" 
-                        aria-current="page" 
-                        to="/"
-                        style={{ textDecoration: 'none' }}>
-                        추천</NavLink>
-                    </li>
 
                     <li className="nav-item me-5">
                         <NavLink 
@@ -68,4 +59,4 @@ const NbMenu = () => {
     );
 };
 
-export default NbMenu;
+export default AdminNavBar;

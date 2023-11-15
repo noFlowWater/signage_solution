@@ -19,7 +19,7 @@ const AdminLogin = () => {
         .then(res=> {
             const data = res.data
             console.log(data.status)
-            history.push('/login');
+            history.push('/admin/menu');
           })
         .catch(error => {
             console.error(error);
@@ -46,7 +46,7 @@ const AdminLogin = () => {
                                 </div>
                         </div>
                     </div>
-                    
+                
                     <button
                         className="btn btn-primary ms-2"
                         onClick ={onSubmit}
