@@ -44,14 +44,32 @@ const AdminNavBar = () => {
                         style={{ textDecoration: 'none' }}>
                         떡볶이</NavLink>
                     </li>
-                    <li className="nav-item">
+                    <li className="nav-item me-5">
                     <NavLink 
                         activeClassName = "active"
                         className="nav-link" 
                         aria-current="page" 
                         to="/"
                         style={{ textDecoration: 'none' }}>
-                        음료</NavLink>
+                        돈가스</NavLink>
+                    </li>
+                    <li className="nav-item me-5">
+                    <NavLink 
+                        activeClassName = "active"
+                        className="nav-link" 
+                        aria-current="page" 
+                        to="/"
+                        style={{ textDecoration: 'none' }}>
+                        사이드</NavLink>
+                    </li>
+                    <li className="nav-item">
+                    <NavLink 
+                        activeClassName = "active"
+                        className="btn btn-primary" 
+                        aria-current="page" 
+                        to="/admin/menu/reg"
+                        style={{ textDecoration: 'none' }}>
+                        메뉴 등록</NavLink>
                     </li>
                 </ul> 
             </div>
