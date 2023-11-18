@@ -1,29 +1,42 @@
-#Check the version of node
-node --version
+#!/bin/bash
+# bash 자동화 스크립트 실행 전, 디렉토리는 build를 생성할 상위 디렉토리이어야 한다.
+# deploy.sh는 프로젝트 디렉토리에서 실행해야 한다.
 
-npm install -g @webosose/ares-cli
+# Remove build file.
+rm -rf build
 
-#안되면
+# Remove IPK file.
+rm -rf IPK
 
-sudo npm install -g @webosose/ares-cli
+# Build the project
+npm run build
 
-#제대로 설치 되었는지 확인
-ares
+# Change to the build directory
+cd build
 
-#Device install & setup
-ares-install -D
-ares-setup-device
+# Create appinfo.json and add content
+printf '{\n "id": "kr.ac.knu.app.signage",\n "version": "1.0.0",\n "vendor": "My Company",\n "type": "web",\n "main": "index.html",\n "title": "new app",\n "icon": "icon.png",\n "requiredPermissions": [ "time.query", "activity.operation" ]\n}' > appinfo.json
 
-ares-generate -t webapp SignageSolution
+# Copy the icon.png file
+cp ../icon.png icon.png
 
-cd SignageSolution
+# Package the application
+ares-package . -o ../IPK
 
+# Change to the IPK directory
+cd ../IPK
+
+# Remove existing installation
+ares-install -d jongmal -r kr.ac.knu.app.signage
+
+# Install the new package
+ares-install -d jongmal kr.ac.knu.app.signage_1.0.0_all.ipk
+
+# Launch the app
+ares-launch -d jongmal kr.ac.knu.app.signage
+
+# Open inspector
+ares-inspect -d jongmal --app kr.ac.knu.app.signage
+
+# Change directory
 cd ..
-cd react_signage
-
-#리액트 프로젝트를 이미 build 했다면
-ares-package build -o IPK
-cd IPK
-
-ares-install -d jongmal "IPK"(.ipk까지 전체)
-ares-launch -d jongmal "[kr.ac](http://kr.ac/)....signage까지"
