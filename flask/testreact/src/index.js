@@ -1,3 +1,4 @@
+import 'react-app-polyfill/stable'; // -> WebOS 올릴 때 필요!!!!!!!  >> npm i react-app-polyfill
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';

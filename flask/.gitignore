@@ -3,3 +3,5 @@ env/
 __pycache__
 
 /temp_face_imgs/
+/testreact/IPK/
+/.vscode/

@@ -196,6 +196,7 @@ print("Model Training Complete!!!!!")
 # ------------------------ ------- Flask서버 셋팅 ------- ------------------------
 
 app = Flask(__name__, static_folder="./templates/static")
+# CORS(app, origins=["http://172.20.10.11:3000","http://172.20.10.11:3001"])
 CORS(app, origins=["http://localhost:3000","http://localhost:3001"])
 
 socketio = SocketIO(app, cors_allowed_origins="*")
