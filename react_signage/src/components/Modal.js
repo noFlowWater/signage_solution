@@ -66,7 +66,7 @@ export const ModalView = styled.div.attrs((props) => ({
       }
   `;
 
-  export const Modal = () => {
+  export const Modal = ({content}) => {
     const [isOpen, setIsOpen] = useState(false);
   
     const openModalHandler = () => {
@@ -88,7 +88,7 @@ export const ModalView = styled.div.attrs((props) => ({
           <ModalBackdrop onClick={openModalHandler}>
               <ModalView onClick={(e) => e.stopPropagation()}>
                 <ExitBtn onClick={openModalHandler}>x</ExitBtn>
-                <div className='desc'>HELLO FEJIGU!</div>
+                <div className='desc'>{content}</div>
               </ModalView>
             </ModalBackdrop>
             : null

@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom/cjs/react-router-dom.min";
 import BacktoHome from "../components/BacktoHome";
 import { Modal } from "../components/Modal";
+import UserAllergyModal from "../components/UserAllergyModal";
 
 const UserFaceCheckPage = () => {
     return (
@@ -10,7 +11,7 @@ const UserFaceCheckPage = () => {
                     <h1>얼굴 인식 화면을 띄울 것입니다.</h1>
                     <div className = "BacktoHome mt-5">
                         <BacktoHome />
-                        </div>
+                    </div>
                     <div>
                         <Link to="/user/menu" style={{ textDecoration: 'none'}}>
                             <button className="btn btn-danger mt-5">
@@ -18,7 +19,8 @@ const UserFaceCheckPage = () => {
                             </button>
                         </Link>
                     </div>
-                    <Modal />
+                    <Modal content="기본 모달"/>
+                    <UserAllergyModal content="알러지를 선택하세요" />
                 </div>
             </div>
         </div>
