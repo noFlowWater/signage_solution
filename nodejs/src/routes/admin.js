@@ -27,7 +27,6 @@ router.post('/login', async(req,res,error) => {
 router.get('/', async(req,res,error) => {
     const thisCategoryID = req.body.categoryID; //categoryID를 가져와서
     console.log("categoryID : ",thisCategoryID);
-
     //카테고리 같은거 추출후 보내줌.
     const result = await prisma.Menu.findMany({
         where: {
@@ -63,11 +62,11 @@ router.delete('/', async(req,res,error) => {
         }
     })}catch(error){
         console.log(`error : ${error}`);
-        res.send(500); //실패시 500
+        res.sendStatus(500); //실패시 500
     }
 
     //성공시 200
-    res.send(200);
+    res.sendStatus(200);
 });
 
 module.exports = router;
