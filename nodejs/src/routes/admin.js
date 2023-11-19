@@ -24,8 +24,8 @@ router.post('/login', async(req,res,error) => {
 }) 
 
 //관리자 카테고리별 메뉴
-router.get('/', async(req,res,error) => {
-    const thisCategoryID = req.body.categoryID; //categoryID를 가져와서
+router.get('/:categoryID', async(req,res,error) => {
+    const thisCategoryID = req.params.categoryID; //categoryID를 가져와서
     console.log("categoryID : ",thisCategoryID);
     //카테고리 같은거 추출후 보내줌.
     const result = await prisma.Menu.findMany({
@@ -58,8 +58,8 @@ router.delete('/', async(req,res,error) => {
     //삭제하는 구문
     try{const result = await prisma.Menu.delete({
         where: {
-            menu_ID : thismenu_ID
-        }
+            menu_ID : thismenu_ID,
+        },
     })}catch(error){
         console.log(`error : ${error}`);
         res.sendStatus(500); //실패시 500
