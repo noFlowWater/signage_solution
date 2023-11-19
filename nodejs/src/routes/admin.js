@@ -51,4 +51,23 @@ router.get('/', async(req,res,error) => {
     res.json(result);
 });
 
+//관리자 메뉴 삭제
+router.delete('/', async(req,res,error) => {
+    const thismenu_ID = req.body.menu_ID; //menuid 가져와서
+    console.log("menu_ID : ",thismenu_ID);
+
+    //삭제하는 구문
+    try{const result = await prisma.Menu.delete({
+        where: {
+            menu_ID : thismenu_ID
+        }
+    })}catch(error){
+        console.log(`error : ${error}`);
+        res.send(500); //실패시 500
+    }
+
+    //성공시 200
+    res.send(200);
+});
+
 module.exports = router;
