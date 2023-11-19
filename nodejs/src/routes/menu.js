@@ -29,7 +29,7 @@ router.get('/menu/recommend', async(req,res,error) => {
 
 //선택한 메뉴 상세보기
 router.get('/:menuID', async(req,res,error) => { //<- :menuID는 req.params.menuID내에 존재
-    const thismenuID = req.params.menuID; //menuID를 가져와서
+    const thismenuID = req.body.menuID; //menuID를 가져와서
     console.log("menuID : ",thismenuID);
 
     //DB에서 menuID 매칭후 추출
@@ -58,8 +58,8 @@ router.get('/:menuID', async(req,res,error) => { //<- :menuID는 req.params.menu
 
 
 //카테고리 별로 메뉴리스트보기
-router.get('/category/:categoryID', async(req,res,error) => {
-    const thisCategoryID = req.params.categoryID; //categoryID를 가져와서
+router.get('/:categoryID', async(req,res,error) => {
+    const thisCategoryID = req.body.categoryID; //categoryID를 가져와서
     console.log("categoryID : ",thisCategoryID);
 
     //카테고리 같은거 추출후 보내줌.
