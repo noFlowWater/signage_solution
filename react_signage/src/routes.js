@@ -8,6 +8,7 @@ import UserFaceCheckPage from './pages/UserFaceCheckPage';
 import UserMenuPage from './pages/UserMenuPage';
 import UserModeSelectPage from './pages/UserModeSelectPage';
 import UserRegPage from './pages/UserRegPage';
+import AdminMenuEdit from './pages/AdminMenuEdit';
 
 const routes = [
     {
@@ -41,9 +42,12 @@ const routes = [
     {
         path : '/admin/menu/reg',
         component : AdminMenuReg
+    },
+    {
+        path : '/admin/menu/edit',
+        component : AdminMenuEdit
     }
 
 ]
 
 export default routes;
-
