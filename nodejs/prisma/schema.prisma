@@ -14,6 +14,7 @@ model User {
   user_id String @id @default(uuid())
   user_name String @db.VarChar(255)
   phoneNumber String @db.Char(255)
+  user_face_model Bytes?
   infos MenuOrderInfo[]
   relationToAllergy Relation_user_allergy[]
 }
@@ -30,7 +31,7 @@ model MenuOrderInfo {
 
 model Menu{
   menu_id String @id @default(uuid())
-  menu_name String @db.VarChar(255)
+  menu_name String @db.VarChar(255) @unique
   menu_description String @db.VarChar(255)
   price Int
   file_path String? @db.VarChar(2058)
@@ -38,20 +39,20 @@ model Menu{
   category_id String //FK
   category Category @relation(fields: [category_id], references: [category_id])
   info MenuOrderInfo[]
-  relationToAllergy Realtion_menu_allergy[]
+  relationToAllergy Relation_menu_allergy[]
 }
 
 model Category{
   category_id String @id @default(uuid())
-  category_name String
+  category_name String @unique
   menus Menu[]
 }
 
 model Allergy{
   allergy_id String @id @default(uuid())
-  allergy_name String @db.VarChar(255)
+  allergy_name String @db.VarChar(255) @unique
   relationToUser Relation_user_allergy[]
-  reltationToMenu Realtion_menu_allergy[]
+  reltationToMenu Relation_menu_allergy[]
 }
 
 model Relation_user_allergy{
@@ -62,7 +63,7 @@ model Relation_user_allergy{
   @@id([userID, allergyID])  //PK
 }
 
-model Realtion_menu_allergy{
+model Relation_menu_allergy{
   menuID String  //FK
   allergyID String  //FK
   menus Menu @relation(fields: [menuID], references: [menu_id])
