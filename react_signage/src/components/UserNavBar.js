@@ -4,7 +4,7 @@ const UserNavBar = () => {
     return (
         <nav className="navbar navbar-tranparent">
             <div className="container">
-                <ul id="nav2" className="nav container-fluid justify-content-center navbar-height">
+                <ul id="nav2" className="nav container-fluid justify-content-center">
                     <li className="nav-item me-5">
                         <NavLink 
                         activeClassName = "active"
