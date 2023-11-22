@@ -25,7 +25,7 @@ const AdminLogin = () => {
             console.error(error);
           });
     };
-      
+
     return (
         <div style = {{padding: '100px'}}>
             <div className="container d-flex align-items-center justify-content-center vh-50">

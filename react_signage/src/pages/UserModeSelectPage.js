@@ -24,6 +24,7 @@ const LeftButton = styled.button`
   padding: 50px 100px;
   border-radius: 20px;
   margin-right: auto; /* 오른쪽 마진을 auto로 설정하여 가운데 정렬 */
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 5); /* 버튼에 그림자 효과 적용 */
 `;
 
 const RightButton = styled.button`
@@ -32,11 +33,12 @@ const RightButton = styled.button`
   padding: 50px 100px;
   border-radius: 20px;
   margin-left: auto; /* 오른쪽 마진을 auto로 설정하여 가운데 정렬 */
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 5); /* 버튼에 그림자 효과 적용 */
 `;
 
 const UserModeSelectPage = () => {
   return (
-    <div style={{ backgroundImage: "url(/img/UserModeBG.png)", backgroundSize: 'cover', backgroundPosition: 'center',width: '100vw', height: '100vh'}}>
+    <div style={{ backgroundImage: `url(${require('../img/UserModeBG.png')})`, backgroundSize: 'cover', backgroundPosition: 'center',width: '100vw', height: '100vh'}}>
         <PageContainer>
             <ButtonContainer>
             <div style={{ fontFamily: 'SansM',fontSize: '50px' }}>첫 방문이라면</div>
