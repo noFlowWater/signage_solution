@@ -166,29 +166,6 @@ print(">> Database schema setting complete! :) ")
 
 # ------------------------ ------- 얼굴 인식 ------- ------------------------
 face_classifier = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
-data_path = './faces/'
-onlyfiles = [f for f in listdir(data_path) if isfile(join(data_path,f))]
-
-
-
-Training_Data, Labels = [], []
-
-# 유저별 face_detected_count 딕셔너리 초기화    
-user_counts = {}
-
-for i, files in enumerate(onlyfiles):
-    image_path = data_path + onlyfiles[i]
-    images = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
-    Training_Data.append(np.asarray(images, dtype=np.uint8))
-    Labels.append(i)
-
-Labels = np.asarray(Labels, dtype=np.int32)
-
-model = cv2.face.LBPHFaceRecognizer_create()
-
-model.train(np.asarray(Training_Data), np.asarray(Labels))
-
-print("Model Training Complete!!!!!")
 # ------------------------ ------- Flask서버 셋팅 ------- ------------------------
 
 app = Flask(__name__, static_folder="./templates/static")
