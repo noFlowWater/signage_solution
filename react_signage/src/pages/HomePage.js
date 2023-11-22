@@ -1,7 +1,7 @@
-import { Link, useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { Link,useNavigate } from 'react-router-dom';
 
 const HomePage = () => {
-    const history = useHistory();
+    const navigate = useNavigate();
     return (
         <div style={{ backgroundImage: `url(${require('../img/HomeBG.png')})`, backgroundSize: 'cover', backgroundPosition: 'center',width: '100vw', height: '100vh', paddingTop: '100px'}}>
             <div className="container d-flex align-items-center justify-content-center vh-50">

@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom/cjs/react-router-dom.min';
+import { Link } from 'react-router-dom';
 
 const PageContainer = styled.div`
   display: flex;
@@ -51,7 +51,7 @@ const UserModeSelectPage = () => {
             
             <ButtonContainer>
             <div style={{ fontFamily: 'SansM',fontSize: '50px' }}>이미 등록되어있다면</div>
-                <Link className="user-face" to="/user/face">
+                <Link className="user-face" to="/user/rec/cam">
                     <RightButton style={{fontSize:'50px'}}> 
                     <div style={{fontFamily: 'SansM'}}>사용자 인증</div>
                     </RightButton>

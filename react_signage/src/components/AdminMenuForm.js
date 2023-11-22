@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { useNavigate } from "react-router-dom";
 import { bool } from 'prop-types';
 
 const AdminMenuForm = ({editing}) => {
@@ -9,7 +9,7 @@ const AdminMenuForm = ({editing}) => {
     const[cid, setCid] = useState();
     const[allergy, setAllergy] = useState([]);
 
-    const history = useHistory();
+    const navigate = useNavigate();
 
     // const onSubmit = () => {
     //      const data = {
@@ -43,7 +43,7 @@ const AdminMenuForm = ({editing}) => {
     };
 
     const goBack=()=>{
-        history.push('/admin/menu');
+        navigate('/admin/menu');
     }
 
     return (
