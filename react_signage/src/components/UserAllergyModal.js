@@ -109,25 +109,25 @@ export const UserAllergyModal = ({ content }) => {
               <div className='desc'>{content}</div>
               <ModalIconContainer>
                 <ModalIcon
-                  src='/img/a1.png'
+                  src={require('../img/a1.png')}
                   alt='Icon 1'
                   isSelected={selectedIcons.includes('호두')}
                   onClick={() => selectIconHandler('호두')}
                 />
                 <ModalIcon
-                  src='/img/a2.png'
+                  src={require('../img/a2.png')}
                   alt='Icon 2'
                   isSelected={selectedIcons.includes('메밀')}
                   onClick={() => selectIconHandler('메밀')}
                 />
                 <ModalIcon
-                  src='/img/a3.png'
+                  src={require('../img/a3.png')}
                   alt='Icon 3'
                   isSelected={selectedIcons.includes('밀')}
                   onClick={() => selectIconHandler('밀')}
                 />
                 <ModalIcon
-                  src='/img/a4.png'
+                  src={require('../img/a4.png')}
                   alt='Icon 4'
                   isSelected={selectedIcons.includes('대두')}
                   onClick={() => selectIconHandler('대두')}

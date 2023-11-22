@@ -1,10 +1,12 @@
 import { useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
+import { CartContext } from './UserCartContext';
 
 const UserMenu = () => {
-    const { id } = useParams(); // URL에서 id 값을 추출
-    const [menus, setMenus] = useState([]); // 메뉴 정보를 저장할 state
+    // const { id } = useParams(); // URL에서 id 값을 추출
+    // const [menus, setMenus] = useState([]); // 메뉴 정보를 저장할 state
+    // const { dispatch } = useContext(CartContext);
 
     // useEffect(() => {
     //     // 서버에서 메뉴 정보를 불러오는 함수
@@ -19,7 +21,7 @@ const UserMenu = () => {
     // return (
     //     <div>
     //         {menus.map((menu, index) => (
-    //             <div key={index}>
+    //             <div key={index} onClick={() => dispatch({ type: 'ADD_ITEM', item: menu })}>
     //                 <h1>{menu.name}</h1>
     //                 <p>{menu.price}</p>
     //                 <img src={menu.image} alt={menu.name} />
@@ -33,6 +35,13 @@ const UserMenu = () => {
         <div> 메뉴 2</div>
         <div> 메뉴 3</div>
         <div> 메뉴 4</div>
+        <div> 메뉴 5</div>
+        <div> 메뉴 6</div>
+        <div> 메뉴 7</div>
+        <div> 메뉴 8</div>
+        <div> 메뉴 9</div>
+        <div> 메뉴 10</div>
+        <div> 메뉴 11</div>
         </div>
     )
 }
