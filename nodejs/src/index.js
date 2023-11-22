@@ -6,6 +6,7 @@ const port = 4000
 const database = require('./database')
 
 app.use(express.json());
+app.use(cors());
 app.use(express.urlencoded({ extends: true}))
 
 
@@ -34,6 +35,6 @@ app.use((error, req, res, next) => {
     res.send(error.message || '서버에서 에러가 났습니다'); //지정한 error msg가 있다면 그걸 전달하고 없다면 해당 메시지를 보낸다
 })
 
-app.listen(4000, () => {
+app.listen(4000,'0.0.0.0', () => {
     console.log(`${port}번에서 실행이 되었습니다.`);
 })
