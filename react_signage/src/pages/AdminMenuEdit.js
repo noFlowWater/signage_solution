@@ -1,7 +1,9 @@
+import AdminMenuForm from "../components/AdminMenuForm";
+
 const AdminMenuEdit = () => {
     return (
         <div>
-            메뉴 수정
+            <AdminMenuForm editing={true}/>
         </div>
     )
 }
