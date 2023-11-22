@@ -24,16 +24,16 @@ router.post('/login', async(req,res,error) => {
 }) 
 
 //관리자 카테고리별 메뉴
-router.get('/:categoryID', async(req,res,error) => {
-    const thisCategoryID = req.params.categoryID; //categoryID를 가져와서
-    console.log("categoryID : ",thisCategoryID);
+router.get('/:category_id', async(req,res,error) => {
+    const thiscategory_id = req.params.category_id; //category_id를 가져와서
+    console.log("category_id : ",thiscategory_id);
     //카테고리 같은거 추출후 보내줌.
     const result = await prisma.Menu.findMany({
         where: {
-            categoryId: thisCategoryID
+            category_id: thiscategory_id
         },
         select: {
-            menuID: true,
+            menu_id: true,
             menu_name: true,
             price: true,
             file_path: true,
@@ -41,7 +41,7 @@ router.get('/:categoryID', async(req,res,error) => {
         }
     })
 
-    console.log("menuID : ",result.menuID);
+    console.log("menu_id : ",result.menu_id);
     console.log("menu_name : ",result.menu_name);
     console.log("price : ",result.price);
     console.log("file_path : ",result.file_path);
@@ -52,7 +52,7 @@ router.get('/:categoryID', async(req,res,error) => {
 
 //관리자 메뉴 삭제
 router.delete('/', async(req,res,error) => {
-    const thismenu_ID = req.body.menu_ID; //menuid 가져와서
+    const thismenu_ID = req.body.menu_ID; //menu_id 가져와서
     console.log("menu_ID : ",thismenu_ID);
 
     //삭제하는 구문
@@ -67,6 +67,32 @@ router.delete('/', async(req,res,error) => {
 
     //성공시 200
     res.sendStatus(200);
+});
+ 
+//메뉴 수정 <- 이거 잘못된 코드입니다~바꿔야돼용.
+router.put('/:menu_id', async(req,res,error) => {
+    const thismenu_id= req.params.menu_id; 
+    console.log("thismenu_id : ",thismenu_id);
+    
+    const result = await prisma.Menu.update({
+        where: {
+            menu_id: thismenu_id
+        },
+        select: {
+            menu_name: true,
+            price: true,
+            file_path: true,
+            is_soldout: true
+        }
+    })
+
+    console.log("menu_id : ",result.menu_id);
+    console.log("menu_name : ",result.menu_name);
+    console.log("price : ",result.price);
+    console.log("file_path : ",result.file_path);
+    console.log("is_soldout : ",result.is_soldout);
+    //res.json() 해서 메뉴표시에 필요한것들 보내주면 된다.
+    res.json(result);
 });
 
 module.exports = router;

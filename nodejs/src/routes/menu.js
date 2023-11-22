@@ -28,14 +28,14 @@ router.get('/menu/recommend', async(req,res,error) => {
 
 
 //선택한 메뉴 상세보기
-router.get('/:menuID', async(req,res,error) => { //<- :menuID는 req.params.menuID내에 존재
-    const thismenuID = req.params.menuID; //menuID를 가져와서
-    console.log("menuID : ",thismenuID);
+router.get('/:menu_id', async(req,res,error) => { //<- :menu_id는 req.params.menu_id내에 존재
+    const thismenu_id = req.params.menu_id; //menu_id를 가져와서
+    console.log("menu_id : ",thismenu_id);
 
-    //DB에서 menuID 매칭후 추출
+    //DB에서 menu_id 매칭후 추출
     const result = await prisma.Menu.findUnique({
         where: {
-            menuID: thismenuID
+            menu_id: thismenu_id
         },
         select: {
             select: {
@@ -58,24 +58,24 @@ router.get('/:menuID', async(req,res,error) => { //<- :menuID는 req.params.menu
 
 
 //카테고리 별로 메뉴리스트보기
-router.get('/:categoryID', async(req,res,error) => {
-    const thisCategoryID = req.params.categoryID; //categoryID를 가져와서
-    console.log("categoryID : ",thisCategoryID);
+router.get('/:category_id', async(req,res,error) => {
+    const thiscategory_id = req.params.category_id; //category_id를 가져와서
+    console.log("category_id : ",thiscategory_id);
 
     //카테고리 같은거 추출후 보내줌.
     const result = await prisma.Menu.findMany({
         where: {
-            categoryId: thisCategoryID
+            category_id: thiscategory_id
         },
         select: {
-            menuID: true,
+            menu_id: true,
             menu_name: true,
             price: true,
             file_path: true
         }
     })
 
-    console.log("menuID : ",result.menuID);
+    console.log("menu_id : ",result.menu_id);
     console.log("menu_name : ",result.menu_name);
     console.log("price : ",result.price);
     console.log("file_path : ",result.file_path);

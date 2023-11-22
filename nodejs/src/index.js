@@ -6,6 +6,7 @@ const port = 4000
 const database = require('./database')
 
 app.use(express.json());
+app.use(express.urlencoded({ extends: true}))
 
 
 //db 연결
