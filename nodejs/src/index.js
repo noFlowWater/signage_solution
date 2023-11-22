@@ -7,6 +7,9 @@ const database = require('./database')
 
 app.use(express.json());
 app.use(cors());
+app.use(express.urlencoded({ extends: true}))
+
+
 //db 연결
 database.$connect()
     .then(() => {
