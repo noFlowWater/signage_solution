@@ -3,7 +3,7 @@ CREATE TABLE `User` (
     `user_id` VARCHAR(191) NOT NULL,
     `user_name` VARCHAR(255) NOT NULL,
     `phoneNumber` CHAR(255) NOT NULL,
-    `user_face_mode` LONGBLOB NULL,
+    `user_face_model` LONGBLOB NULL,
     PRIMARY KEY (`user_id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 

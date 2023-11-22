@@ -22,7 +22,9 @@ const RegisterForm = () => {
         } catch (error) {
             if (error.response) {
             // 서버로부터 응답을 받았으나, 요청이 2xx 범위를 벗어났을 경우
-            console.error('Registration failed:', error.response.data.message);
+            console.error('Registration failed:', error.response.data.error || error.response.data.message);
+            // 사용자에게 오류 메시지 표시
+            alert(`Error: ${error.response.data.error}`);
             } else if (error.request) {
             // 요청이 이루어졌으나 응답을 받지 못했을 경우
             console.error('Registration failed: No response', error.request);

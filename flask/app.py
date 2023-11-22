@@ -3,6 +3,7 @@ import os
 from os import listdir
 from os.path import isfile, join
 import cv2
+import shutil
 import numpy as np
 from flask import Flask, render_template, send_from_directory,request, jsonify
 from flask_socketio import SocketIO, emit
@@ -19,11 +20,6 @@ database_name = "FLASK_BASIC"
 flask_user = "flask_user"
 flask_password = "8246"
 sql_file_path = "./db.sql"
-
-# 가정: 이미 등록된 사용자 목록
-registered_users = {
-    "010-4080-6853": "노유수"  # 전화번호: 이름
-}
 
 # ------------------------ ------- Database 유저 세팅 ------- ------------------------
 
@@ -135,7 +131,7 @@ def delete_all_tables_with_fk(cursor, conn):
         conn.rollback()
 
 # # 모든 모든 테이블 삭제 명령.
-# delete_all_tables_with_fk(cursor, conn)
+delete_all_tables_with_fk(cursor, conn)
 
 # SQL 파일 읽기
 with open(sql_file_path, 'r') as file:
@@ -316,6 +312,7 @@ createFolder('./temp')
 def receive_data(data):
     image = data.get("image")
     phone_number = data.get("phoneNumber")
+    name = data.get("name")
 
     # 유저가 처음 데이터를 보내는 경우, 딕셔너리에 초기값 0 설정
     if phone_number not in user_counts:
@@ -331,7 +328,7 @@ def receive_data(data):
             # face_detected_count 증가
             user_counts[phone_number] += 1
             if user_counts[phone_number] <= 100:
-                print(user_counts[phone_number])
+                print(str(user_counts[phone_number]) + " + " + phone_number)
                 # Optionally, emit the processed image with face boxes back to the client
                 _, buffer = cv2.imencode('.jpg', image)
                 processed_image = base64.b64encode(buffer).decode('utf-8')
@@ -363,20 +360,34 @@ def receive_data(data):
 
                 model.train(np.asarray(Training_Data), np.asarray(Labels))
                 # 모델 저장
-                model.save(f'trained_model_{phone_number}.yml')
+                model.save(f'./temp/{phone_number}/trained_model_{phone_number}.yml')
 
                 print(f"{phone_number}'s Model Training Complete!!!!!")
 
                 # . . .
-                # 전달받은 유저 아이디에 매핑되게 디비에 저장.
-                with open(f"trained_model_{phone_number}.yml", "rb") as model_file:
-                    model_data = model_file.read()
+                # 전달받은 유저 아이디에 매핑되게 디비에 저장.)
+                try:
+                    # 모델 파일을 이진 형식으로 읽기
+                    with open(f'./temp/{phone_number}/trained_model_{phone_number}.yml', 'rb') as file:
+                        model_data = file.read()
 
-                
+                    # 데이터베이스에 사용자 정보와 모델 데이터 저장
+                    insert_user_query = "INSERT INTO User (user_id, user_name, phoneNumber, user_face_model) VALUES (UUID(), %s, %s, %s)"
+                    cursor.execute(insert_user_query, (name, phone_number, model_data))
+                    conn.commit()
 
+                    print(f"User {name} with phone number {phone_number} has been successfully registered.")
+                    emit("registration_success", {"message": f"User {name} registered successfully"})
+
+                except Exception as e:
+                    print(f"An error occurred during user registration: {e}")
+                    emit("registration_failed", {"error": str(e)})
+
+                # 경로에 있는 이미지와 경로 삭제
+                temp_path = f'./temp/{phone_number}'
+                shutil.rmtree(temp_path)
+                print(f"Images and directory {temp_path} have been deleted")
                 # 등록완료!
-                
-                # temp_face_imgs 경로 & 내용 전부 삭제
                 
         else:
             # No face detected, optionally emit a message indicating failure to detect a face
@@ -390,27 +401,27 @@ def register_user():
     name = data.get('name')
     phone_number = data.get('phoneNumber')
 
-    print("> name : "+name)
-    print("> phone_number : "+phone_number)
+    print("> name : " + name)
+    print("> phone_number : " + phone_number)
 
-    # 데이터 중복 체크
-    if phone_number in registered_users:
-        # 전화번호가 이미 등록되어 있으면 실패 응답을 보냅니다.
-        return jsonify({'status': 'fail', 'message': 'Phone number already registered'}), 400
+    # 전화번호 중복 체크
+    query = "SELECT * FROM `User` WHERE `phoneNumber` = %s"
+    cursor.execute(query, (phone_number,))
+    result = cursor.fetchone()
+
+    if result:
+        return {"error": "Phone number already registered"}, 400
+
+    # Your code to add the new user to the database goes here
+    # ...
 
     # 유효성 검사 (예: 전화번호 형식 검사)
     if not is_valid_phone_number(phone_number):
         # 유효하지 않은 전화번호 형식이면 실패 응답을 보냅니다.
-        return jsonify({'status': 'fail', 'message': 'Invalid phone number'}), 400
+        return {"error": "Invalid phone number"}, 400
 
-    # 중복되지 않았고 유효하다면 데이터베이스에 저장하는 로직 (여기서는 생략)
-    # 유저 정보를 데이터베이스에 INSERT
-    insert_user_query = "INSERT INTO users (name, phone_number) VALUES (%s, %s)"
-    cursor.execute(insert_user_query, (name, phone_number))
-    conn.commit()
     # 성공 응답을 보냅니다.
     return jsonify({'status': 'success', 'name': name, 'phoneNumber': phone_number})
-
 
 @app.route("/")
 def index():

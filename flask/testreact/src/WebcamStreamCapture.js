@@ -99,6 +99,7 @@ const WebcamStreamCapture = () => {
 
                 // 전화번호와 이미지 데이터를 함께 보내는 객체 생성
                 const dataToSend = {
+                    name: name,
                     phoneNumber: phoneNumber, // phoneNumber 변수는 이미 존재해야 함
                     image: data
                 };
