@@ -1,0 +1,72 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  user_id String @id @default(uuid())
+  user_name String @db.VarChar(255)
+  phoneNumber String @db.Char(255)
+  user_face_model Bytes?
+  infos MenuOrderInfo[]
+  relationToAllergy Relation_user_allergy[]
+}
+
+model MenuOrderInfo {
+  order_count Int
+  last_order_time DateTime
+  userID String  //FK
+  menuID String  //FK
+  user User @relation(fields: [userID], references: [user_id])
+  menu Menu @relation(fields: [menuID], references: [menu_id])
+  @@id([userID, menuID])
+}
+
+model Menu{
+  menu_id String @id @default(uuid())
+  menu_name String @db.VarChar(255) @unique
+  menu_description String @db.VarChar(255)
+  price Int
+  file_path String? @db.VarChar(2058)
+  is_soldout Boolean
+  category_id String //FK
+  category Category @relation(fields: [category_id], references: [category_id])
+  info MenuOrderInfo[]
+  relationToAllergy Relation_menu_allergy[]
+}
+
+model Category{
+  category_id String @id @default(uuid())
+  category_name String @unique
+  menus Menu[]
+}
+
+model Allergy{
+  allergy_id String @id @default(uuid())
+  allergy_name String @db.VarChar(255) @unique
+  relationToUser Relation_user_allergy[]
+  reltationToMenu Relation_menu_allergy[]
+}
+
+model Relation_user_allergy{
+  userID String //FK
+  allergyID String  //FK
+  users User @relation(fields: [userID], references: [user_id])
+  allergies Allergy @relation(fields: [allergyID], references: [allergy_id])
+  @@id([userID, allergyID])  //PK
+}
+
+model Relation_menu_allergy{
+  menuID String  //FK
+  allergyID String  //FK
+  menus Menu @relation(fields: [menuID], references: [menu_id])
+  allergies Allergy @relation(fields: [allergyID], references: [allergy_id])
+  @@id([menuID, allergyID]) //PK
+}
