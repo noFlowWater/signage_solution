@@ -15,13 +15,15 @@ database.$connect()
     })
     .catch(err => {
         console.log(err);
-    } )
+    })
 
 //admin 관련 api 요청은 routes/admin 에서 처리
 app.use('/admin', require('./routes/admin'));
 
 // '/menu' 관련 api 요청은 routes/menu에서 처리
 app.use('/menu', require('./routes/menu'));
+
+
 
 // app.use('/api', require('./routes/api'));
 // '/api' 관련 요청은 routes/api에서 처리 -> /api는 메뉴등록,수정,삭제 등을 <요청>함
