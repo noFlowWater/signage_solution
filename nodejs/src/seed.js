@@ -20,10 +20,13 @@ database.$connect()
 //category 시드 생성
 async function category(){
     await database.category.upsert({
-        where: {category_id : "1"},
-        update : {},
+        where: {category_name : "사이드"},
+        update : {
+            category_id : "5"
+        },
         create : {
-            category_name : "사이드"
+            category_name : "사이드",
+            category_id : "5"
         }
     })
     console.log("success")
