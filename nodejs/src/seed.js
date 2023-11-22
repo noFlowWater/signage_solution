@@ -20,8 +20,10 @@ database.$connect()
 //category 시드 생성
 async function category(){
     await database.category.upsert({
-        where: {category_id : "1"},
-        update : {},
+        where: {category_name : "돈가스"},
+        update : {
+            category_id : "4"
+        },
         create : {
             category_name : "사이드"
         }
@@ -151,7 +153,7 @@ async function menutoallergy() {
     console.log("success")
 }
 //함수 호출
-menu()
+category()
     .catch(e => {
         console.error(e)
         process.exit(1)
