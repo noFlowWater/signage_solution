@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import io from 'socket.io-client';
 import { kiosk } from '../kiosk';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import FaceRegNavBar from '../components/FaceRegNavBar';
 
 const UserRegCam = () => {
@@ -167,6 +167,7 @@ const UserRegCam = () => {
                     </div>
                 </div>
             </div>
+            <Link to='/user/reg/allergy'>일단 알러지 선택으로 보내</Link>
         </div>
     );
 };

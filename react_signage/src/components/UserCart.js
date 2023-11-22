@@ -11,7 +11,7 @@ const UserCart = () => {
             </div>
             {cart.map((item, index) => (
                 <div key={index}>
-                    <h1>{item.name}</h1>
+                    <h1>{item.menu_name}</h1>
                     <p>{item.price}</p>
                 </div>
             ))}

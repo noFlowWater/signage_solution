@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import BacktoHome from "../components/BacktoHome";
 import { Modal } from "../components/Modal";
-import UserAllergyModal from "../components/UserAllergyModal";
 
 const UserRecCam = () => {
     return (
@@ -20,7 +19,6 @@ const UserRecCam = () => {
                         </Link>
                     </div>
                     <Modal title="기본 모달" content="기본 모달"/>
-                    <UserAllergyModal content="알러지를 선택하세요" />
                 </div>
             </div>
         </div>

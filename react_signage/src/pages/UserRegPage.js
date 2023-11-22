@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, {useState } from 'react';
 import axios from 'axios';
 import { kiosk } from '../kiosk';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import FaceRegNavBar from '../components/FaceRegNavBar';
 
 const UserRegPage = () => {
@@ -64,6 +64,8 @@ const UserRegPage = () => {
                     >
                         등록
                     </button>
+
+                    <Link to='/user/reg/cam'>일단 캠으로 보내</Link>
                 </form>
             </div>
         </div>

@@ -10,6 +10,7 @@ import UserRegPage from './pages/UserRegPage';
 import AdminMenuEdit from './pages/AdminMenuEdit';
 import UserRegCam from './pages/UserRegCam';
 import UserRecCam from './pages/UserRecCam';
+import UserAllergySelectPage from './pages/UserAllergySelectPage';
 
 const routes = [
     {
@@ -31,6 +32,10 @@ const routes = [
     {
         path : '/user/reg/cam',
         component : UserRegCam
+    },
+    {
+        path : '/user/reg/allergy',
+        component : UserAllergySelectPage
     },
     {
         path : '/user/menu/:cid',
