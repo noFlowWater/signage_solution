@@ -44,35 +44,36 @@ router.post('/login', async(req,res,error) => {
 
 //admin menuadd
 router.post('/menu', async(req,res,error) => {
-    try{
-        console.log(`name : ${req.body.category}`);
-        const category = await prisma.category.findFirst({
-            where: {
-                category_name : req.body.category
+    const allergy = [];
+    console.log(req.body);
+    const price = parseInt(req.body.price);
+    const is_soldout = Boolean(req.body.is_soldout);
+    const menu = await prisma.menu.upsert ({
+        where : {menu_name : req.body.menu_name},
+        update : {},
+        create : {
+            menu_name : req.body.menu_name,
+            menu_description : req.body.menu_description,
+            price : price,
+            file_path : req.body.file_path,
+            is_soldout : is_soldout,
+            category : {
+                connect : {category_name : req.body.category_name}
+            },
+        }
+    })
+    res.status(200).send(menu);
+    const allergy_table = await prisma.relation_menu_allergy.create ({
+        data : {
+            menus : {
+                connect : { menu_name : req.body.menu_name}
+            },
+            allergies : {
+                connect : {allergy_name : "밀"}
             }
-        })
-        console.log(`category: ${category.category_id}`);
-        const price = parseInt(req.body.price);
-        if (isNaN(price)) {
-            return res.status(400).json({ error: 'Invalid price: must be a number' });
         }
-        try{
-            const menu = await prisma.menu.create({
-                data: {
-                    menu_name: req.body.name,
-                    menu_description: req.body.des,
-                    price: req.body.price,
-                    file_path : " ",
-                    is_soldout: req.body.is_soldout,
-                    category_id: category.category_id
-                }
-            });
-        } catch (error) {
-            console.log(error);
-        }
-    } catch(error) {
-        console.log(error);
-    }
+    })
+    console.log("success");
 })
 
 //관리자 카테고리별 메뉴
