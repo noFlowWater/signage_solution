@@ -154,7 +154,7 @@ async function menutoallergy() {
     console.log("success")
 }
 //함수 호출
-menu()
+category()
     .catch(e => {
         console.error(e)
         process.exit(1)
