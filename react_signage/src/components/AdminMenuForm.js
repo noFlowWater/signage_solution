@@ -1,14 +1,46 @@
 import { useState } from "react";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { bool } from 'prop-types';
 
-const AdminMenuForm = () => {
+const AdminMenuForm = ({editing}) => {
     const[name, setName] = useState();
     const[explan, setExplan] = useState();
     const[cost, setCost] = useState();
     const[cid, setCid] = useState();
-    const[allergy, setAllergy] = useState();
+    const[allergy, setAllergy] = useState([]);
 
     const history = useHistory();
+
+    // const onSubmit = () => {
+    //      const data = {
+    //      name = name
+    //      explan = explan
+    //      cost = cost
+    //      cid = cid
+    //      allergy = allergy
+    //     };
+    //     axios.post('http://172.20.37.28:4000/admin/login', JSON.stringify(data), {
+    //       headers: {
+    //         'Content-Type': 'application/json'
+    //       }
+    //     })
+    //     .then(res=> {
+    //         const data = res.data
+    //         console.log(data.status)
+    //         history.push('/admin/menu');
+    //       })
+    //     .catch(error => {
+    //         alert("등록 불가");
+    //         console.error(error);
+    //       });
+    // };
+    const handleAllergyChange = (event) => {
+        if(event.target.checked) {
+            setAllergy([...allergy, event.target.value]);
+        } else {
+            setAllergy(allergy.filter(item => item !== event.target.value));
+        }
+    };
 
     const goBack=()=>{
         history.push('/admin/menu');
@@ -19,7 +51,7 @@ const AdminMenuForm = () => {
             <nav className="navbar">
                 <div className="container">
                     <div style = {{fontFamily: 'SansM', fontSize:'30px'}}>
-                        메뉴 등록
+                        {editing ? '메뉴 수정' : '메뉴 등록'}
                     </div>
                     {/* <img src={'/img/menu_reg.png'} alt="메뉴 등록" height="110" width="300"/> */}
                     <img src={'/img/logo.png'} alt="logo" height="110" width="300"/>
@@ -70,18 +102,42 @@ const AdminMenuForm = () => {
                     </div>
                     <div className="mb-4">
                         <label className="from-label mb-1">카테고리 ID</label>
-                        <input
+                        <select
                             className="form-control"
                             value={cid}
                             onChange={(e)=>{
                                 setCid(e.target.value);
                             }}
                             style={{ width: "80px" }}
-                        />
+                        >
+                            <option value="김밥">김밥</option>
+                            <option value="라면">라면</option>
+                            <option value="떡볶이">떡볶이</option>
+                            <option value="돈가스">돈가스</option>
+                            <option value="사이드">사이드</option>
+                        </select>
+                    </div>
+                    <div className="mb-4">
+                        <label className="form-label mb-1">알레르기 정보</label>
+                            <div 
+                                style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
+                                {["없음", "메밀", "밀", "대두", "호두", "땅콩", "복숭아", "토마토", "돼지고기", "난류(가금류)", "우유", "닭고기", "쇠고기", "새우", "고등어", "홍합", "전복", "굴", "조개류", "게", "오징어", "아황산 포함식품"].map((item, index) => (
+                                    <div key={index} style={{ marginRight: '10px' }}>
+                                        <input
+                                            type="checkbox"
+                                            id={`allergy${index}`}
+                                            name="allergy"
+                                            value={item}
+                                            onChange={handleAllergyChange}
+                                        />
+                                        <label htmlFor={`allergy${index}`}>{item}</label>
+                                    </div>
+                                ))}
+                            </div>
                     </div>
                     <div className="mb-4">
                         <div className ="btn btn-primary">
-                            메뉴 등록
+                            {editing ? '메뉴 수정' : '메뉴 등록'}
                         </div>
                         <div 
                         className ="btn btn-danger ms-2"
@@ -95,5 +151,13 @@ const AdminMenuForm = () => {
         </div>
     )
 };
+
+AdminMenuForm.propTypes = {
+    editing : bool
+}
+
+AdminMenuForm.defaultProps = {
+    editing : false
+}
 
 export default AdminMenuForm;
