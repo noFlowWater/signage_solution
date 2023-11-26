@@ -5,10 +5,55 @@ const prisma = require('../database')
 dotenv.config()
 
 
-/*//추천 메뉴리스트 보기 
-router.get('/menu/recommend', async(req,res,error) => {
-    git /menu/recommend
-})*/ //<- 이거는 알고리즘이 필요하기 때문에 조금 더 생각을 해 보아요.
+//추천 메뉴리스트 보기 
+router.get('/menu/0', async(req,res,error) => {
+    const thisuser_id = req.body.user_id;
+    console.log("user_id : ",thisuser_id);
+    
+    //내가 최근에 먹은 메뉴
+    const result1 = await prisma.MenuOrderInfo.findFirst({
+        where:{
+            user_id:thisuser_id
+        },
+        select: {
+            menu_id: true,
+            menu_name: true,
+            price: true,
+            file_path: true,
+            is_soldout: true,
+            orderBy:{
+                last_order_time: "desc",
+            },
+        }
+    
+    })
+
+    //내가 가장 많이 먹은 메뉴
+    const result2 = await prisma.menuOrderInfo.groupBy({
+        by: ['menu_id', 'menu_name', 'price', 'file_path', 'is_soldout'],
+        _count: {
+          menu_id: true
+        },
+        where: {
+          user_id: thisuser_id
+        },
+        orderBy: {
+          _count: {
+            menu_id: 'desc'
+          }
+        },
+        select: {
+          menu_id: true,
+          menu_name: true,
+          price: true,
+          file_path: true,
+          is_soldout: true
+        }
+      });
+      
+    //나랑 비슷한 사용자가 먹은 메뉴
+
+})
 
 
 
