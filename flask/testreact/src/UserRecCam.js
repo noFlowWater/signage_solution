@@ -23,6 +23,7 @@ function UserRecCam() {
 
         socket.current.on('image_processed', (data) => {
             setProcessedImage(data.image);
+            console.log("!!!");
         });
 
         return () => {
@@ -36,10 +37,10 @@ function UserRecCam() {
     useEffect(() => {
         navigator.mediaDevices.getUserMedia({ video: true })
         .then(stream => {
-            
             if (videoRef.current) {
                 videoRef.current.srcObject = stream;
                 setWebcamStream(stream);
+                console.log(`webcamStream: ${webcamStream}`)
             }
         }).catch(console.error);
 
