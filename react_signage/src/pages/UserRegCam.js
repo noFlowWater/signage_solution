@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import io from 'socket.io-client';
 import { flask } from '../constants';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
+import FaceRegNavBar from '../components/FaceRegNavBar';
 
-const WebcamStreamCapture = () => {
-    
+const UserRegCam = () => {
     const location = useLocation();
     const { name, phoneNumber } = location.state || {};
     const videoRef = useRef(null);
@@ -128,40 +128,50 @@ const WebcamStreamCapture = () => {
 
 
   return (
-      <div id="container">
-            {isCollectionComplete ? (
-                    <div>Collection complete! All images have been saved.</div>
-                ) : (
-                    <div className="camera-container">
-                        <div className="camera-info">
-                            <p>Name: {name}</p>
-                            <p>Phone Number: {phoneNumber}</p>
-                        </div>
-                        <video 
-                            ref={videoRef} 
-                            autoPlay 
-                            playsInline 
-                            width="400" 
-                            height="300" 
-                            style={{ transform: 'rotateY(180deg)' }} 
-                        />
-                        <img 
-                            id="photo" 
-                            src={processedImage} 
-                            width="400" 
-                            height="300" 
-                            alt="Processed" 
-                            style={{
-                                display: processedImage ? 'block' : 'none',
-                                transform: 'rotateY(180deg)'
-                            }}
-                        />
+        <div>
+            <FaceRegNavBar />
+            <div className="container d-flex align-items-center justify-content-center vh-50" style={{paddingTop:'50px'}}>
+                <div className="d-flex flex-column align-items-center">
+                    <div style={{ fontFamily: 'SansM',fontSize: '30px' }}>카메라를 응시해주세요</div>
+                    <div id="container">
+                        {isCollectionComplete ? (
+                                <div>Collection complete! All images have been saved.</div>
+                            ) : (
+                                <div className="camera-container">
+                                    <div className="camera-info">
+                                        <p>Name: {name}</p>
+                                        <p>Phone Number: {phoneNumber}</p>
+                                    </div>
+                                    <video 
+                                        ref={videoRef} 
+                                        autoPlay 
+                                        playsInline 
+                                        width="400" 
+                                        height="300" 
+                                        style={{ transform: 'rotateY(180deg)' }} 
+                                    />
+                                    <img 
+                                        id="photo" 
+                                        src={processedImage} 
+                                        width="400" 
+                                        height="300" 
+                                        alt="Processed" 
+                                        style={{
+                                            display: processedImage ? 'block' : 'none',
+                                            transform: 'rotateY(180deg)'
+                                        }}
+                                    />
+                                </div>
+                            )}
+                        {/* The canvas is used for capturing frames but is not displayed */}
+                        <canvas ref={canvasRef} style={{ display: 'none' }}></canvas>
                     </div>
-                )}
-            {/* The canvas is used for capturing frames but is not displayed */}
-            <canvas ref={canvasRef} style={{ display: 'none' }}></canvas>
+                    <Link to='/user/reg/allergy'>일단 알러지 선택으로 보내</Link>
+                </div>
+                
+            </div>
         </div>
     );
 };
 
-export default WebcamStreamCapture;
+export default UserRegCam;
