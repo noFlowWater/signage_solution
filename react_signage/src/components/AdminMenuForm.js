@@ -32,7 +32,7 @@ const AdminMenuForm = ({editing}) => {
         .then(res=> {
             const data = res.data
             console.log(data.status)
-            history.push('/admin/menu');
+            navigate('/admin/menu');
           })
         .catch(error => {
             alert("등록 불가");

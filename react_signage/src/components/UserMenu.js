@@ -1,7 +1,7 @@
 import { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import { CartContext } from './UserCartContext';
-import { kiosk } from '../kiosk';
+import { kiosk } from '../constants';
 import { useLocation, useParams } from 'react-router-dom';
 
 const UserMenu = () => {
