@@ -1,13 +1,15 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import AdminMenuCard from "./AdminMenuCard";
+import { useNavigate } from "react-router-dom";
 
 const AdminMenuList = () => {
+    const navigate = useNavigate();
     const [menus, setMenus] = useState([]);
     const [selectedMenu, setSelectedMenu] = useState(1); // 선택된 메뉴 버튼의 기본값은 1로 설정
 
     const getMenus = () => {
-        axios.get(`http://172.20.16.146:4000/admin/${selectedMenu}`)
+        axios.get(`http://172.20.10.89:4000/admin/${selectedMenu}`)
             .then(response => {
                 const menusData = response.data;
                 setMenus(menusData);
@@ -25,16 +27,25 @@ const AdminMenuList = () => {
         setSelectedMenu(menuNumber);
     };
 
+    const deleteMenu = (e, id) => {
+        e.stopPropagation();
+        axios.delete(`http://172.20.10.89:4000/admin/${id}`).then(()=>{
+            setMenus(prevMenus => prevMenus.filter(menus=> menus.menu_id !== id))
+        })
+    }
+
     const renderMenuList = () => {
         return (
             <div style={{ marginTop: "16px" }}>
                 {menus.map(menu => (
                     <AdminMenuCard
-                        key={menu.id}
+                        key={menu.menu_id}
                         menu_name={menu.menu_name}
+                        onClick={()=>navigate(`/admin/menu/${menu.menu_id}`)}
                     >
                         <button
                         className = "btn btn-danger btn-sm"
+                        onClick={(e) => deleteMenu(e, menu.menu_id)}
                         >
                             메뉴 삭제
                         </button>
@@ -42,6 +53,7 @@ const AdminMenuList = () => {
                 ))}
             </div>
         );
+    
     };
 
     return (
