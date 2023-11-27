@@ -1,4 +1,5 @@
 import base64
+from dotenv import load_dotenv
 import os
 from os import listdir
 from os.path import isfile, join
@@ -6,20 +7,26 @@ import cv2
 import shutil
 import numpy as np
 from flask import Flask, render_template, send_from_directory,request, jsonify
-from flask_socketio import SocketIO, emit
+from flask_socketio import SocketIO, emit, join_room
 from flask_cors import CORS
 import mysql.connector
 from mysql.connector import errorcode
+from PIL import Image, ImageDraw, ImageFont
+from collections import defaultdict
+import numpy as np
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
+# .env 파일 불러오기
+load_dotenv()
 
-user = "root"
-password = "8246"
-host = "localhost"
-database_name = "FLASK_BASIC"
-flask_user = "flask_user"
-flask_password = "8246"
-sql_file_path = "./db.sql"
+user = os.getenv('user')
+password = os.getenv('password')
+host = os.getenv('host')
+database_name = os.getenv('database_name')
+sql_file_path = os.getenv('sql_file_path')
+cors_url_1 = os.getenv('CORS_URL_1')
+cors_url_2 = os.getenv('CORS_URL_2')
+korean_font_path = os.getenv('korean_font_path')
 
 # ------------------------ ------- Database 유저 세팅 ------- ------------------------
 
@@ -43,48 +50,19 @@ try:
     else:
         cursor.execute(f"CREATE DATABASE {database_name}")
         print(f"{database_name} 데이터베이스를 생성하였습니다.")
-
-except mysql.connector.Error as err:
-    if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
-        print("이름 또는 비밀번호가 잘못되었습니다.")
-    elif err.errno == errorcode.ER_BAD_DB_ERROR:
-        print("데이터베이스가 존재하지 않습니다.")
-    else:
-        print("연결에 실패하였습니다: {}".format(err))
-
-try:
-    cursor.execute(f"CREATE USER '{flask_user}'@'localhost' IDENTIFIED BY '{flask_password}'")
-    print(f"새로운 사용자 {flask_user}를 생성하였습니다.")
     
-    # 권한 부여
-    try:
-        cursor.execute(f"GRANT ALL PRIVILEGES ON {database_name}.* TO '{flask_user}'@'localhost'")
-        print(f"{flask_user}에게 {database_name}의 모든 권한을 부여하였습니다.")
-    except mysql.connector.Error as err:
-        print("권한 부여 에러: {}".format(err))
-
-except mysql.connector.Error as err:
-    if err.errno == errorcode.ER_CANNOT_USER:
-        print(f"사용자 {flask_user}가 이미 존재합니다.")
-    else:
-        print("사용자 생성 에러: {}".format(err))
-finally:
-    try:
-        # 연결 종료
+    if conn.is_connected():
+        cursor.close()
         conn.close()
-        print("root 유저 연결 종료되었습니다.")
-    except mysql.connector.Error as err:
-        print(f"연결 종료 중 에러 발생: {err}")
 
-try:
     # MySQL 서버에 연결
     conn = mysql.connector.connect(
         host=host,
-        user=flask_user,
-        password=flask_password,
-        database=database_name,
+        user=user,
+        password=password,  # 여기에 MySQL root 계정의 비밀번호를 입력하세요.
+        database= database_name
     )
-    print(f"{flask_user} 연결 성공!")
+    print(f"{database_name} CONNECT 성공!")
 
     cursor = conn.cursor()
 
@@ -95,43 +73,8 @@ except mysql.connector.Error as err:
         print("데이터베이스가 존재하지 않습니다.")
     else:
         print("연결에 실패하였습니다: {}".format(err))
+
 # ------------------------ ------- Database SQL생성 ------- ------------------------
-
-def delete_all_tables_with_fk(cursor, conn):
-    """
-    외래 키 제약 조건을 비활성화하고 데이터베이스의 모든 테이블을 삭제한 후,
-    외래 키 제약 조건을 다시 활성화하는 함수.
-
-    :param cursor: MySQL 데이터베이스에 대한 커서 객체
-    :param conn: MySQL 데이터베이스 연결 객체
-    """
-    try:
-        # 외래 키 제약 조건 비활성화
-        cursor.execute("SET FOREIGN_KEY_CHECKS=0")
-        print("\n> Foreign key checks disabled.\n")
-
-        # 데이터베이스의 모든 테이블 이름 가져오기
-        cursor.execute("SHOW TABLES")
-        tables = [table[0] for table in cursor.fetchall()]
-
-        # 각 테이블 삭제
-        for table_name in tables:
-            cursor.execute(f"DROP TABLE {table_name}")
-            print(f"> Table {table_name} deleted.")
-
-        # 외래 키 제약 조건 다시 활성화
-        cursor.execute("SET FOREIGN_KEY_CHECKS=1")
-        print("\n> Foreign key checks re-enabled.\n")
-
-        # 변경사항 적용
-        conn.commit()
-
-    except mysql.connector.Error as err:
-        print(f"Error: {err}")
-        conn.rollback()
-
-# # 모든 모든 테이블 삭제 명령.
-delete_all_tables_with_fk(cursor, conn)
 
 # SQL 파일 읽기
 with open(sql_file_path, 'r') as file:
@@ -165,37 +108,13 @@ conn.commit()
 print(">> Database schema setting complete! :) ")
 
 # ------------------------ ------- 얼굴 인식 ------- ------------------------
+
+# 검색 결과 처리
+users_models = []
 face_classifier = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
-data_path = './faces/'
-onlyfiles = [f for f in listdir(data_path) if isfile(join(data_path,f))]
-
-
-
-Training_Data, Labels = [], []
-
 # 유저별 face_detected_count 딕셔너리 초기화    
 user_counts = {}
 
-for i, files in enumerate(onlyfiles):
-    image_path = data_path + onlyfiles[i]
-    images = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
-    Training_Data.append(np.asarray(images, dtype=np.uint8))
-    Labels.append(i)
-
-Labels = np.asarray(Labels, dtype=np.int32)
-
-model = cv2.face.LBPHFaceRecognizer_create()
-
-model.train(np.asarray(Training_Data), np.asarray(Labels))
-
-print("Model Training Complete!!!!!")
-# ------------------------ ------- Flask서버 셋팅 ------- ------------------------
-
-app = Flask(__name__, static_folder="./templates/static")
-# CORS(app, origins=["http://172.20.10.11:3000","http://172.20.10.11:3001"])
-CORS(app, origins=["http://localhost:3000","http://localhost:3001"])
-
-socketio = SocketIO(app, cors_allowed_origins="*")
 
 def createFolder(directory):
     try:
@@ -233,70 +152,102 @@ def face_detector(img, size = 0.5):
 
     return img,roi
 
+def load_user_models(cursor):
+    """
+    Load user models from the database and add them to the global users_models list.
+    :param cursor: Database cursor to execute the query
+    """
+    global users_models
+
+    # 모든 사용자의 모델 데이터와 이름 검색
+    fetch_models_query = "SELECT user_name, user_face_model FROM User"
+    cursor.execute(fetch_models_query)
+
+    # 검색 결과 처리
+    for (user_name, model_data) in cursor.fetchall():
+        temp_model_path = f"temp_model_{user_name}.yml"
+        with open(temp_model_path, "wb") as file:
+            file.write(model_data)
+
+        # 모델 로드
+        model = cv2.face.LBPHFaceRecognizer_create()
+        model.read(temp_model_path)
+
+        # 모델과 사용자 이름을 튜플로 묶어 리스트에 추가
+        users_models.append((user_name, model))
+
+        # 로드된 임시 파일 삭제
+        os.remove(temp_model_path)
+
+    # 사용자 모델 로드 확인
+    for user_name, model in users_models:
+        print(f"Model for {user_name} loaded.")
+
+
+
+load_user_models(cursor)
+createFolder('./temp')
+
+# ------------------------ ------- Flask서버 셋팅 ------- ------------------------
+
+app = Flask(__name__, static_folder="./templates/static")
+CORS(app, origins=[cors_url_1, cors_url_2])
+
+socketio = SocketIO(app, cors_allowed_origins="*")
+
 def is_valid_phone_number(phone_number):
     # 전화번호 유효성 검사 로직 구현 (여기서는 간단한 형식 체크만 하겠습니다)
     import re
     pattern = re.compile(r'^01([0|1|6|7|8|9]?)-?([0-9]{4})-?([0-9]{4})$')
     return pattern.match(phone_number)
 
-@app.route("/favicon.ico")
-def favicon():
-    """
-    The favicon function serves the favicon.ico file from the static directory.
-    
-    :return: A favicon
-    """
-    return send_from_directory(
-        os.path.join(app.root_path, "static"),
-        "favicon.ico",
-        mimetype="image/vnd.microsoft.icon",
-    )
+def putTextWithKorean(image, text, position, font_path, font_size, color):
+    image_pil = Image.fromarray(image)
+    draw = ImageDraw.Draw(image_pil)
+    font = ImageFont.truetype(font_path, font_size)
+    draw.text(position, text, font=font, fill=color)
+    return np.array(image_pil)
 
 @socketio.on("connect")
-def test_connect():
-    """
-    The test_connect function is used to test the connection between the client and server.
-    It sends a message to the client letting it know that it has successfully connected.
-    
-    :return: A 'connected' string
-    """
-    print("Connected")
-    # emit("my response", {"data": "Connected"})
-    global face_detected_count
-    face_detected_count=0
+def handle_connect():
+    user_id = request.args.get('user_id')
+    join_room(user_id)
+    print(f"Client {user_id} connected.")
+
 
 
 @socketio.on("image")
 def receive_image(image):
-    """
-    The receive_image function takes in an image from the webcam, converts it to grayscale, and then emits
-    the processed image back to the client.
-
-
-    :param image: Pass the image data to the receive_image function
-    :return: The image that was received from the client
-    """
     # Decode the base64-encoded image data
     face = cv2.flip(base64_to_image(image), 1)
     image, face = face_detector(face)
     try:
         face = cv2.cvtColor(face, cv2.COLOR_BGR2GRAY)
-        result = model.predict(face)
 
-        if result[1] < 500:
-            confidence = int(100*(1-(result[1])/300))
-            display_string = str(confidence)+'% Confidence it is user'
-        cv2.putText(image,display_string,(75,75), cv2.FONT_HERSHEY_COMPLEX,0.5,(0,0,0),1)
-        
-        if confidence > 75:
-            cv2.putText(image, "Unlocked", (75, 200), cv2.FONT_HERSHEY_COMPLEX, 0.5, (0, 255, 0), 2)
+        # 초기화: 가장 높은 예측값을 찾기 위한 변수들
+        highest_confidence = 0
+        recognized_user_name = ""
 
+        # users_models 리스트를 순회하며 얼굴 인식 시도
+        for user_name, model in users_models:
+            result = model.predict(face)
+            confidence = int(100 * (1 - (result[1]) / 300))
+
+            # 가장 높은 예측값 찾기
+            if confidence > highest_confidence:
+                highest_confidence = confidence
+                recognized_user_name = user_name
+
+        # 가장 높은 예측값을 가진 사용자의 정보 표시
+        if highest_confidence > 75:
+            image = putTextWithKorean(image, f"Unlocked: {recognized_user_name} / {highest_confidence}", (75, 200), korean_font_path, 20, (0, 255, 0))
         else:
-            cv2.putText(image, "Locked", (75, 200), cv2.FONT_HERSHEY_COMPLEX, 0.5, (0, 0, 255), 2)
-    except:
-        cv2.putText(image, "Face Not Found", (75, 200), cv2.FONT_HERSHEY_COMPLEX, 0.5, (255, 0, 0), 2)
-        pass
+            image = putTextWithKorean(image, "Locked", (75, 200), korean_font_path, 20, (0, 0, 255))
 
+    except:
+        image = putTextWithKorean(image, "Face Not Found", (75, 200), korean_font_path, 20, (255, 0, 0))
+
+    # 이미지 처리 및 송출
     frame_resized = cv2.resize(image, (640, 360))
     encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 90]
     result, frame_encoded = cv2.imencode(".jpg", frame_resized, encode_param)
@@ -305,8 +256,89 @@ def receive_image(image):
     processed_img_data = b64_src + processed_img_data
     emit("processed_image", processed_img_data)
 
+@socketio.on('upload_image')
+def handle_image_upload(data):
+    user_id = data['user_id']
+    image_data = data['image']
 
-createFolder('./temp')
+    face = cv2.flip(base64_to_image(image_data), 1)
+    image, face = face_detector(face)
+    try:
+        # face = cv2.cvtColor(face, cv2.COLOR_BGR2GRAY)
+        print("x")
+        # 이미지를 임시 저장소에 저장
+        save_temp_image(user_id, face)
+
+        _, buffer = cv2.imencode('.jpg', image)
+        processed_image = base64.b64encode(buffer).decode('utf-8')
+        emit("image_processed", f"data:image/jpeg;base64,{processed_image}", room=user_id)
+
+        # 30장의 사진이 모였는지 확인
+        if is_30_images_collected(user_id):
+            # 예측값 집계
+            predictions = predict_user(user_id)
+            
+            # 가장 많이 예측된 사용자 이름 찾기
+            most_common_user, _ = max(predictions.items(), key=lambda item: item[1])
+            
+            # 클라이언트에 결과 반환
+            emit('user_recognized', {'user_name': most_common_user}, room=user_id)
+
+            # 임시 저장소 정리
+            clear_temp_storage(user_id)
+    except Exception as e:
+        print(f"Error: {e}")
+
+# 예측 집계 함수
+def predict_user(user_id):
+    load_user_models(cursor)
+    predictions = defaultdict(int)
+    for image in load_temp_images(user_id):
+        highest_confidence = 0
+        recognized_user_name = ""
+        for user_name, model in users_models:
+            result = model.predict(image)
+            confidence = int(100 * (1 - (result[1]) / 300))
+            if confidence > highest_confidence:
+                highest_confidence = confidence
+                recognized_user_name = user_name
+        if highest_confidence > 75:  # 예시로 75%를 기준으로 설정
+            predictions[recognized_user_name] += 1
+    return predictions
+
+TEMP_IMAGE_DIR = "temp_images"
+
+def create_user_temp_dir(user_id):
+    user_dir = os.path.join(TEMP_IMAGE_DIR, user_id)
+    if not os.path.exists(user_dir):
+        os.makedirs(user_dir)
+
+def save_temp_image(user_id, image):
+    create_user_temp_dir(user_id)
+    user_dir = os.path.join(TEMP_IMAGE_DIR, user_id)
+    image_count = len(os.listdir(user_dir))
+    cv2.imwrite(os.path.join(user_dir, f"img_{image_count + 1}.jpg"), image)
+
+def is_30_images_collected(user_id):
+    user_dir = os.path.join(TEMP_IMAGE_DIR, user_id)
+    return len(os.listdir(user_dir)) >= 30
+
+def clear_temp_storage(user_id):
+    user_dir = os.path.join(TEMP_IMAGE_DIR, user_id)
+    if os.path.exists(user_dir):
+        for file in os.listdir(user_dir):
+            os.remove(os.path.join(user_dir, file))
+        os.rmdir(user_dir)
+
+def load_temp_images(user_id):
+    user_dir = os.path.join(TEMP_IMAGE_DIR, user_id)
+    images = []
+    if os.path.exists(user_dir):
+        for file in sorted(os.listdir(user_dir)):
+            img_path = os.path.join(user_dir, file)
+            img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE)
+            images.append(img)
+    return images
 
 @socketio.on("data_for_storage")
 def receive_data(data):
@@ -364,8 +396,7 @@ def receive_data(data):
 
                 print(f"{phone_number}'s Model Training Complete!!!!!")
 
-                # . . .
-                # 전달받은 유저 아이디에 매핑되게 디비에 저장.)
+                # 전달받은 유저 아이디에 매핑되게 디비에 저장
                 try:
                     # 모델 파일을 이진 형식으로 읽기
                     with open(f'./temp/{phone_number}/trained_model_{phone_number}.yml', 'rb') as file:
@@ -376,11 +407,11 @@ def receive_data(data):
                     cursor.execute(insert_user_query, (name, phone_number, model_data))
                     conn.commit()
 
-                    print(f"User {name} with phone number {phone_number} has been successfully registered.")
+                    print(f"> User {name} with phone number {phone_number} has been successfully registered.")
                     emit("registration_success", {"message": f"User {name} registered successfully"})
 
                 except Exception as e:
-                    print(f"An error occurred during user registration: {e}")
+                    print(f"> An error occurred during user registration: {e}")
                     emit("registration_failed", {"error": str(e)})
 
                 # 경로에 있는 이미지와 경로 삭제
