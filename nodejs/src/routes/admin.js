@@ -63,22 +63,22 @@ router.post('/menu', async(req,res,error) => {
         }
     })
     res.status(200).send(menu);
-    const allergy_table = await prisma.relation_menu_allergy.create ({
-        data : {
-            menus : {
-                connect : { menu_name : req.body.menu_name}
-            },
-            allergies : {
-                connect : {allergy_name : "밀"}
-            }
-        }
-    })
+    // const allergy_table = await prisma.relation_menu_allergy.create ({
+    //     data : {
+    //         menus : {
+    //             connect : { menu_name : req.body.menu_name}
+    //         },
+    //         allergies : {
+    //             connect : {allergy_name : "밀"}
+    //         }
+    //     }
+    // })
     console.log("success");
 })
 
 //관리자 카테고리별 메뉴
 router.get('/:category_id', async(req,res,error) => {
-    //const thiscategory_id = req.params.category_id; //category_id를 가져와서
+    const thiscategory_id = req.params.category_id; //category_id를 가져와서
     console.log("category_id : ",req.params.category_id);
     //카테고리 같은거 추출후 보내줌.
     const result = await prisma.menu.findMany({
