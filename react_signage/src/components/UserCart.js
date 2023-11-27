@@ -7,7 +7,7 @@ const UserCart = () => {
     return (
         <div>
             <div style = {{paddingTop: '15px',paddingLeft: '5px'}}>
-                <img src={require('../img/CartBtn.png')} alt="Cart" height="60" width="170"/>
+                <img src={require('../img/CartBtn.png')} alt="Cart" height="65" width="180"/>
             </div>
             {cart.map((item, index) => (
                 <div key={index}>

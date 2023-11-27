@@ -130,8 +130,9 @@ const UserRegCam = () => {
   return (
         <div>
             <FaceRegNavBar />
-            <div className="container d-flex align-items-center justify-content-center vh-50" style={{paddingTop:'100px'}}>
+            <div className="container d-flex align-items-center justify-content-center vh-50" style={{paddingTop:'50px'}}>
                 <div className="d-flex flex-column align-items-center">
+                    <div style={{ fontFamily: 'SansM',fontSize: '30px' }}>카메라를 응시해주세요</div>
                     <div id="container">
                         {isCollectionComplete ? (
                                 <div>Collection complete! All images have been saved.</div>
@@ -145,8 +146,8 @@ const UserRegCam = () => {
                                         ref={videoRef} 
                                         autoPlay 
                                         playsInline 
-                                        width="400" 
-                                        height="300" 
+                                        width="600" 
+                                        height="450" 
                                         style={{ transform: 'rotateY(180deg)' }} 
                                     />
                                     <img 
@@ -165,9 +166,10 @@ const UserRegCam = () => {
                         {/* The canvas is used for capturing frames but is not displayed */}
                         <canvas ref={canvasRef} style={{ display: 'none' }}></canvas>
                     </div>
+                    <Link to='/user/reg/allergy'>일단 알러지 선택으로 보내</Link>
                 </div>
+                
             </div>
-            <Link to='/user/reg/allergy'>일단 알러지 선택으로 보내</Link>
         </div>
     );
 };
