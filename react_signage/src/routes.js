@@ -4,11 +4,13 @@ import AdminLogin from './pages/AdminLogin';
 import AdminMenu from './pages/AdminMenu';
 import AdminMenuReg from './pages/AdminMenuReg';
 
-import UserFaceCheckPage from './pages/UserFaceCheckPage';
 import UserMenuPage from './pages/UserMenuPage';
 import UserModeSelectPage from './pages/UserModeSelectPage';
 import UserRegPage from './pages/UserRegPage';
 import AdminMenuEdit from './pages/AdminMenuEdit';
+import UserRegCam from './pages/UserRegCam';
+import UserRecCam from './pages/UserRecCam';
+import UserAllergySelectPage from './pages/UserAllergySelectPage';
 
 const routes = [
     {
@@ -20,15 +22,23 @@ const routes = [
         component : UserModeSelectPage
     },
     {
-        path : '/user/face',
-        component : UserFaceCheckPage
+        path : '/user/rec/cam',
+        component : UserRecCam
     },
     {
         path : '/user/reg',
         component : UserRegPage
     },
     {
-        path : '/user/menu',
+        path : '/user/reg/cam',
+        component : UserRegCam
+    },
+    {
+        path : '/user/reg/allergy',
+        component : UserAllergySelectPage
+    },
+    {
+        path : '/user/menu/:cid',
         component : UserMenuPage
     },
     {
