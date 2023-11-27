@@ -15,7 +15,6 @@ mysql-connector-python==8.2.0
 numpy==1.24.2
 opencv-contrib-python==4.8.1.78
 opencv-python==4.7.0.68
-Pillow==10.1.0
 protobuf==4.21.12
 pycparser==2.21
 pyOpenSSL==23.2.0
