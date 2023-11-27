@@ -2,59 +2,72 @@ const express = require('express');
 const router = express.Router();
 const dotenv = require('dotenv')
 const prisma = require('../database')
+const recommendationModule = require('./recommendation');
 dotenv.config()
 
 
 //추천 메뉴리스트 보기 
-router.get('/menu/0', async(req,res,error) => {
-    const thisuser_id = req.body.user_id;
-    console.log("user_id : ",thisuser_id);
-    
-    //내가 최근에 먹은 메뉴
-    const result1 = await prisma.MenuOrderInfo.findFirst({
-        where:{
-            user_id:thisuser_id
-        },
-        select: {
-            menu_id: true,
-            menu_name: true,
-            price: true,
-            file_path: true,
-            is_soldout: true,
-            orderBy:{
-                last_order_time: "desc",
-            },
-        }
-    
-    })
+router.get('/menu/0', async (req, res, error) => {
+  const thisuser_id = req.body.user_id;
+  console.log("user_id : ", thisuser_id);
+  resultarr = [];
 
-    //내가 가장 많이 먹은 메뉴
-    const result2 = await prisma.menuOrderInfo.groupBy({
-        by: ['menu_id', 'menu_name', 'price', 'file_path', 'is_soldout'],
-        _count: {
-          menu_id: true
-        },
-        where: {
+  // 내가 최근에 먹은 메뉴
+  const result1 = await prisma.MenuOrderInfo.findFirst({
+      where: {
           user_id: thisuser_id
-        },
-        orderBy: {
+      },
+      select: {
+          menu_id: true,
+          menu_name: true,
+          price: true,
+          file_path: true,
+          is_soldout: true,
+          orderBy: {
+              last_order_time: "desc",
+          },
+      }
+  });
+
+  resultarr.push(result1); // result1을 배열에 추가
+
+  // 내가 가장 많이 먹은 메뉴
+  const result2 = await prisma.menuOrderInfo.groupBy({
+      by: ['menu_id', 'menu_name', 'price', 'file_path', 'is_soldout'],
+      _count: {
+          menu_id: true
+      },
+      where: {
+          user_id: thisuser_id
+      },
+      orderBy: {
           _count: {
-            menu_id: 'desc'
+              menu_id: 'desc'
           }
-        },
-        select: {
+      },
+      select: {
           menu_id: true,
           menu_name: true,
           price: true,
           file_path: true,
           is_soldout: true
-        }
-      });
-      
-    //나랑 비슷한 사용자가 먹은 메뉴
+      }
+  });
 
-})
+  resultarr.push(result2); // result2를 배열에 추가
 
+  const N = 5; // 상위 N개의 유사한 사용자 가져오기
+  try {
+      const result3 = await recommendationModule.recommendMenuForUser(targetUserId, N);
+      resultarr.push(result3); // result3를 배열에 추가
+
+      // 여기서 resultarr을 사용하여 클라이언트에게 응답을 보낼 수 있음
+  } catch (error) {
+      next(error);
+  }
+
+  res.json(resultarr);
+});
 
 
 //선택한 메뉴 상세보기
