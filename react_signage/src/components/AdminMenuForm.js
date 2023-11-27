@@ -1,45 +1,55 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { bool } from 'prop-types';
+import axios from "axios";
 
 const AdminMenuForm = ({editing}) => {
     const[name, setName] = useState();
     const[explan, setExplan] = useState();
     const[cost, setCost] = useState();
-    const[cid, setCid] = useState();
+    const[cid, setCid] = useState("김밥");
+    const[img, setImg] = useState();
     const[allergy, setAllergy] = useState([]);
+    const [isChecked, setIsChecked] = useState(false);
 
     const navigate = useNavigate();
 
-    // const onSubmit = () => {
-    //      const data = {
-    //      name = name
-    //      explan = explan
-    //      cost = cost
-    //      cid = cid
-    //      allergy = allergy
-    //     };
-    //     axios.post('http://172.20.37.28:4000/admin/login', JSON.stringify(data), {
-    //       headers: {
-    //         'Content-Type': 'application/json'
-    //       }
-    //     })
-    //     .then(res=> {
-    //         const data = res.data
-    //         console.log(data.status)
-    //         history.push('/admin/menu');
-    //       })
-    //     .catch(error => {
-    //         alert("등록 불가");
-    //         console.error(error);
-    //       });
-    // };
+    const onSubmit = () => {
+        const data = {
+            menu_name : name,
+            menu_description : explan,
+            price : cost,
+            file_path : img,
+            category_name : cid,
+            // allergy : allergy,
+            is_soldout : isChecked
+        };
+        axios.post('http://172.20.16.146:4000/admin/menu', JSON.stringify(data), {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+        .then(res=> {
+            const data = res.data
+            console.log(data.status)
+            history.push('/admin/menu');
+          })
+        .catch(error => {
+            alert("등록 불가");
+            console.error(error);
+          });
+    };
+
     const handleAllergyChange = (event) => {
         if(event.target.checked) {
             setAllergy([...allergy, event.target.value]);
         } else {
             setAllergy(allergy.filter(item => item !== event.target.value));
         }
+    };
+
+    const handleCheckboxChange = (event) => {
+        setIsChecked(event.target.checked);
     };
 
     const goBack=()=>{
@@ -54,7 +64,7 @@ const AdminMenuForm = ({editing}) => {
                         {editing ? '메뉴 수정' : '메뉴 등록'}
                     </div>
                     {/* <img src={'/img/menu_reg.png'} alt="메뉴 등록" height="110" width="300"/> */}
-                    <img src={'/img/logo.png'} alt="logo" height="110" width="300"/>
+                    <img src={require('../img/Logo.png')} alt="logo" height="110" width="300"/>
                 </div>
             </nav>
             <div className="form-control">
@@ -136,7 +146,20 @@ const AdminMenuForm = ({editing}) => {
                             </div>
                     </div>
                     <div className="mb-4">
-                        <div className ="btn btn-primary">
+                        <label className="form-label mb-1">매진 여부(체크 하면 매진, 체크 하지 않으면 매진 X)</label>
+                        <div>
+                            <input
+                                type="checkbox"
+                                checked={isChecked}
+                                onChange={handleCheckboxChange}
+                            />
+                        </div>
+                    </div>
+                    <div className="mb-4">
+                        <div 
+                        className ="btn btn-primary"
+                        onClick={onSubmit}
+                        >
                             {editing ? '메뉴 수정' : '메뉴 등록'}
                         </div>
                         <div 

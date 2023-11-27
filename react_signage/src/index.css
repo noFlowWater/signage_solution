@@ -32,6 +32,7 @@ code {
 }
 
 :root {
+
 	--font-SansL: "SansL";
 	--font-SansM: "SansM";
   --font-SansB: "SansB";
@@ -40,6 +41,7 @@ code {
 .logo-container {
   width: var(--logo-width);
   height: var(--logo-height);
+
   display: flex;
   align-items: center;
   justify-content: center;

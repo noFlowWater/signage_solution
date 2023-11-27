@@ -1,10 +1,11 @@
 import AdminNavBar from "../components/AdminNavBar";
+import AdminMenuList from "../components/AdminMenuList";
 
 const AdminMenu = () => {
     return (
         <div>
             <AdminNavBar />
-            관리자 메뉴 페이지
+            <AdminMenuList />
         </div>
     )
 }
