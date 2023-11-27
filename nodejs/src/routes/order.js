@@ -5,9 +5,13 @@ const prisma = require('../database')
 const prisma = new PrismaClient();
 dotenv.config()
 
-router.post('/', async (req, res) => {
+// router.js
+
+
+router.post('', async (req, res) => {
   try {
-    const { user_id, menu_ids } = req.body;
+    const user_id = req.body.user_id;
+    const orders = req.body.orders;
 
     // user_id에 해당하는 menuOrderInfo 가져오기
     const userOrderInfo = await prisma.menuOrderInfo.findMany({
@@ -15,13 +19,16 @@ router.post('/', async (req, res) => {
         userID: user_id,
       },
     });
+    console.log("user_id : ",user_id)
+    console.log("orders.menu_ID : ",orders.menu_id)
+    console.log("orders.order_count : ",orders.order_count)
 
-    // menu_ids에 해당하는 메뉴들을 찾아 업데이트
-    for (const menu_id of menu_ids) {
+    // orders에 해당하는 메뉴들을 찾아 업데이트
+    for (const { menu_id, order_count } of orders) {
       const menuOrder = userOrderInfo.find(order => order.menuID === menu_id);
 
       if (menuOrder) {
-        // 이미 주문한 메뉴라면 주문 횟수를 증가
+        // 이미 주문한 메뉴라면 주문 횟수를 업데이트
         await prisma.menuOrderInfo.update({
           where: {
             userID_menuID: {
@@ -30,7 +37,7 @@ router.post('/', async (req, res) => {
             },
           },
           data: {
-            order_count: menuOrder.order_count + 1,
+            order_count: order_count,
             last_order_time: new Date(),
           },
         });
@@ -40,7 +47,7 @@ router.post('/', async (req, res) => {
           data: {
             userID: user_id,
             menuID: menu_id,
-            order_count: 1,
+            order_count: order_count,
             last_order_time: new Date(),
           },
         });
