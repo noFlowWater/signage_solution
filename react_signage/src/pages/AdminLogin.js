@@ -1,9 +1,9 @@
 import {useState } from 'react';
 import axios from 'axios';
-import { useHistory} from 'react-router';
+import { useNavigate } from 'react-router-dom';
 
 const AdminLogin = () => {
-    const history = useHistory();
+    const navigate = useNavigate();
     const [pwd,setPwd] = useState('');
 
     const onSubmit = () => {
@@ -19,7 +19,7 @@ const AdminLogin = () => {
         .then(res=> {
             const data = res.data
             console.log(data.status)
-            history.push('/admin/menu');
+            navigate('/admin/김밥');
           })
         .catch(error => {
             console.error(error);

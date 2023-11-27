@@ -7,11 +7,11 @@ const UserCart = () => {
     return (
         <div>
             <div style = {{paddingTop: '15px',paddingLeft: '5px'}}>
-                <img src={require('../img/CartBtn.png')} alt="Cart" height="60" width="170"/>
+                <img src={require('../img/CartBtn.png')} alt="Cart" height="65" width="180"/>
             </div>
             {cart.map((item, index) => (
                 <div key={index}>
-                    <h1>{item.name}</h1>
+                    <h1>{item.menu_name}</h1>
                     <p>{item.price}</p>
                 </div>
             ))}

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { useNavigate } from "react-router-dom";
 import { bool } from 'prop-types';
 import axios from "axios";
 
@@ -12,7 +12,7 @@ const AdminMenuForm = ({editing}) => {
     const[allergy, setAllergy] = useState([]);
     const [isChecked, setIsChecked] = useState(false);
 
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const onSubmit = () => {
         const data = {
@@ -53,7 +53,7 @@ const AdminMenuForm = ({editing}) => {
     };
 
     const goBack=()=>{
-        history.push('/admin/menu');
+        navigate('/admin/menu');
     }
 
     return (

@@ -32,14 +32,16 @@ code {
 }
 
 :root {
-	—font-SansL: "SansL";
-	—font-SansM: "SansM";
-  —font-SansB: "SansB";
+
+	--font-SansL: "SansL";
+	--font-SansM: "SansM";
+  --font-SansB: "SansB";
 }
 
 .logo-container {
-  width: var(—logo-width);
-  height: var(—logo-height);
+  width: var(--logo-width);
+  height: var(--logo-height);
+
   display: flex;
   align-items: center;
   justify-content: center;
