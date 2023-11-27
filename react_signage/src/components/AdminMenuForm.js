@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { bool } from 'prop-types';
 import axios from "axios";
 
@@ -12,32 +12,77 @@ const AdminMenuForm = ({editing}) => {
     const[allergy, setAllergy] = useState([]);
     const [isChecked, setIsChecked] = useState(false);
 
+    const {id} = useParams();
+
+    useEffect(()=>{
+        if(editing){
+            axios.get(`http://172.20.10.89:4000/menu/detail/${id}`)
+            .then(response => {
+                setName(response.data.menu_name);
+                setExplan(response.data.menu_description);
+                setCost(response.data.price);
+                setCid(response.data.category_id);
+                setIsChecked(response.data.is_soldout);
+            })
+            .catch(error => {
+                console.error(error);
+            });
+        }
+    }, [id, editing]);
+
     const navigate = useNavigate();
 
     const onSubmit = () => {
-        const data = {
-            menu_name : name,
-            menu_description : explan,
-            price : cost,
-            file_path : img,
-            category_name : cid,
-            // allergy : allergy,
-            is_soldout : isChecked
-        };
-        axios.post('http://172.20.16.146:4000/admin/menu', JSON.stringify(data), {
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        })
-        .then(res=> {
-            const data = res.data
-            console.log(data.status)
-            history.push('/admin/menu');
-          })
-        .catch(error => {
-            alert("등록 불가");
-            console.error(error);
-          });
+        if (editing){
+            const data = {
+                menu_name : name,
+                menu_description : explan,
+                price : cost,
+                file_path : img,
+                category_name : cid,
+                // allergy : allergy,
+                is_soldout : isChecked
+            };
+            axios.put(`http://172.20.10.89:4000/admin/${id}`, JSON.stringify(data), {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+              .then(res=> {
+                const data = res.data
+                console.log(data.status)
+                navigate(`/admin/menu/${id}`);
+              })
+            .catch(error => {
+                alert("등록 불가");
+                console.error(error);
+              });
+        }
+        else{
+            const data = {
+                menu_name : name,
+                menu_description : explan,
+                price : cost,
+                file_path : img,
+                category_name : cid,
+                // allergy : allergy,
+                is_soldout : isChecked
+            };
+            axios.post('http://172.20.10.89:4000/admin/menu', JSON.stringify(data), {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+            })
+            .then(res=> {
+                const data = res.data
+                console.log(data.status)
+                navigate('/admin/menu');
+            })
+            .catch(error => {
+                alert("등록 불가");
+                console.error(error);
+            });
+            };
     };
 
     const handleAllergyChange = (event) => {
@@ -53,7 +98,12 @@ const AdminMenuForm = ({editing}) => {
     };
 
     const goBack=()=>{
-        navigate('/admin/menu');
+        if(editing){
+            navigate(`/admin/menu/${id}`)
+        }
+        else{
+                navigate('/admin/menu');
+        }
     }
 
     return (
