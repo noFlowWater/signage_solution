@@ -77,7 +77,7 @@ const UserCart = () => {
                         <button onClick={() => handleDecrease(item)}>-</button>
                         수량: {calculateQuantity(item)}
                         <button onClick={() => handleIncrease(item)}>+</button>
-                        <button onClick={() => handleRemove(item)}>X</button>
+                        <div><button onClick={() => handleRemove(item)}>X</button></div>
                     </div>
                 </div>
             ))}
