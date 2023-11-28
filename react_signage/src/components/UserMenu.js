@@ -7,39 +7,38 @@ import { useLocation, useParams } from 'react-router-dom';
 const UserMenu = () => {
     const location = useLocation();
     const { cid } = useParams();
-    // const hash = window.location.hash; // 예: "#/user/menu/123"
-    // const hashParts = hash.split('/'); // ["#", "user", "menu", "123"]
-    // const eid = hashParts[3]; // 매개변수인 id를 추출합니다. 예: "123"
-    // // const id = decodeURIComponent(eid);
 
-    const [menus, setMenus] = useState([]); // 메뉴 정보를 저장할 state
-    const { dispatch } = useContext(CartContext);
+    const [menus, setMenus] = useState([]);
+    const { cart, dispatch } = useContext(CartContext);
 
     useEffect(() => {
-        // 서버에서 메뉴 정보를 불러오는 함수
         const fetchMenus = async () => {
             try {
                 const response = await axios.get(`${kiosk}/menu/${cid}`);
+                console.log(response.data)
                 setMenus(response.data);
             } catch (error) {
                 console.log(error);
             }
         }
         fetchMenus();
-    }, [cid]); // id 값이 변경될 때마다 서버에서 메뉴 정보를 다시 불러옴
-    
-    // menu_name: true,
-    // menu_discription: true,
-    // price: true,
-    // file_path: true
+    }, [cid]);
+
+    const addToCart = (menu) => {
+        const existingItem = cart.find(item => item.menu_name === menu.menu_name);
+        if (existingItem) {
+            dispatch({ type: 'INCREMENT_ITEM', item: existingItem });
+        } else {
+            dispatch({ type: 'ADD_ITEM', item: { ...menu, quantity: 1 } });
+        }
+    };
 
     return (
         <div>
             {menus.map((menu, index) => (
-                <div key={index} onClick={() => dispatch({ type: 'ADD_ITEM', item: menu })}>
+                <div key={index} onClick={() => addToCart(menu)}>
                     <h1>{menu.menu_name}</h1>
                     <p>{menu.price}</p>
-                    {/* <img src={menu.image} alt={menu.name} /> */}
                 </div>
             ))}
         </div>
