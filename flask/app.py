@@ -1,20 +1,24 @@
 import base64
 from dotenv import load_dotenv
+import sys
 import os
 from os import listdir
 from os.path import isfile, join
 import cv2
 import shutil
 import numpy as np
-from flask import Flask, render_template, send_from_directory,request, jsonify
+from flask import Flask, render_template,request, jsonify
 from flask_socketio import SocketIO, emit, join_room
 from flask_cors import CORS
 import mysql.connector
 from mysql.connector import errorcode
 from PIL import Image, ImageDraw, ImageFont
-from collections import defaultdict
+from collections import Counter
 import numpy as np
+
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
+
+TEMP_IMAGE_DIR = "temp_images"
 
 # .env 파일 불러오기
 load_dotenv()
@@ -108,12 +112,15 @@ conn.commit()
 print(">> Database schema setting complete! :) ")
 
 # ------------------------ ------- 얼굴 인식 ------- ------------------------
-
+# 얼굴 인식 모델
+face_classifier = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 # 검색 결과 처리
 users_models = []
-face_classifier = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 # 유저별 face_detected_count 딕셔너리 초기화    
 user_counts = {}
+# 전역 변수로 클라이언트별 얼굴 인식 횟수를 저장하는 딕셔너리
+client_face_counts = {}
+
 
 
 def createFolder(directory):
@@ -159,34 +166,44 @@ def load_user_models(cursor):
     """
     global users_models
 
-    # 모든 사용자의 모델 데이터와 이름 검색
-    fetch_models_query = "SELECT user_name, user_face_model FROM User"
-    cursor.execute(fetch_models_query)
+    try:
+        # 모든 사용자의 모델 데이터와 이름 검색
+        fetch_models_query = "SELECT user_id, user_name, user_face_model FROM User"
+        cursor.execute(fetch_models_query)
 
-    # 검색 결과 처리
-    for (user_name, model_data) in cursor.fetchall():
-        temp_model_path = f"temp_model_{user_name}.yml"
-        with open(temp_model_path, "wb") as file:
-            file.write(model_data)
+        # 검색 결과 처리
+        for (user_id, user_name, model_data) in cursor.fetchall():
+            # 이미 리스트에 모델이 있는지 확인
+            if any(user_id == loaded_id for loaded_id, _, _ in users_models):
+                continue  # 이미 로드된 모델이면 건너뛰기
+            
+            temp_model_path = f"temp_model_{user_id}.yml"
+            with open(temp_model_path, "wb") as file:
+                file.write(model_data)
 
-        # 모델 로드
-        model = cv2.face.LBPHFaceRecognizer_create()
-        model.read(temp_model_path)
+            # 모델 로드
+            model = cv2.face.LBPHFaceRecognizer_create()
+            model.read(temp_model_path)
 
-        # 모델과 사용자 이름을 튜플로 묶어 리스트에 추가
-        users_models.append((user_name, model))
+            # 모델과 사용자 이름을 튜플로 묶어 리스트에 추가
+            users_models.append((user_id, user_name, model))
 
-        # 로드된 임시 파일 삭제
-        os.remove(temp_model_path)
+            # 로드된 임시 파일 삭제
+            os.remove(temp_model_path)
 
-    # 사용자 모델 로드 확인
-    for user_name, model in users_models:
-        print(f"Model for {user_name} loaded.")
+        # 사용자 모델 로드 확인
+        for user_id, user_name, model in users_models:
+            print(f"Model for {user_name} (ID: {user_id}) loaded.")
+        return True
 
+    except Exception as e:
+        print(f"An error occurred while loading user models: {e}")
+        return False
 
+    
+createFolder('./temp')
 
 load_user_models(cursor)
-createFolder('./temp')
 
 # ------------------------ ------- Flask서버 셋팅 ------- ------------------------
 
@@ -210,9 +227,9 @@ def putTextWithKorean(image, text, position, font_path, font_size, color):
 
 @socketio.on("connect")
 def handle_connect():
-    user_id = request.args.get('user_id')
-    join_room(user_id)
-    print(f"Client {user_id} connected.")
+    client_id = request.args.get('client_id')
+    join_room(client_id)
+    print(f"Client {client_id} connected.")
 
 
 
@@ -222,14 +239,13 @@ def receive_image(image):
     face = cv2.flip(base64_to_image(image), 1)
     image, face = face_detector(face)
     try:
-        face = cv2.cvtColor(face, cv2.COLOR_BGR2GRAY)
 
         # 초기화: 가장 높은 예측값을 찾기 위한 변수들
         highest_confidence = 0
         recognized_user_name = ""
 
         # users_models 리스트를 순회하며 얼굴 인식 시도
-        for user_name, model in users_models:
+        for _, user_name, model in users_models:
             result = model.predict(face)
             confidence = int(100 * (1 - (result[1]) / 300))
 
@@ -258,84 +274,141 @@ def receive_image(image):
 
 @socketio.on('upload_image')
 def handle_image_upload(data):
-    user_id = data['user_id']
+    client_id = data['client_id']
     image_data = data['image']
+    
+    # 유저가 처음 데이터를 보내는 경우, 딕셔너리에 초기값 0 설정
+    if client_id not in client_face_counts:
+        client_face_counts[client_id] = 0
 
-    face = cv2.flip(base64_to_image(image_data), 1)
+    face = base64_to_image(image_data)
     image, face = face_detector(face)
     try:
-        # face = cv2.cvtColor(face, cv2.COLOR_BGR2GRAY)
-        print("x")
-        # 이미지를 임시 저장소에 저장
-        save_temp_image(user_id, face)
+        if len(face) > 0:
+            face = cv2.cvtColor(face, cv2.COLOR_BGR2GRAY)
 
-        _, buffer = cv2.imencode('.jpg', image)
-        processed_image = base64.b64encode(buffer).decode('utf-8')
-        emit("image_processed", f"data:image/jpeg;base64,{processed_image}", room=user_id)
-
-        # 30장의 사진이 모였는지 확인
-        if is_30_images_collected(user_id):
-            # 예측값 집계
-            predictions = predict_user(user_id)
+            recognized_user_id, recognized_user_name, highest_confidence = recognize_face_in_image(face)
             
-            # 가장 많이 예측된 사용자 이름 찾기
-            most_common_user, _ = max(predictions.items(), key=lambda item: item[1])
-            
-            # 클라이언트에 결과 반환
-            emit('user_recognized', {'user_name': most_common_user}, room=user_id)
+            if highest_confidence > 75:
+                # 30장의 사진이 모였는지 확인
+                if client_face_counts[client_id] >= 30:
+                    # 이미지가 30장 미만이면 함수를 종료합니다.
+                    if not is_30_images_collected(client_id):
+                        return
+                    
+                    emit("stop_sending", {"message": "30 face images have been saved"}, room=client_id)
+                    
+                    # 예측값 집계
+                    most_common_user_id, most_common_user_name = determine_most_recognized_user(client_id)
+                    
+                    # 클라이언트에 결과 반환
+                    emit('user_recognized', {
+                                                'predicted_user_name': most_common_user_name, 
+                                                'predicted_user_id':most_common_user_id
+                                            }, room=client_id)
+                    print(f">>> most_common_user : {most_common_user_name}")
 
-            # 임시 저장소 정리
-            clear_temp_storage(user_id)
+                    # 임시 저장소 정리
+                    clear_temp_storage(client_id)
+                else:
+                    image = putTextWithKorean(image, f"Unlocked: {recognized_user_name} / {highest_confidence}", (75, 200), korean_font_path, 20, (0, 255, 0))
+                
+                    # 얼굴 인식 횟수 증가 및 임시 이미지 저장
+                    client_face_counts[client_id] += 1
+                    save_temp_image(client_id, face, recognized_user_id, recognized_user_name)
+                    print("!", end="")
+                    sys.stdout.flush()  # 수동으로 flush   
+            else:
+                image = putTextWithKorean(image, "Locked", (75, 200), korean_font_path, 20, (0, 0, 255))
+        else:
+            image = putTextWithKorean(image, "Face Not Found", (75, 200), korean_font_path, 20, (255, 0, 0))
+        
+        # 이미지 처리 및 송출
+        frame_resized = cv2.resize(image, (640, 360))
+        encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 90]
+        _, frame_encoded = cv2.imencode(".jpg", frame_resized, encode_param)
+        processed_img_data = base64.b64encode(frame_encoded).decode()
+        b64_src = "data:image/jpg;base64,"
+        processed_img_data = b64_src + processed_img_data
+        emit("image_processed", processed_img_data, room=client_id)
+            
     except Exception as e:
         print(f"Error: {e}")
 
-# 예측 집계 함수
-def predict_user(user_id):
-    load_user_models(cursor)
-    predictions = defaultdict(int)
-    for image in load_temp_images(user_id):
-        highest_confidence = 0
-        recognized_user_name = ""
-        for user_name, model in users_models:
-            result = model.predict(image)
-            confidence = int(100 * (1 - (result[1]) / 300))
-            if confidence > highest_confidence:
-                highest_confidence = confidence
-                recognized_user_name = user_name
-        if highest_confidence > 75:  # 예시로 75%를 기준으로 설정
-            predictions[recognized_user_name] += 1
-    return predictions
+@socketio.on('load_model_request')
+def handle_load_model_request():
+    success = load_user_models(cursor)
+    if success:
+        socketio.emit('model_loaded', {'status': 'complete'})
 
-TEMP_IMAGE_DIR = "temp_images"
+def determine_most_recognized_user(client_id):
+    client_dir = os.path.join(TEMP_IMAGE_DIR, client_id)
+    user_predictions = Counter()
 
-def create_user_temp_dir(user_id):
-    user_dir = os.path.join(TEMP_IMAGE_DIR, user_id)
-    if not os.path.exists(user_dir):
-        os.makedirs(user_dir)
+    if os.path.exists(client_dir):
+        for filename in os.listdir(client_dir):
+            # 파일 이름에서 인식된 사용자 ID와 이름 추출
+            parts = filename.split('_')
+            recognized_user_id = parts[0]
+            recognized_user_name = parts[1]
 
-def save_temp_image(user_id, image):
-    create_user_temp_dir(user_id)
-    user_dir = os.path.join(TEMP_IMAGE_DIR, user_id)
-    image_count = len(os.listdir(user_dir))
-    cv2.imwrite(os.path.join(user_dir, f"img_{image_count + 1}.jpg"), image)
+            user_predictions[(recognized_user_id, recognized_user_name)] += 1
 
-def is_30_images_collected(user_id):
-    user_dir = os.path.join(TEMP_IMAGE_DIR, user_id)
-    return len(os.listdir(user_dir)) >= 30
+    # 가장 많이 예측된 사용자의 ID와 이름 찾기
+    if user_predictions:
+        (most_common_user_id, most_common_user_name), _ = user_predictions.most_common(1)[0]
+        return most_common_user_id, most_common_user_name
+    else:
+        return None, None  # 예측된 사용자가 없는 경우
 
-def clear_temp_storage(user_id):
-    user_dir = os.path.join(TEMP_IMAGE_DIR, user_id)
-    if os.path.exists(user_dir):
-        for file in os.listdir(user_dir):
-            os.remove(os.path.join(user_dir, file))
-        os.rmdir(user_dir)
+def recognize_face_in_image(image):
+    """
+    Recognizes a face in the given image using the users_models list.
+    Returns the user ID, name, and confidence of the most recognized user.
+    """
+    highest_confidence = 0
+    recognized_user_id = None
+    recognized_user_name = ""
 
-def load_temp_images(user_id):
-    user_dir = os.path.join(TEMP_IMAGE_DIR, user_id)
+    for user_id, user_name, model in users_models:
+        result = model.predict(image)
+        confidence = int(100 * (1 - (result[1]) / 300))
+        if confidence > highest_confidence:
+            highest_confidence = confidence
+            recognized_user_id = user_id
+            recognized_user_name = user_name
+
+    return recognized_user_id, recognized_user_name, highest_confidence
+
+def create_user_temp_dir(client_id):
+    client_dir = os.path.join(TEMP_IMAGE_DIR, client_id)
+    if not os.path.exists(client_dir):
+        os.makedirs(client_dir)
+
+def save_temp_image(client_id, image, recognized_user_id, recognized_user_name):
+    create_user_temp_dir(client_id)
+    client_dir = os.path.join(TEMP_IMAGE_DIR, client_id)
+    image_count = len(os.listdir(client_dir))
+    filename = f"{recognized_user_id}_{recognized_user_name}_{image_count + 1}.jpg"
+    cv2.imwrite(os.path.join(client_dir, filename), image)
+
+def is_30_images_collected(client_id):
+    client_dir = os.path.join(TEMP_IMAGE_DIR, client_id)
+    return len(os.listdir(client_dir)) >= 30
+
+def clear_temp_storage(client_id):
+    client_dir = os.path.join(TEMP_IMAGE_DIR, client_id)
+    if os.path.exists(client_dir):
+        for file in os.listdir(client_dir):
+            os.remove(os.path.join(client_dir, file))
+        os.rmdir(client_dir)
+
+def load_temp_images(client_id):
+    client_dir = os.path.join(TEMP_IMAGE_DIR, client_id)
     images = []
-    if os.path.exists(user_dir):
-        for file in sorted(os.listdir(user_dir)):
-            img_path = os.path.join(user_dir, file)
+    if os.path.exists(client_dir):
+        for file in sorted(os.listdir(client_dir)):
+            img_path = os.path.join(client_dir, file)
             img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE)
             images.append(img)
     return images
@@ -346,7 +419,6 @@ def receive_data(data):
     phone_number = data.get("phoneNumber")
     name = data.get("name")
 
-    # 유저가 처음 데이터를 보내는 경우, 딕셔너리에 초기값 0 설정
     if phone_number not in user_counts:
         user_counts[phone_number] = 0
 
