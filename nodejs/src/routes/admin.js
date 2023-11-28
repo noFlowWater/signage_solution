@@ -44,10 +44,11 @@ router.post('/login', async(req,res,error) => {
 
 //admin menuadd
 router.post('/menu', async(req,res,error) => {
-    const allergy = [];
-    console.log(req.body);
+    console.log("body",req.body);
     const price = parseInt(req.body.price);
     const is_soldout = Boolean(req.body.is_soldout);
+    // allergy = ["","",""] 이렇게 req로 날아옴
+    console.log(req.body.allergy.length);
     const menu = await prisma.menu.upsert ({
         where : {menu_name : req.body.menu_name},
         update : {},
@@ -58,46 +59,79 @@ router.post('/menu', async(req,res,error) => {
             file_path : req.body.file_path,
             is_soldout : is_soldout,
             category : {
-                connect : {category_name : req.body.category_name}
-            },
-        }
-    })
-    res.status(200).send(menu);
-    const allergy_table = await prisma.relation_menu_allergy.create ({
-        data : {
-            menus : {
-                connect : { menu_name : req.body.menu_name}
-            },
-            allergies : {
-                connect : {allergy_name : "밀"}
+                connect : {category_id : req.body.category_id}
             }
         }
     })
-    console.log("success");
+    if(req.body.allergy.length > 0){
+        //배열 parsing하기
+        let all = req.body.allergy;
+        console.log("all:",all);
+        var allergies = all.join(',').split(',');
+        console.log("allergies",allergies);
+        const connections = allergies.map(allergyName => {
+            return {allergy_name : allergyName}
+        })
+        console.log("connections",connections);
+        //메뉴에 알러지 정보 넣기
+        console.log("name: ",req.body.menu_name);
+        for (const allergy_name of allergies) {
+            // 데이터베이스에서 알러지 찾기
+            if (allergy_name != "없음"){
+                const existingAllergy = await prisma.allergy.findUnique({
+                    where: { allergy_name },
+                  });
+                  // 메뉴와 알러지 연결
+                  await prisma.relation_menu_allergy.create({
+                    data: {
+                      menus: { connect: { menu_id: menu.menu_id } },
+                      allergies: { connect: { allergy_id: existingAllergy.allergy_id } },
+                    },
+                  });
+            }
+        }
+        // const allergyMenuConnections = connections.map(allergyConnection => {
+        //     return {
+        //         menus: {
+        //             connect: { menu_name: req.body.menu_name }
+        //           },
+        //         allergies: {
+        //             connect: { allergy_name: allergyConnection}
+        //         }
+        //     };
+        //   });
+        // console.log("allergyMenuConnections: ", allergyMenuConnections);
+        // const allergy_table = await prisma.relation_menu_allergy.create ({
+        //     data : allergyMenuConnections
+        // })
+        // console.log("success");
+    }
+    res.status(200).send(menu);
 })
 
 //관리자 카테고리별 메뉴
 router.get('/:category_id', async(req,res,error) => {
     //const thiscategory_id = req.params.category_id; //category_id를 가져와서
-    console.log("category_id : ",req.params.category_id);
+    console.log("category_id : ", req.params.category_id);
     //카테고리 같은거 추출후 보내줌.
     const result = await prisma.menu.findMany({
         where: {
             category_id: req.params.category_id
         },
     })
+    console.log(result)
     res.json(result);
 });
 
 //관리자 메뉴 삭제
 router.delete('/', async(req,res,error) => {
-    const thismenu_ID = req.body.menu_ID; //menu_id 가져와서
+    const thismenu_ID = req.body.menu_id; //menu_id 가져와서
     console.log("menu_ID : ",thismenu_ID);
 
     //삭제하는 구문
     try{const result = await prisma.menu.delete({
         where: {
-            menu_ID : thismenu_ID,
+            menu_id : thismenu_ID,
         },
     })}catch(error){
         console.log(`error : ${error}`);

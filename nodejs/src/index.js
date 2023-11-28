@@ -4,11 +4,12 @@ const app = express();
 const cors = require('cors');
 const port = 4000
 const database = require('./database')
+const { swaggerUi, specs } = require('./swagger/swagger');
 
 app.use(express.json());
 app.use(cors());
 app.use(express.urlencoded({ extends: true}))
-
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
 //db 연결
 database.$connect()

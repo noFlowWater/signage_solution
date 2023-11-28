@@ -20,13 +20,13 @@ database.$connect()
 //category 시드 생성
 async function category(){
     await database.category.upsert({
-        where: {category_name : "사이드"},
+        where: {category_name : "추천"},
         update : {
-            category_id : "5"
+            category_id : "0"
         },
         create : {
-            category_name : "사이드",
-            category_id : "5"
+            category_name : "추천",
+            category_id : "0"
         }
     })
     console.log("success")
@@ -147,14 +147,14 @@ async function menutoallergy() {
                 connect : { menu_name : "떡라면"}
             },
             allergies : {
-                connect : {allergy_name : "밀"}
+                connect : {allergy_name : "밀"},
             }
         }
     })
     console.log("success")
 }
 //함수 호출
-category()
+menutoallergy()
     .catch(e => {
         console.error(e)
         process.exit(1)
