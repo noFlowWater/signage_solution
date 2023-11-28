@@ -24,6 +24,7 @@ app.use('/admin', require('./routes/admin'));
 
 // '/menu' 관련 api 요청은 routes/menu에서 처리
 app.use('/menu', require('./routes/menu'));
+app.use('/order',require('./routes/order'));
 
 
 
