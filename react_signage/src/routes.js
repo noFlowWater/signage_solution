@@ -11,6 +11,7 @@ import AdminMenuEdit from './pages/AdminMenuEdit';
 import UserRegCam from './pages/UserRegCam';
 import UserRecCam from './pages/UserRecCam';
 import UserAllergySelectPage from './pages/UserAllergySelectPage';
+import UserOrderPage from './pages/UserOrderPage';
 
 const routes = [
     {
@@ -40,6 +41,10 @@ const routes = [
     {
         path : '/user/menu/:cid',
         component : UserMenuPage
+    },
+    {
+        path : '/user/menu/order',
+        component : UserOrderPage
     },
     {
         path : '/admin/login',

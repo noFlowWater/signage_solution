@@ -2,6 +2,7 @@ import { useContext, useState } from 'react';
 import { CartContext } from './UserCartContext';
 import axios from 'axios';
 import { kiosk } from '../constants';
+import { Link } from 'react-router-dom';
 
 const UserCart = () => {
     const { cart, dispatch } = useContext(CartContext);
@@ -17,16 +18,31 @@ const UserCart = () => {
         return count;
     };
 
+    const handleDecrease = (menu) => {
+        const existingItem = cart.find(item => item.menu_name === menu.menu_name);
+        if (existingItem) {
+            if (existingItem.quantity > 1) {
+                dispatch({ type: 'DECREASE_QUANTITY', menuName: menu.menu_name });
+            }
+        }
+    };
+
+    const handleIncrease = (menu) => {
+        const existingItem = cart.find(item => item.menu_name === menu.menu_name);
+        if (existingItem) {
+            if (existingItem.quantity >= 1) {
+                dispatch({ type: 'INCREASE_QUANTITY', menuName: menu.menu_name });
+            }
+        }
+    };
+
+    const handleRemove = (menu) => {
+        dispatch({ type: 'REMOVE_MENU', menuName: menu.menu_name });
+    };
+
     const handleOrder = async () => {
         try {
             setIsOrdering(true);
-            // const orderData = cart.map(item => {
-            //     console.log(item); // item 값을 콘솔 창에 출력
-            //     return {
-            //         menu_name: item.menu_name,
-            //         quantity: item.quantity,
-            //     };
-            // });
             const orderData = {
                 user_id: '1',
                 orders: cart.map(item => ({
@@ -57,12 +73,21 @@ const UserCart = () => {
                 <div key={index}>
                     <h1>{item.menu_name}</h1>
                     <p>{item.price}</p>
-                    <p>수량: {calculateQuantity(item)}</p>
+                    <div>
+                        <button onClick={() => handleDecrease(item)}>-</button>
+                        수량: {calculateQuantity(item)}
+                        <button onClick={() => handleIncrease(item)}>+</button>
+                        <button onClick={() => handleRemove(item)}>X</button>
+                    </div>
                 </div>
             ))}
-            <button onClick={handleOrder} disabled={isOrdering}>
-                {isOrdering ? '주문 중...' : '주문하기'}
-            </button>
+            <div style={{paddingLeft: '10px',fontFamily: 'SansM',fontSize: '20px'}}>
+                <Link to="/user/menu/order" style={{ textDecoration: 'none'}}>
+                    <button className="btn btn-danger mt-5" onClick={handleOrder} disabled={isOrdering}>
+                        {isOrdering ? '주문 중...' : '주문하기'}
+                    </button>
+                </Link>
+            </div>
         </div>
     );
 }
