@@ -2,9 +2,9 @@ import React, { useEffect, useRef, useState } from 'react';
 import io from 'socket.io-client';
 import { flask } from '../constants';
 import { Link } from 'react-router-dom';
-import FaceRegNavBar from '../components/FaceRegNavBar';
 import shortUUID from 'short-uuid';
 import UserRecResultModal from '../components/UserRecResultModal';
+import FaceRecNavBar from '../components/FaceRecNavBar';
 
 const CLIENT_ID = shortUUID.generate();
 
@@ -160,7 +160,7 @@ const UserRecCam = () => {
 
   return (
         <div>
-            <FaceRegNavBar />
+            <FaceRecNavBar />
             <div className="container d-flex align-items-center justify-content-center vh-50" style={{paddingTop:'50px'}}>
                 <div className="d-flex flex-column align-items-center">
                     <div style={{ fontFamily: 'SansM',fontSize: '30px' }}>카메라를 응시해주세요</div>
@@ -197,7 +197,7 @@ const UserRecCam = () => {
                         {/* The canvas is used for capturing frames but is not displayed */}
                         <canvas ref={canvasRef} style={{ display: 'none' }}></canvas>
                     </div>
-                    <Link to='/user/reg/allergy'>일단 알러지 선택으로 보내</Link>
+                    <Link to='/user/menu/1'>메뉴 보기</Link>
                     <UserRecResultModal 
                         content={`당신은 이름: ${recognizedUser.name} ID: ${recognizedUser.id}입니까?`}
                         isOpen={modalOpen}
