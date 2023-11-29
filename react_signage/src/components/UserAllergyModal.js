@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import { kiosk } from '../constants';
+import { useNavigate } from 'react-router-dom';
 
 export const ModalContainer = styled.div`
   display: flex;
@@ -80,9 +81,10 @@ export const ModalIcon = styled.img`
 `;
 
 
-export const UserAllergyModal = ({ content, isOpen, setIsOpen }) => {
+export const UserAllergyModal = ({ content, isOpen, setIsOpen,userId }) => {
   const [selectedIcons, setSelectedIcons] = useState([]);
-  
+  const navigate = useNavigate();
+
   // 모달 상태를 내부에서 관리하는 대신 props로 받음
   useEffect(() => {
       setIsOpen(isOpen); // 외부 상태에 따라 모달 상태 설정
@@ -98,14 +100,16 @@ export const UserAllergyModal = ({ content, isOpen, setIsOpen }) => {
   };
 
   const sendSelectedIconsToServer = () => {
-    const data = JSON.stringify({ selectedIcons });
+    const user_id = userId
+    const allergies = selectedIcons
+    const data = JSON.stringify({ user_id, allergies });
     const config = {
       headers: {
         'Content-Type': 'application/json',
       },
     };
-
-    axios.post(`/{kiosk}/allergy`, data, config)
+  
+    axios.post(`${kiosk}/users`, data, config)
       .then(response => {
         // 서버로부터의 응답 처리
         console.log(response.data);
@@ -114,6 +118,8 @@ export const UserAllergyModal = ({ content, isOpen, setIsOpen }) => {
         // 에러 처리
         console.error(error);
       });
+
+      navigate('/');
   };
 
   return (

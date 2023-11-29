@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+import { kiosk } from '../constants';
 
 export const ModalContainer = styled.div`
   display: flex;
@@ -33,18 +35,18 @@ export const ModalBtn = styled.button`
   cursor: grab;
 `;
 
-export const ExitBtn = styled(ModalBtn)`
-  background-color: #4000c7;
-  border-radius: 10px;
-  text-decoration: none;
-  margin: 15px;
-  padding: 5px 10px;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
+// export const ExitBtn = styled(ModalBtn)`
+//   background-color: #4000c7;
+//   border-radius: 10px;
+//   text-decoration: none;
+//   margin: 15px;
+//   padding: 5px 10px;
+//   width: 40px;
+//   height: 40px;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+// `;
 
 export const ModalView = styled.div.attrs((props) => ({
   role: 'dialog',
@@ -53,8 +55,9 @@ export const ModalView = styled.div.attrs((props) => ({
   align-items: center;
   flex-direction: column;
   border-radius: 20px;
+  padding: 20px;
   width: 500px;
-  height: 250px;
+  height: 200px;
   background-color: #ffffff;
   > div.desc {
     margin: 20px;
@@ -70,11 +73,40 @@ export const UserPayModal = ({ content }) => {
     setIsOpen(!isOpen);
   };
 
-  const handleConfirm = () => {
-    // 로컬 스토리지에서 userId 값 삭제
-    localStorage.removeItem('userId');
+  const handleConfirm = async () => {
+    try {
+      const userId = localStorage.getItem('userId');
+      const userCart = localStorage.getItem('userCart');
+  
+      if (userId && userCart) {
+        const orderData = {
+          user_id: userId,
+          orders: JSON.parse(userCart).map(item => ({
+            menu_id: item.menu_id,
+            order_count: item.quantity,
+          })),
+        };
+  
+        await axios.post(`${kiosk}/users/order`, JSON.stringify(orderData), {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+  
+        // // 서버로 전송 후에 필요한 처리를 추가해주세요 (예: 카트 비우기)
+        // dispatch({ type: 'CLEAR_CART' });
+      }
+      console.log("주문 내역 전송 완료")
+  
+      // 로컬 스토리지의 모든 값 삭제
+      localStorage.removeItem('userId');
+      localStorage.removeItem('userCart');
+      localStorage.removeItem('total');
+      console.log("로컬 스토리지 비움 완료")
+    } catch (error) {
+      console.log(error);
+    }
   };
-
   return (
     <>
       <ModalContainer>
@@ -85,7 +117,6 @@ export const UserPayModal = ({ content }) => {
         {isOpen ? (
           <ModalBackdrop onClick={openModalHandler}>
             <ModalView onClick={(e) => e.stopPropagation()}>
-              <ExitBtn onClick={openModalHandler}>x</ExitBtn>
               <img src={require('../img/Logo.png')} alt="Pay" className="pay-image" style={{ width: '150px', height: 'auto' }} />
               <div className='desc' style={{ fontFamily: 'SansM', fontSize: '20px' }}>{content}</div>
               <Link to="/" style={{ textDecoration: 'none' }}>

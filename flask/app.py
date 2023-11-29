@@ -204,8 +204,6 @@ def load_user_models(cursor):
     
 createFolder('./temp')
 
-load_user_models(cursor)
-
 # ------------------------ ------- Flask서버 셋팅 ------- ------------------------
 
 app = Flask(__name__, static_folder="./templates/static")

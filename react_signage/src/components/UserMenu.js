@@ -11,6 +11,10 @@ const UserMenu = () => {
     const [menus, setMenus] = useState([]);
     const { cart, dispatch } = useContext(CartContext);
 
+    //testing
+    const userId = localStorage.getItem('userId');
+    console.log(userId);
+
     useEffect(() => {
         const fetchMenus = async () => {
             try {
