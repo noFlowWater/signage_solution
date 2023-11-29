@@ -94,9 +94,9 @@ const UserCart = () => {
             </div>
             <div style={{paddingLeft: '10px',fontFamily: 'SansM',fontSize: '20px'}}>
                 <Link to="/user/order" style={{ textDecoration: 'none'}}>
-                    <button className="btn btn-danger mt-5" onClick={handleOrder} disabled={isOrdering}>
-                        {isOrdering ? '주문 중...' : '주문하기'}
-                    </button>
+                <button className="btn mt-5" onClick={handleOrder} disabled={isOrdering} style={{ backgroundColor: '#FF4B4B', color: 'white' }}>
+                    {isOrdering ? '주문 중...' : '주문하기'}
+                </button>
                 </Link>
             </div>
         </div>
