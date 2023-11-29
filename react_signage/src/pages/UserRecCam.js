@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import io from 'socket.io-client';
 import { flask } from '../constants';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import shortUUID from 'short-uuid';
 import UserRecResultModal from '../components/UserRecResultModal';
 import FaceRecNavBar from '../components/FaceRecNavBar';
@@ -20,6 +20,7 @@ const UserRecCam = () => {
     const [modalOpen, setModalOpen] = useState(false); // 모달 상태 관리
     const [recognizedUser, setRecognizedUser] = useState({ name: '', id: '' });
     
+    const navigate = useNavigate();
     // 웹캠 스트림 설정
     useEffect(() => {
         const newSocket = io(flask, {
@@ -122,7 +123,7 @@ const UserRecCam = () => {
                 context.clearRect(0, 0, width, height);
 
                 // 서버로 데이터를 emit
-                socket.emit('upload_image', { client_id: CLIENT_ID, image: data });
+                socket.emit('upload_image', CLIENT_ID, { image: data });
                 console.log("Data sent...");
             }
         }, 1000 / FPS);
@@ -136,16 +137,19 @@ const UserRecCam = () => {
 
     // 버튼에 대한 이벤트 핸들러 정의
     const handleYes = () => {
+        navigate('/user/menu/1')
         console.log("YES 클릭");
         // YES 버튼 로직 구현
     };
 
     const handleAlternative = () => {
+        navigate('/user/rec/alt')
         console.log("대체인증 클릭");
         // 대체인증 버튼 로직 구현
     };
 
     const handleHome = () => {
+        navigate('/');
         console.log("HOME 클릭");
         // HOME 버튼 로직 구현
     };

@@ -7,6 +7,7 @@ from os.path import isfile, join
 import cv2
 import shutil
 import numpy as np
+import uuid
 from flask import Flask, render_template,request, jsonify
 from flask_socketio import SocketIO, emit, join_room
 from flask_cors import CORS
@@ -232,7 +233,6 @@ def handle_connect():
     print(f"Client {client_id} connected.")
 
 
-
 @socketio.on("image")
 def receive_image(image):
     # Decode the base64-encoded image data
@@ -273,8 +273,7 @@ def receive_image(image):
     emit("processed_image", processed_img_data)
 
 @socketio.on('upload_image')
-def handle_image_upload(data):
-    client_id = data['client_id']
+def handle_image_upload(client_id, data):
     image_data = data['image']
     
     # 유저가 처음 데이터를 보내는 경우, 딕셔너리에 초기값 0 설정
@@ -414,7 +413,7 @@ def load_temp_images(client_id):
     return images
 
 @socketio.on("data_for_storage")
-def receive_data(data):
+def receive_data(client_id,data):
     image = data.get("image")
     phone_number = data.get("phoneNumber")
     name = data.get("name")
@@ -432,11 +431,11 @@ def receive_data(data):
             # face_detected_count 증가
             user_counts[phone_number] += 1
             if user_counts[phone_number] <= 100:
-                print(str(user_counts[phone_number]) + " + " + phone_number)
+                print(str(user_counts[phone_number]) +" / "+name +" / "+ phone_number +" / "+ client_id)
                 # Optionally, emit the processed image with face boxes back to the client
                 _, buffer = cv2.imencode('.jpg', image)
                 processed_image = base64.b64encode(buffer).decode('utf-8')
-                emit("processed_image", f"data:image/jpeg;base64,{processed_image}")
+                emit("processed_image", f"data:image/jpeg;base64,{processed_image}", room=client_id)
                 # Save the image to the server
                 createFolder(f'./temp/{phone_number}')
                 cv2.imwrite(f'./temp/{phone_number}/{user_counts[phone_number]}.jpg', roi)
@@ -444,7 +443,7 @@ def receive_data(data):
                 # emit("image_saved", {"count": face_detected_count})
             else:
                 # If 100 images have been saved, you can emit a message to stop sending images
-                emit("stop_sending", {"message": "100 face images have been saved"})
+                emit("stop_sending", {"message": "100 face images have been saved"}, room=client_id)
 
                 # 모델 100장 학습 시키고
                 data_path = f'./temp/{phone_number}/'
@@ -457,35 +456,38 @@ def receive_data(data):
                     images = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
                     Training_Data.append(np.asarray(images, dtype=np.uint8))
                     Labels.append(i)
-
-                Labels = np.asarray(Labels, dtype=np.int32)
-
-                model = cv2.face.LBPHFaceRecognizer_create()
-
-                model.train(np.asarray(Training_Data), np.asarray(Labels))
-                # 모델 저장
-                model.save(f'./temp/{phone_number}/trained_model_{phone_number}.yml')
-
-                print(f"{phone_number}'s Model Training Complete!!!!!")
-
-                # 전달받은 유저 아이디에 매핑되게 디비에 저장
                 try:
+                    Labels = np.asarray(Labels, dtype=np.int32)
+                    model = cv2.face.LBPHFaceRecognizer_create()
+                    model.train(np.asarray(Training_Data), np.asarray(Labels))
+                    # 모델 저장
+                    model.save(f'./temp/{phone_number}/trained_model_{phone_number}.yml')
+                    print(f"{phone_number}'s Model Training Complete!!!!!")
+
+                    # 전달받은 유저 아이디에 매핑되게 디비에 저장
                     # 모델 파일을 이진 형식으로 읽기
                     with open(f'./temp/{phone_number}/trained_model_{phone_number}.yml', 'rb') as file:
                         model_data = file.read()
-
+                    
+                    userId = str(uuid.uuid4())
                     # 데이터베이스에 사용자 정보와 모델 데이터 저장
-                    insert_user_query = "INSERT INTO User (user_id, user_name, phoneNumber, user_face_model) VALUES (UUID(), %s, %s, %s)"
-                    cursor.execute(insert_user_query, (name, phone_number, model_data))
+                    insert_user_query = "INSERT INTO User (user_id, user_name, phoneNumber, user_face_model) VALUES (%s, %s, %s, %s)"
+                    cursor.execute(insert_user_query, (userId, name, phone_number, model_data))
                     conn.commit()
 
+                    # 성공한 경우
                     print(f"> User {name} with phone number {phone_number} has been successfully registered.")
-                    emit("registration_success", {"message": f"User {name} registered successfully"})
-
+                    emit("registration_result", {"status": "success",
+                                                "message": "registered successfully",
+                                                "user_id": f"{userId}",
+                                                "name": f"{name}",
+                                                "phone_number": f"{phone_number}"}, room=client_id)
                 except Exception as e:
+                    # 실패한 경우
                     print(f"> An error occurred during user registration: {e}")
-                    emit("registration_failed", {"error": str(e)})
-
+                    emit("registration_result", {"status": "failed",
+                                 "error": str(e)}, room=client_id)
+                    
                 # 경로에 있는 이미지와 경로 삭제
                 temp_path = f'./temp/{phone_number}'
                 shutil.rmtree(temp_path)
@@ -494,12 +496,12 @@ def receive_data(data):
                 
         else:
             # No face detected, optionally emit a message indicating failure to detect a face
-            emit("face_not_detected", {"message": "No face detected in the image"})
+            emit("face_not_detected", {"message": "No face detected in the image"}, room=client_id)
     except Exception as e:
         print(f"An error occurred: {e}")
 
 @app.route('/register', methods=['POST'])
-def register_user():
+def register_user():    
     data = request.get_json()
     name = data.get('name')
     phone_number = data.get('phoneNumber')
@@ -525,6 +527,33 @@ def register_user():
 
     # 성공 응답을 보냅니다.
     return jsonify({'status': 'success', 'name': name, 'phoneNumber': phone_number})
+
+
+@app.route('/alternative', methods=['POST'])
+def alternative_rec():
+    data = request.get_json()
+    phone_number = data.get('phoneNumber')
+
+    print("alternative > phone_number : " + phone_number)
+    
+    if not is_valid_phone_number(phone_number):
+        # 유효하지 않은 전화번호 형식이면 실패 응답을 보냅니다.
+        return {"error": "유효하지 않은 전화번호 형식"}, 400
+
+    # 전화번호 체크
+    query = "SELECT * FROM `User` WHERE `phoneNumber` = %s"
+    cursor.execute(query, (phone_number,))
+    result = cursor.fetchone()
+
+    if result:
+        # result 튜플에서 필요한 값을 인덱스로 접근
+        user_id = result[0]  # user_id는 첫 번째 열
+        user_name = result[1]  # user_name은 두 번째 열
+        return jsonify({'status': 'success', 'user_id': user_id, 'user_name': user_name})
+    else:
+        # 전화번호가 데이터베이스에 없는 경우 오류 메시지를 반환합니다.
+        return {"error": "존재하지 않는 전화번호입니다. 다시 입력해주세요."}, 400
+
 
 @app.route("/")
 def index():

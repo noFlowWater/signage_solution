@@ -2,8 +2,11 @@ import React, { useEffect, useRef, useState } from 'react';
 import io from 'socket.io-client';
 import { flask } from '../constants';
 import { Link, useLocation } from 'react-router-dom';
+import shortUUID from 'short-uuid';
 import FaceRegNavBar from '../components/FaceRegNavBar';
 import UserAllergyModal from '../components/UserAllergyModal';
+
+const CLIENT_ID = shortUUID.generate();
 
 const UserRegCam = () => {
     const location = useLocation();
@@ -13,6 +16,8 @@ const UserRegCam = () => {
     const [socket, setSocket] = useState(null);
     const [processedImage, setProcessedImage] = useState('');
     const [isCollectionComplete, setIsCollectionComplete] = useState(false);
+    const [isRegCompleteResult, setIsRegCompleteResult] = useState('');
+    const [userAllergyModalOpen, setUserAllergyModalOpen] = useState(false);
     const [complete,setComplete] = useState(0);
 
     // 웹캠 스트림 설정
@@ -20,7 +25,8 @@ const UserRegCam = () => {
         const newSocket = io(flask, {
             transports: ['websocket'],
             secure: false,
-            rejectUnauthorized: false
+            rejectUnauthorized: false,
+            query: { client_id: CLIENT_ID }
         });
         setSocket(newSocket)
 
@@ -37,6 +43,21 @@ const UserRegCam = () => {
                 tracks.forEach(track => track.stop());
                 videoRef.current.srcObject = null;
             }
+        });
+
+        newSocket.on('registration_result', (data) => {
+            if (data.status === "success") {
+                setIsRegCompleteResult("success");
+                console.log("Registration successful!");
+                console.log("User ID:", data.user_id);
+                console.log("Name:", data.name);
+                console.log("Phone Number:", data.phone_number);
+                // 추가적인 성공 로직 처리
+            } else if (data.status === "failed") {
+                setIsRegCompleteResult("failed");
+                console.error("Registration failed:", data.error);
+                // 추가적인 실패 로직 처리
+            }
             if (socket) {
                 socket.off('connect');
                 socket.off('processed_image');
@@ -45,6 +66,7 @@ const UserRegCam = () => {
                 setSocket(null); // Clear the socket state
             }
         });
+
 
         // 비디오 스트림 설정
         navigator.mediaDevices.getUserMedia({ video: true })
@@ -63,7 +85,7 @@ const UserRegCam = () => {
 
         // 소켓 이벤트 핸들러
         newSocket.on('connect', () => {
-            console.log('Connected...!', newSocket.connected);
+            console.log('Connected...!', CLIENT_ID,);
         });
 
         return () => {
@@ -76,9 +98,15 @@ const UserRegCam = () => {
                 console.log("스트림이 열려있으면 닫기")
             }
         }
-    },[]);
+    }, []);
     
-    
+    useEffect(() => {
+        if (isRegCompleteResult === "success") {
+            setUserAllergyModalOpen(true);
+        } else if (isRegCompleteResult === "failed") {
+            console.error("<< 서버 측 등록 과정 중 실패..! >>");
+        }
+    }, [isRegCompleteResult]);
     
     // 클라이언트의 캠화면 전송
     useEffect(() => {
@@ -106,7 +134,8 @@ const UserRegCam = () => {
                 };
 
                 // 서버로 데이터를 emit
-                socket.emit('data_for_storage', dataToSend);
+                // 서버로 데이터를 emit하면서 CLIENT_ID를 인자로 전달
+                socket.emit('data_for_storage', CLIENT_ID, dataToSend);
                 console.log("Data sent...");
             }
         }, 1000 / FPS);
@@ -136,10 +165,7 @@ const UserRegCam = () => {
                     <div style={{ fontFamily: 'SansM',fontSize: '30px' }}>카메라를 응시해주세요</div>
                     <div id="container">
                         {isCollectionComplete ? (
-                                <div>
-                                    <div>Collection complete! All images have been saved.</div>
-                                    <UserAllergyModal content="알러지를 선택하세요" isOpen={true} />
-                                </div>
+                                <div>Collection complete! All images have been saved.</div>
                             ) : (
                                 <div className="camera-container">
                                     <div className="camera-info">
@@ -170,8 +196,12 @@ const UserRegCam = () => {
                         {/* The canvas is used for capturing frames but is not displayed */}
                         <canvas ref={canvasRef} style={{ display: 'none' }}></canvas>
                     </div>
+                    <UserAllergyModal
+                        content="알러지를 선택하세요"
+                        isOpen={userAllergyModalOpen}
+                        setIsOpen={setUserAllergyModalOpen}
+                    />
                 </div>
-                
             </div>
         </div>
     );
