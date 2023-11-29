@@ -64,6 +64,14 @@ const UserCart = () => {
         }
     };
 
+    const calculateTotal = () => {
+        let total = 0;
+        cart.forEach(item => {
+            total += item.price * item.quantity;
+        });
+        return total;
+    };
+
     return (
         <div>
             <div style={{ paddingTop: '15px', paddingLeft: '5px' }}>
@@ -77,15 +85,18 @@ const UserCart = () => {
                         <button onClick={() => handleDecrease(item)}>-</button>
                         수량: {calculateQuantity(item)}
                         <button onClick={() => handleIncrease(item)}>+</button>
-                        <button onClick={() => handleRemove(item)}>X</button>
+                        <div><button onClick={() => handleRemove(item)}>X</button></div>
                     </div>
                 </div>
             ))}
+            <div style={{ paddingLeft: '10px', fontFamily: 'SansB', fontSize: '20px' }}>
+                TOTAL: {calculateTotal()} {/* 총 금액 표시 */}
+            </div>
             <div style={{paddingLeft: '10px',fontFamily: 'SansM',fontSize: '20px'}}>
-                <Link to="/user/menu/order" style={{ textDecoration: 'none'}}>
-                    <button className="btn btn-danger mt-5" onClick={handleOrder} disabled={isOrdering}>
-                        {isOrdering ? '주문 중...' : '주문하기'}
-                    </button>
+                <Link to="/user/order" style={{ textDecoration: 'none'}}>
+                <button className="btn mt-5" onClick={handleOrder} disabled={isOrdering} style={{ backgroundColor: '#FF4B4B', color: 'white' }}>
+                    {isOrdering ? '주문 중...' : '주문하기'}
+                </button>
                 </Link>
             </div>
         </div>

@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
 
-const FaceRegNavBar = () => {
+const AltCertNavBar = () => {
     return (
         <nav className="navbar bg-transparent navbar-height" style = {{paddingTop: '15px'}}>
             <div className="container">
-                <img src={require('../img/FaceReg.png')} alt="FaceReg" height="100" width="300"/>
+                <img src={require('../img/AltBtn.png')} alt="AltCert" height="100" width="300"/>
                 <div style = {{
                     flexDirection: 'row'
                 }} >
@@ -15,4 +15,4 @@ const FaceRegNavBar = () => {
     );
 };
 
-export default FaceRegNavBar;
+export default AltCertNavBar;

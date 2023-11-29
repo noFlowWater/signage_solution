@@ -44,7 +44,7 @@ const routes = [
         component : UserMenuPage
     },
     {
-        path : '/user/menu/order',
+        path : '/user/order',
         component : UserOrderPage
     },
     {
