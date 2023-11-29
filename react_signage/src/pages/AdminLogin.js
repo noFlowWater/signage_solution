@@ -11,7 +11,7 @@ const AdminLogin = () => {
           password: pwd
         };
       
-        axios.post('http://172.20.37.28:4000/admin/login', JSON.stringify(data), {
+        axios.post('http://172.20.37.141:4000/admin/login', JSON.stringify(data), {
           headers: {
             'Content-Type': 'application/json'
           }
@@ -19,7 +19,7 @@ const AdminLogin = () => {
         .then(res=> {
             const data = res.data
             console.log(data.status)
-            navigate('/admin/김밥');
+            navigate('/admin/menu');
           })
         .catch(error => {
             console.error(error);
