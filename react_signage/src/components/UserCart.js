@@ -81,8 +81,11 @@ const UserCart = () => {
                     </div>
                 </div>
             ))}
+            <div style={{paddingLeft: '10px',fontFamily: 'SansB',fontSize: '20px'}}>
+                TOTAL : 
+            </div>
             <div style={{paddingLeft: '10px',fontFamily: 'SansM',fontSize: '20px'}}>
-                <Link to="/user/menu/order" style={{ textDecoration: 'none'}}>
+                <Link to="/user/order" style={{ textDecoration: 'none'}}>
                     <button className="btn btn-danger mt-5" onClick={handleOrder} disabled={isOrdering}>
                         {isOrdering ? '주문 중...' : '주문하기'}
                     </button>
