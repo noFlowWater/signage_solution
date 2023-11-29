@@ -5,6 +5,7 @@ const prisma = require('../database')
 const recommendationModule = require('./recommendation');
 dotenv.config()
 
+//사용자의 메뉴 기능들
 
 //추천 메뉴리스트 보기 
 router.get('/menu/0', async (req, res, error) => {
@@ -73,21 +74,48 @@ router.get('/menu/0', async (req, res, error) => {
 //선택한 메뉴 상세보기
 router.get('/detail/:menu_id', async(req,res,error) => { //<- :menu_id는 req.params.menu_id내에 존재
     const thismenu_id = req.params.menu_id; //menu_id를 가져와서
-    console.log("menu_id : ",thismenu_id);
+    // console.log("menu_id : ",thismenu_id);
 
     //DB에서 menu_id 매칭후 추출
-    const result = await prisma.menu.findUnique({
-        where: {
-            menu_id: thismenu_id
-        },
-    });
+    try {
+        //해당 메뉴 찾기
+        const result = await prisma.menu.findUnique({
+            where : {
+                menu_id : thismenu_id
+            }
+        })
+        //해당 메뉴 알러지 정보
+        const allergyInfo = await prisma.menu.findUnique({
+            where: {
+                menu_id: thismenu_id
+            },
+            include : {
+                relationToAllergy : {
+                    select : {
+                        allergies : {
+                            select :{
+                                allergy_name : true
+                            }
+                        }
+                    }
+                }
+            }
+        });
+        //알러지 이름만 추출
+        const allergies = allergyInfo.relationToAllergy.map(names => 
+                names.allergies.allergy_name)
 
-    console.log("menu_name : ",result.menu_name);
-    console.log("menu_description : ",result.menu_description);
-    console.log("price : ",result.price);
-    console.log("file_path : ",result.file_path);     
+        //메뉴와 알러지 정보 합치기
+        const menuWithAllergy = Object.assign(result, { allergies: allergies })
+        res.json(menuWithAllergy);
+    } catch (error) {
+        console.log(error)
+    }
+    // console.log("menu_name : ",result.menu_name);
+    // console.log("menu_description : ",result.menu_description);
+    // console.log("price : ",result.price);
+    // console.log("file_path : ",result.file_path);     
     //res.json() 해서 메뉴표시에 필요한것들 보내주면 된다.
-    res.json(result);
 })
 
 
@@ -97,23 +125,45 @@ router.get('/:category_id', async(req,res,error) => {
     //const thiscategory_id = req.params.category_id; //category_id를 가져와서
     //console.log("category_id : ",thiscategory_id);
 
-    //카테고리 같은거 추출후 보내줌.
+    //메뉴와 연결된 알러지 정보 가져오기
+    const allResults = await prisma.menu.findMany({
+        where: {
+            category_id: req.params.category_id
+        },
+        include : {
+            relationToAllergy : {
+                select : {
+                    allergies : {
+                        select : {
+                            allergy_name : true
+                        }
+                    }
+                }
+            }
+        }
+    })
+    //알러지 이름만 추출
+    const allergies = allResults.map(items => 
+        items.relationToAllergy.map(names => 
+            names.allergies.allergy_name))
+    // console.log(allergies)
+    //해당 카테고리를 가진 메뉴 추출
     const result = await prisma.menu.findMany({
         where: {
             category_id: req.params.category_id
         }
     })
-    const allergies = await prisma.relation_menu_allergy.findMany({
-        
-    })
+    //메뉴와 알러지 combine
+    const combinedResult = result.map((item, index) =>
+    Object.assign({}, item, { allergies: allergies[index] })
+    );
     console.log("menu_id : ",result.menu_id);
     console.log("menu_name : ",result.menu_name);
     console.log("price : ",result.price);
     console.log("file_path : ",result.file_path);
     //res.json() 해서 메뉴표시에 필요한것들 보내주면 된다.
-    res.json(result);
+    res.json(combinedResult);
 });
 
 
 module.exports = router;
-// module.exports = menu;
