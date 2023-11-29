@@ -27,8 +27,9 @@ app.use('/admin', require('./routes/admin'));
 app.use('/menu', require('./routes/menu'));
 app.use('/order',require('./routes/order'));
 
-
-
+//image처리를 위한 경로 설정 받은 이미지 uploads 폴더에 저장
+app.use(express.static('uploads'));
+app.use(express.static(path.join(__dirname, '../uploads')))
 // app.use('/api', require('./routes/api'));
 // '/api' 관련 요청은 routes/api에서 처리 -> /api는 메뉴등록,수정,삭제 등을 <요청>함
 

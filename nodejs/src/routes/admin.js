@@ -2,10 +2,21 @@ const express = require('express');
 const router = express.Router();
 const dotenv = require('dotenv');
 const prisma = require('../database');
+const multer = require('multer')
 
 dotenv.config()
 
+const storage = multer.diskStorage({
+    destination : function(req,file,cb) {
+        cb(null, 'uploads')
+    },
+    filename : function(req,file,cb) {
+        cb(null, `${Date.now()}_${file.originalname}`);
+    }
+});
+
 var is_auth = false;
+
 
 //admin login
 router.post('/login', async(req,res,error) => {
@@ -24,23 +35,29 @@ router.post('/login', async(req,res,error) => {
         console.log(`error : ${error}`);
     }
 }) 
-//admin categoryadd 기본 데이터 세팅 -> 생성 기능 없음
-// router.post('/category', async(req,res,error) => {
-//     try{
-//         const category = prisma.category.create({
-//             data: {
-//                 category_name: req.body.categoryName
-//             }
-//         })
-//         .then(
-//             //await prisma.$disconnect,
-//             console.log(req.body.categoryName)
-//         )
-//         res.json({"try" : "성공"});
-//     } catch (error) {
-//         console.log(error);
-//     }
-// })
+//사진 업로드 함수
+const uploads = multer(
+    {
+        storage : storage
+    }
+).single('file');
+
+let file_path = ""
+
+//admin menu 이미지 업로드
+router.post('/image', async(req,res,err) => {
+    console.log(req.file);
+    //파일 업로드
+    uploads(req,res,err => {
+        if(err) {
+            console.log(err);
+            return res.status(500).send(err);
+        }
+        console.log(res.req.file.filename);
+        file_path = res.req.file.filename;
+        return res.json({file : res.req.file.filename})
+    }) 
+})
 
 //admin menuadd
 router.post('/menu', async(req,res,error) => {
@@ -56,11 +73,11 @@ router.post('/menu', async(req,res,error) => {
             menu_name : req.body.menu_name,
             menu_description : req.body.menu_description,
             price : price,
-            file_path : req.body.file_path,
             is_soldout : is_soldout,
             category : {
                 connect : {category_id : req.body.category_id}
-            }
+            },
+            file_path : file_path
         }
     })
     if(req.body.allergy.length > 0){
@@ -141,7 +158,7 @@ router.delete('/:menu_id', async(req,res,error) => {
     res.sendStatus(200);
 });
  
-//메뉴 수정 <- 이거 잘못된 코드입니다~바꿔야돼용.
+//메뉴 수정
 router.put('/:menu_id', async(req,res,error) => {
     const thismenu_id= req.params.menu_id; 
     console.log("thismenu_id : ",thismenu_id);
