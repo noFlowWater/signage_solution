@@ -9,7 +9,6 @@ dotenv.config()
 
 router.post('/', async (req, res) => {
     try {
-        console.log('sex');
       const user_id = req.body.user_id;
       const orders = req.body.orders;
   
