@@ -90,14 +90,14 @@ router.get('/:category_id', async(req,res,error) => {
 });
 
 //관리자 메뉴 삭제
-router.delete('/', async(req,res,error) => {
-    const thismenu_ID = req.body.menu_ID; //menu_id 가져와서
-    console.log("menu_ID : ",thismenu_ID);
+router.delete('/:menu_id', async(req,res,error) => {
+    const thismenu_id = req.params.menu_id; //menu_id 가져와서
+    console.log("menu_id : ",thismenu_id);
 
     //삭제하는 구문
     try{const result = await prisma.menu.delete({
         where: {
-            menu_ID : thismenu_ID,
+            menu_id : thismenu_id,
         },
     })}catch(error){
         console.log(`error : ${error}`);
@@ -112,16 +112,19 @@ router.delete('/', async(req,res,error) => {
 router.put('/:menu_id', async(req,res,error) => {
     const thismenu_id= req.params.menu_id; 
     console.log("thismenu_id : ",thismenu_id);
+    const price = parseInt(req.body.price);
     
     const result = await prisma.menu.update({
         where: {
             menu_id: thismenu_id
         },
-        select: {
-            menu_name: true,
-            price: true,
-            file_path: true,
-            is_soldout: true
+        data: {
+            menu_name: req.body.menu_name,
+            menu_description: req.body.menu_description,
+            price: price,
+            file_path: req.body.file_path,
+            is_soldout: req.body.is_soldout,
+            category_id: req.body.category_id
         }
     })
 

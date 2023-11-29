@@ -66,7 +66,7 @@ router.get('/menu/0', async (req, res, error) => {
       next(error);
   }
 
-  res.json(resultarr);
+  res.json(resultarr);ㅊ3
 });
 
 
