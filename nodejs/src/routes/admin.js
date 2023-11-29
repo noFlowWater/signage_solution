@@ -126,18 +126,47 @@ router.post('/menu', async(req,res,error) => {
     res.status(200).send(menu);
 })
 
-//관리자 카테고리별 메뉴
+//관리자 카테고리별 메뉴 보여주기
 router.get('/:category_id', async(req,res,error) => {
     const thiscategory_id = req.params.category_id; //category_id를 가져와서
     console.log("category_id : ",req.params.category_id);
     //카테고리 같은거 추출후 보내줌.
-    const result = await prisma.menu.findMany({
+
+    //메뉴와 연결된 알러지 정보 가져오기
+    const allResults = await prisma.menu.findMany({
         where: {
             category_id: req.params.category_id
         },
+        include : {
+            relationToAllergy : {
+                select : {
+                    allergies : {
+                        select : {
+                            allergy_name : true
+                        }
+                    }
+                }
+            }
+        }
     })
-    console.log(result)
-    res.json(result);
+    //알러지 이름만 추출
+    const allergies = allResults.map(items => 
+        items.relationToAllergy.map(names => 
+            names.allergies.allergy_name))
+    // console.log(allergies)
+    //해당 카테고리를 가진 메뉴 추출
+    const result = await prisma.menu.findMany({
+        where: {
+            category_id: req.params.category_id
+        }
+    })
+    //메뉴와 알러지 combine
+    const combinedResult = result.map((item, index) =>
+    Object.assign({}, item, { allergies: allergies[index] })
+    );
+    console.log(combinedResult);
+    // console.log(result)
+    res.json(combinedResult);
 });
 
 //관리자 메뉴 삭제
@@ -178,11 +207,11 @@ router.put('/:menu_id', async(req,res,error) => {
         }
     })
 
-    console.log("menu_id : ",result.menu_id);
-    console.log("menu_name : ",result.menu_name);
-    console.log("price : ",result.price);
-    console.log("file_path : ",result.file_path);
-    console.log("is_soldout : ",result.is_soldout);
+    // console.log("menu_id : ",result.menu_id);
+    // console.log("menu_name : ",result.menu_name);
+    // console.log("price : ",result.price);
+    // console.log("file_path : ",result.file_path);
+    // console.log("is_soldout : ",result.is_soldout);
     //res.json() 해서 메뉴표시에 필요한것들 보내주면 된다.
     res.json(result);
 });

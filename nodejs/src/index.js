@@ -25,7 +25,9 @@ app.use('/admin', require('./routes/admin'));
 
 // '/menu' 관련 api 요청은 routes/menu에서 처리
 app.use('/menu', require('./routes/menu'));
-app.use('/order',require('./routes/order'));
+
+// 유저 알러지 매핑, 유저 주문 처리
+app.use('/users',require('./routes/users'));
 
 //image처리를 위한 경로 설정 받은 이미지 uploads 폴더에 저장
 app.use(express.static('uploads'));

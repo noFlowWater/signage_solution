@@ -4,10 +4,9 @@ const dotenv = require('dotenv')
 const prisma = require('../database')
 dotenv.config()
 
-// router.js
 
-
-router.post('/', async (req, res) => {
+//사용자가 주문
+router.post('/order', async (req, res) => {
     try {
       const user_id = req.body.user_id;
       const orders = req.body.orders;
@@ -76,5 +75,42 @@ router.post('/', async (req, res) => {
       res.status(500).json({ success: false, message: 'Internal Server Error' });
     }
   });
+//회원가입한 유저와 보유 알러지 연결
+router.post('/', async(req,res,err) => {
+try {
+    if(req.body.allergies.length > 0){
+        //배열 parsing하기
+        let all = req.body.allergies;
+        console.log("all:",all);
+        var allergies = all.join(',').split(',');
+        console.log("allergies",allergies);
+        const connections = allergies.map(allergyName => {
+            return {allergy_name : allergyName}
+        })
+        console.log("connections",connections);
+        //메뉴에 알러지 정보 넣기
+        console.log("name: ",req.body.menu_name);
+        for (const allergy_name of allergies) {
+            // 데이터베이스에서 알러지 찾기
+            if (allergy_name != "없음"){
+                const existingAllergy = await prisma.allergy.findUnique({
+                    where: { allergy_name },
+                    });
+                    // 메뉴와 알러지 연결
+                    await prisma.relation_user_allergy.create({
+                    data: {
+                        users: { connect: { user_id: req.body.user_id } },
+                        allergies: { connect: { allergy_id: existingAllergy.allergy_id } },
+                    },
+                    });
+            }
+        }
+    }
+    res.sendStatus(200);
+} catch (error) {
+    console.log(error)
+    res.status(500).send(error);
+}
+})
   
-  module.exports = router;
+module.exports = router;
