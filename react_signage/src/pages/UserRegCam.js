@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import io from 'socket.io-client';
-import { kiosk } from '../kiosk';
+import { flask } from '../constants';
 import { Link, useLocation } from 'react-router-dom';
 import FaceRegNavBar from '../components/FaceRegNavBar';
 
@@ -16,7 +16,7 @@ const UserRegCam = () => {
 
     // 웹캠 스트림 설정
     useEffect(() => {
-        const newSocket = io(kiosk, {
+        const newSocket = io(flask, {
             transports: ['websocket'],
             secure: false,
             rejectUnauthorized: false
@@ -146,8 +146,8 @@ const UserRegCam = () => {
                                         ref={videoRef} 
                                         autoPlay 
                                         playsInline 
-                                        width="600" 
-                                        height="450" 
+                                        width="400" 
+                                        height="300" 
                                         style={{ transform: 'rotateY(180deg)' }} 
                                     />
                                     <img 

@@ -1,6 +1,6 @@
 import React, {useState } from 'react';
 import axios from 'axios';
-import { kiosk } from '../kiosk';
+import { flask } from '../constants';
 import { Link, useNavigate } from 'react-router-dom';
 import FaceRegNavBar from '../components/FaceRegNavBar';
 
@@ -13,7 +13,7 @@ const UserRegPage = () => {
         event.preventDefault();
         try {
         // Flask 서버로 POST 요청을 보냅니다.
-        const response = await axios.post(`${kiosk}/register`, {
+        const response = await axios.post(`${flask}/register`, {
             name: name,
             phoneNumber: phoneNumber
         });

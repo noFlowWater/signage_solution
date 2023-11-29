@@ -38,6 +38,7 @@ const AdminMenuForm = ({editing}) => {
     const navigate = useNavigate();
 
     const onSubmit = () => {
+
         if (editing){
             const data = {
                 menu_name : name,
