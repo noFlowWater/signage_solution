@@ -1,5 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
+import { kiosk } from '../constants';
 
 export const ModalContainer = styled.div`
   display: flex;
@@ -77,17 +79,22 @@ export const ModalIcon = styled.img`
   opacity: ${({ isSelected }) => (isSelected ? 1 : 0.5)};
 `;
 
-export const UserAllergyModal = ({ content }) => {
-  const [isOpen, setIsOpen] = useState(false);
+export const UserAllergyModal = ({ content, isOpen }) => {
   const [selectedIcons, setSelectedIcons] = useState([]);
+  const [modalOpen, setModalOpen] = useState(false);
 
-  const openModalHandler = () => {
-    setIsOpen(true);
-  };
+  useEffect(() => {
+    if (isOpen) {
+      setSelectedIcons([]);
+      setModalOpen(true);
+    } else {
+      setModalOpen(false);
+    }
+  }, [isOpen]);
 
   const closeModalHandler = () => {
-    setIsOpen(false);
     setSelectedIcons([]);
+    setModalOpen(false);
   };
 
   const selectIconHandler = (iconName) => {
@@ -98,11 +105,29 @@ export const UserAllergyModal = ({ content }) => {
     }
   };
 
+  const sendSelectedIconsToServer = () => {
+    const data = JSON.stringify({ selectedIcons });
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+
+    axios.post(`/{kiosk}/allergy`, data, config)
+      .then(response => {
+        // 서버로부터의 응답 처리
+        console.log(response.data);
+      })
+      .catch(error => {
+        // 에러 처리
+        console.error(error);
+      });
+  };
+
   return (
     <>
       <ModalContainer>
-        <ModalBtn onClick={openModalHandler}>알러지를 선택해주세요</ModalBtn>
-        {isOpen ? (
+        {modalOpen && (
           <ModalBackdrop onClick={closeModalHandler}>
             <ModalView onClick={(e) => e.stopPropagation()}>
               <ExitBtn onClick={closeModalHandler}>x</ExitBtn>
@@ -134,9 +159,10 @@ export const UserAllergyModal = ({ content }) => {
                 />
               </ModalIconContainer>
               <div>선택한 알러지 정보: {selectedIcons.join(', ')}</div>
+              <ModalBtn onClick={sendSelectedIconsToServer}>선택 완료</ModalBtn>
             </ModalView>
           </ModalBackdrop>
-        ) : null}
+        )}
       </ModalContainer>
     </>
   );

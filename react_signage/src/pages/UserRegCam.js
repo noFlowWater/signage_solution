@@ -3,6 +3,7 @@ import io from 'socket.io-client';
 import { flask } from '../constants';
 import { Link, useLocation } from 'react-router-dom';
 import FaceRegNavBar from '../components/FaceRegNavBar';
+import UserAllergyModal from '../components/UserAllergyModal';
 
 const UserRegCam = () => {
     const location = useLocation();
@@ -135,7 +136,10 @@ const UserRegCam = () => {
                     <div style={{ fontFamily: 'SansM',fontSize: '30px' }}>카메라를 응시해주세요</div>
                     <div id="container">
                         {isCollectionComplete ? (
-                                <div>Collection complete! All images have been saved.</div>
+                                <div>
+                                    <div>Collection complete! All images have been saved.</div>
+                                    <UserAllergyModal content="알러지를 선택하세요" isOpen={true} />
+                                </div>
                             ) : (
                                 <div className="camera-container">
                                     <div className="camera-info">
@@ -166,7 +170,6 @@ const UserRegCam = () => {
                         {/* The canvas is used for capturing frames but is not displayed */}
                         <canvas ref={canvasRef} style={{ display: 'none' }}></canvas>
                     </div>
-                    <Link to='/user/reg/allergy'>일단 알러지 선택으로 보내</Link>
                 </div>
                 
             </div>
