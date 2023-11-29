@@ -10,7 +10,7 @@ const AdminMenuShow = () => {
     const navigate = useNavigate();
 
     const getMenus = (id) => {
-        axios.get(`http://172.20.10.89:4000/menu/detail/${id}`)
+        axios.get(`http://172.20.37.141:4000/menu/detail/${id}`)
             .then(response => {
                 const menusData = response.data;
                 setMenus(menusData);
@@ -41,7 +41,7 @@ const AdminMenuShow = () => {
                 </div>
             </nav>
             <div class="card" >
-                <img src="..." class="card-img-top" alt="메뉴 이미지" />
+                <img src={`http://172.20.37.141:4000/${menus.file_path}`} class="card-img-top" alt="메뉴 이미지" />
                     <div class="card-body">
                     <h3 class="card-title">{menus.menu_name}</h3>
                     <h5>가격</h5>

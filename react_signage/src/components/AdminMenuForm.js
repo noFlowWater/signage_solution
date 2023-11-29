@@ -7,22 +7,27 @@ const AdminMenuForm = ({editing}) => {
     const[name, setName] = useState();
     const[explan, setExplan] = useState();
     const[cost, setCost] = useState();
-    const[cid, setCid] = useState("김밥");
+    const[cid, setCid] = useState("1");
     const[img, setImg] = useState();
     const[allergy, setAllergy] = useState([]);
     const [isChecked, setIsChecked] = useState(false);
+    const [preview, setPreview] = useState();
+    const [file, setFile] = useState();
+
 
     const {id} = useParams();
 
     useEffect(()=>{
         if(editing){
-            axios.get(`http://172.20.10.89:4000/menu/detail/${id}`)
+            axios.get(`http://172.20.37.141:4000/menu/detail/${id}`)
             .then(response => {
                 setName(response.data.menu_name);
                 setExplan(response.data.menu_description);
                 setCost(response.data.price);
                 setCid(response.data.category_id);
+                setImg(response.data.file_path);
                 setIsChecked(response.data.is_soldout);
+                
             })
             .catch(error => {
                 console.error(error);
@@ -39,11 +44,11 @@ const AdminMenuForm = ({editing}) => {
                 menu_description : explan,
                 price : cost,
                 file_path : img,
-                category_name : cid,
-                // allergy : allergy,
+                category_id : cid,
+                allergy : allergy,
                 is_soldout : isChecked
             };
-            axios.put(`http://172.20.10.89:4000/admin/${id}`, JSON.stringify(data), {
+            axios.put(`http://172.20.37.141:4000/admin/${id}`, JSON.stringify(data), {
                     headers: {
                         'Content-Type': 'application/json'
                     }
@@ -59,31 +64,43 @@ const AdminMenuForm = ({editing}) => {
               });
         }
         else{
-            const data = {
-                menu_name : name,
-                menu_description : explan,
-                price : cost,
-                file_path : img,
-                category_name : cid,
-                // allergy : allergy,
-                is_soldout : isChecked
-            };
-            axios.post('http://172.20.10.89:4000/admin/menu', JSON.stringify(data), {
-            headers: {
-                'Content-Type': 'application/json'
-            }
+            const formData = new FormData();
+            formData.append('file', file);
+            axios.post('http://172.20.37.141:4000/admin/image', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
             })
-            .then(res=> {
-                const data = res.data
-                console.log(data.status)
+            .then(res => {
+                // 이미지 전송 성공 시
+                const data = {
+                    menu_name: name,
+                    menu_description: explan,
+                    price: cost,
+                    category_id: cid,
+                    allergy: allergy,
+                    is_soldout: isChecked,
+                    // file_path: res.data.file_path  
+                };
+
+                // 나머지 데이터 전송
+                return axios.post('http://172.20.37.141:4000/admin/menu', JSON.stringify(data), {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+            })
+            .then(res => {
+                const data = res.data;
+                console.log(data.status);
                 navigate('/admin/menu');
             })
             .catch(error => {
                 alert("등록 불가");
                 console.error(error);
             });
-            };
     };
+}
 
     const handleAllergyChange = (event) => {
         if(event.target.checked) {
@@ -105,6 +122,17 @@ const AdminMenuForm = ({editing}) => {
                 navigate('/admin/menu');
         }
     }
+    const handleFileChange = (e) => {
+        const selectedFile = e.target.files[0];
+        setFile(selectedFile);  // 선택된 파일을 상태에 저장
+    
+        const reader = new FileReader();
+        reader.readAsDataURL(selectedFile);
+        reader.onloadend = () => {
+            setImg(reader.result);  // 이미지 URL을 상태에 저장
+            setPreview(reader.result);  // 미리보기 이미지 URL을 상태에 저장
+        };
+    };
 
     return (
         <div>
@@ -142,13 +170,22 @@ const AdminMenuForm = ({editing}) => {
                         />
                     </div>
                     <div className="mb-4">
-                        <label className="from-label mb-1">사진 등록</label>
-                            <div className="mb-3">
-                                <div className="btn btn-dark">
-                                사진 등록
-                                </div>
-                            </div>
+                        <label className="form-label mb-1">사진 등록</label>
+                        <div className="mb-3">
+                        <input 
+                            type="file" 
+                            onChange={handleFileChange}  // 파일 선택 핸들러 변경
+                        />
                         </div>
+                    </div>
+                    <div className="mb-4">
+                        <label className="form-label mb-1">사진 미리보기</label>
+                        <div className="mb-3">
+                            { preview && (
+                                <img src={preview} alt="Preview" style={{width: '300px', height: 'auto'}}/>
+                            )}
+                        </div>
+                    </div>
                     <div className="mb-4">
                         <label className="from-label mb-1">메뉴 가격</label>
                         <input
@@ -170,11 +207,11 @@ const AdminMenuForm = ({editing}) => {
                             }}
                             style={{ width: "80px" }}
                         >
-                            <option value="김밥">김밥</option>
-                            <option value="라면">라면</option>
-                            <option value="떡볶이">떡볶이</option>
-                            <option value="돈가스">돈가스</option>
-                            <option value="사이드">사이드</option>
+                            <option value="1">김밥</option>
+                            <option value="2">라면</option>
+                            <option value="3">떡볶이</option>
+                            <option value="4">돈가스</option>
+                            <option value="5">사이드</option>
                         </select>
                     </div>
                     <div className="mb-4">
@@ -222,7 +259,7 @@ const AdminMenuForm = ({editing}) => {
                 </div>
             </div>
         </div>
-    )
+    )                     
 };
 
 AdminMenuForm.propTypes = {
