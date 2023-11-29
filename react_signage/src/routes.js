@@ -13,6 +13,7 @@ import UserRecCam from './pages/UserRecCam';
 import UserAllergySelectPage from './pages/UserAllergySelectPage';
 import UserOrderPage from './pages/UserOrderPage';
 import AdminMenuShow from './pages/AdminMenuShow';
+import UserAltCertPage from './pages/UserAltCertPage';
 
 const routes = [
     {
@@ -26,6 +27,10 @@ const routes = [
     {
         path : '/user/rec/cam',
         component : UserRecCam
+    },
+    {
+        path: '/user/rec/alt',
+        component : UserAltCertPage
     },
     {
         path : '/user/reg',

@@ -1,5 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
+import { kiosk } from '../constants';
 
 export const ModalContainer = styled.div`
   display: flex;
@@ -74,21 +76,16 @@ export const ModalIcon = styled.img`
   height: 73px;
   margin: 10px;
   cursor: pointer;
-  opacity: ${({ isSelected }) => (isSelected ? 1 : 0.5)};
+  opacity: ${({ 'data-isselected': isSelected }) => (isSelected ? 1 : 0.5)};
 `;
 
-export const UserAllergyModal = ({ content }) => {
-  const [isOpen, setIsOpen] = useState(false);
+export const UserAllergyModal = ({ content, isOpen, setIsOpen }) => {
   const [selectedIcons, setSelectedIcons] = useState([]);
-
-  const openModalHandler = () => {
-    setIsOpen(true);
-  };
-
-  const closeModalHandler = () => {
-    setIsOpen(false);
-    setSelectedIcons([]);
-  };
+  
+  // 모달 상태를 내부에서 관리하는 대신 props로 받음
+  useEffect(() => {
+      setIsOpen(isOpen); // 외부 상태에 따라 모달 상태 설정
+  }, [isOpen, setIsOpen]);
 
   const selectIconHandler = (iconName) => {
     if (selectedIcons.includes(iconName)) {
@@ -98,46 +95,64 @@ export const UserAllergyModal = ({ content }) => {
     }
   };
 
+  const sendSelectedIconsToServer = () => {
+    const data = JSON.stringify({ selectedIcons });
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+
+    axios.post(`/{kiosk}/allergy`, data, config)
+      .then(response => {
+        // 서버로부터의 응답 처리
+        console.log(response.data);
+      })
+      .catch(error => {
+        // 에러 처리
+        console.error(error);
+      });
+  };
+
   return (
     <>
-      <ModalContainer>
-        <ModalBtn onClick={openModalHandler}>알러지를 선택해주세요</ModalBtn>
-        {isOpen ? (
-          <ModalBackdrop onClick={closeModalHandler}>
+      {isOpen && (
+        <ModalContainer>
+          <ModalBackdrop>
             <ModalView onClick={(e) => e.stopPropagation()}>
-              <ExitBtn onClick={closeModalHandler}>x</ExitBtn>
               <div className='desc'>{content}</div>
               <ModalIconContainer>
                 <ModalIcon
                   src={require('../img/a1.png')}
                   alt='Icon 1'
-                  isSelected={selectedIcons.includes('호두')}
+                  data-isselected={selectedIcons.includes('호두')}
                   onClick={() => selectIconHandler('호두')}
                 />
                 <ModalIcon
                   src={require('../img/a2.png')}
                   alt='Icon 2'
-                  isSelected={selectedIcons.includes('메밀')}
+                  data-isselected={selectedIcons.includes('메밀')}
                   onClick={() => selectIconHandler('메밀')}
                 />
                 <ModalIcon
                   src={require('../img/a3.png')}
                   alt='Icon 3'
-                  isSelected={selectedIcons.includes('밀')}
+                  data-isselected={selectedIcons.includes('밀')}
                   onClick={() => selectIconHandler('밀')}
                 />
                 <ModalIcon
                   src={require('../img/a4.png')}
                   alt='Icon 4'
-                  isSelected={selectedIcons.includes('대두')}
+                  data-isselected={selectedIcons.includes('대두')}
                   onClick={() => selectIconHandler('대두')}
                 />
               </ModalIconContainer>
               <div>선택한 알러지 정보: {selectedIcons.join(', ')}</div>
+              <ModalBtn onClick={sendSelectedIconsToServer}>선택 완료</ModalBtn>
             </ModalView>
           </ModalBackdrop>
-        ) : null}
-      </ModalContainer>
+        </ModalContainer>
+        )}
     </>
   );
 };

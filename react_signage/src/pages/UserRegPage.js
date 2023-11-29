@@ -17,7 +17,7 @@ const UserRegPage = () => {
             name: name,
             phoneNumber: phoneNumber
         });
-        console.log(response.data); // 응답 데이터를 콘솔에 출력
+        console.log(response.data.error);
         // 성공적으로 데이터를 전송한 후, /webcam 경로로 이동합니다.
         navigate('/user/reg/cam', { state: { name, phoneNumber } });
         } catch (error) {
