@@ -103,7 +103,9 @@ router.get('/:category_id', async(req,res,error) => {
             category_id: req.params.category_id
         }
     })
-
+    const allergies = await prisma.relation_menu_allergy.findMany({
+        
+    })
     console.log("menu_id : ",result.menu_id);
     console.log("menu_name : ",result.menu_name);
     console.log("price : ",result.price);

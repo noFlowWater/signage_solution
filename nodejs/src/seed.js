@@ -147,14 +147,14 @@ async function menutoallergy() {
                 connect : { menu_name : "떡라면"}
             },
             allergies : {
-                connect : {allergy_name : "밀"}
+                connect : {allergy_name : "밀"},
             }
         }
     })
     console.log("success")
 }
 //함수 호출
-category()
+menutoallergy()
     .catch(e => {
         console.error(e)
         process.exit(1)
