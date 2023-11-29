@@ -166,7 +166,6 @@ const UserRegCam = () => {
                     <div id="container">
                         {isCollectionComplete ? (
                                 <div>Collection complete! All images have been saved.</div>
-                                
                             ) : (
                                 <div className="camera-container">
                                     <div className="camera-info">
@@ -201,7 +200,7 @@ const UserRegCam = () => {
                         content="알러지를 선택하세요"
                         isOpen={userAllergyModalOpen}
                         setIsOpen={setUserAllergyModalOpen}
-                    />                
+                    />
                 </div>
             </div>
         </div>

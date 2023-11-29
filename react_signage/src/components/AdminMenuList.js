@@ -9,7 +9,7 @@ const AdminMenuList = () => {
     const [selectedMenu, setSelectedMenu] = useState(1); // 선택된 메뉴 버튼의 기본값은 1로 설정
 
     const getMenus = () => {
-        axios.get(`http://172.20.10.89:4000/admin/${selectedMenu}`)
+        axios.get(`http://172.20.37.141:4000/admin/${selectedMenu}`)
             .then(response => {
                 const menusData = response.data;
                 setMenus(menusData);
@@ -29,7 +29,7 @@ const AdminMenuList = () => {
 
     const deleteMenu = (e, id) => {
         e.stopPropagation();
-        axios.delete(`http://172.20.10.89:4000/admin/${id}`).then(()=>{
+        axios.delete(`http://172.20.37.141:4000/admin/${id}`).then(()=>{
             setMenus(prevMenus => prevMenus.filter(menus=> menus.menu_id !== id))
         })
     }

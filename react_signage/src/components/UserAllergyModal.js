@@ -79,6 +79,7 @@ export const ModalIcon = styled.img`
   opacity: ${({ 'data-isselected': isSelected }) => (isSelected ? 1 : 0.5)};
 `;
 
+
 export const UserAllergyModal = ({ content, isOpen, setIsOpen }) => {
   const [selectedIcons, setSelectedIcons] = useState([]);
   
@@ -86,6 +87,7 @@ export const UserAllergyModal = ({ content, isOpen, setIsOpen }) => {
   useEffect(() => {
       setIsOpen(isOpen); // 외부 상태에 따라 모달 상태 설정
   }, [isOpen, setIsOpen]);
+
 
   const selectIconHandler = (iconName) => {
     if (selectedIcons.includes(iconName)) {
