@@ -2,6 +2,8 @@ import UserOrderNavBar from "../components/UserOrderNavBar";
 import { useState } from 'react';
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import { Modal } from "../components/Modal";
+import { UserPayModal } from "../components/UserPayModal";
 
 const DineInButton = styled.button`
   background-color: ${props => props.active ? '#FF4B4B' : '#FAFFFD'};
@@ -22,6 +24,7 @@ const ToGoButton = styled.button`
 const UserOrderPage = () => {
     const [isDineIn, setIsDineIn] = useState(true); // 매장 버튼의 상태
     const [isTakeOut, setIsTakeOut] = useState(false); // 포장 버튼의 상태
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const handleDineIn = () => {
         setIsDineIn(true);
@@ -52,11 +55,7 @@ const UserOrderPage = () => {
                         TOTAL :
                     </div>
                     <hr style={{ borderTop: '1px solid black', width: '100%' }} />
-                    <Link to="/" style={{ textDecoration: 'none' }}>
-                        <button type="button" style={{ background: 'transparent', border: 'none', paddingTop: '30px' }}>
-                            <img src={require('../img/PayBtn.png')} alt="Pay" className="pay-image" style={{ width: '200px', height: 'auto' }} />
-                        </button>
-                    </Link>
+                    <UserPayModal content="결제가 완료되었습니다!"/>
                 </div>
             </div>
         </div>
