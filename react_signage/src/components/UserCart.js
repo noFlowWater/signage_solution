@@ -64,6 +64,14 @@ const UserCart = () => {
         }
     };
 
+    const calculateTotal = () => {
+        let total = 0;
+        cart.forEach(item => {
+            total += item.price * item.quantity;
+        });
+        return total;
+    };
+
     return (
         <div>
             <div style={{ paddingTop: '15px', paddingLeft: '5px' }}>
@@ -81,8 +89,8 @@ const UserCart = () => {
                     </div>
                 </div>
             ))}
-            <div style={{paddingLeft: '10px',fontFamily: 'SansB',fontSize: '20px'}}>
-                TOTAL : 
+            <div style={{ paddingLeft: '10px', fontFamily: 'SansB', fontSize: '20px' }}>
+                TOTAL: {calculateTotal()} {/* 총 금액 표시 */}
             </div>
             <div style={{paddingLeft: '10px',fontFamily: 'SansM',fontSize: '20px'}}>
                 <Link to="/user/order" style={{ textDecoration: 'none'}}>

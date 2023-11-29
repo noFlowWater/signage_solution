@@ -55,7 +55,7 @@ const UserOrderPage = () => {
                         TOTAL :
                     </div>
                     <hr style={{ borderTop: '1px solid black', width: '100%' }} />
-                    <UserPayModal content="결제가 완료되었습니다!"/>
+                    <UserPayModal content="결제가 완료되었습니다 :)"/>
                 </div>
             </div>
         </div>

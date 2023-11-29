@@ -37,7 +37,7 @@ export const ExitBtn = styled(ModalBtn)`
   background-color: #4000c7;
   border-radius: 10px;
   text-decoration: none;
-  margin: 10px;
+  margin: 15px;
   padding: 5px 10px;
   width: 40px;
   height: 40px;
@@ -57,7 +57,7 @@ export const ModalView = styled.div.attrs((props) => ({
   height: 250px;
   background-color: #ffffff;
   > div.desc {
-    margin: 50px;
+    margin: 20px;
     font-size: 20px;
     color: var(--coz-purple-600);
   }
@@ -81,7 +81,8 @@ export const UserPayModal = ({ content }) => {
           <ModalBackdrop onClick={openModalHandler}>
             <ModalView onClick={(e) => e.stopPropagation()}>
               <ExitBtn onClick={openModalHandler}>x</ExitBtn>
-              <div className='desc'>{content}</div>
+              <img src={require('../img/Logo.png')} alt="Pay" className="pay-image" style={{ width: '150px', height: 'auto' }} />
+              <div className='desc' style={{ fontFamily: 'SansM', fontSize: '20px' }}>{content}</div>
               <Link to="/" style={{ textDecoration: 'none' }}>
                   <button className="btn btn-primary">
                       확인
