@@ -20,8 +20,6 @@ const UserRecCam = () => {
     const [modalOpen, setModalOpen] = useState(false); // 모달 상태 관리
     const [recognizedUser, setRecognizedUser] = useState({ name: '', id: '' });
     
-
-
     // 웹캠 스트림 설정
     useEffect(() => {
         const newSocket = io(flask, {
@@ -52,7 +50,7 @@ const UserRecCam = () => {
             }
         });
 
-        setSocket(newSocket)
+        setSocket(newSocket);
 
         newSocket.on('image_processed', (image) => {
             setProcessedImage(image);
@@ -64,16 +62,16 @@ const UserRecCam = () => {
             console.log(`Recognized User: ${data.predicted_user_name} (ID: ${data.predicted_user_id})`);
             setRecognitionComplete(true); // 인식 완료 상태 설정
         });
-        
 
         newSocket.on('stop_sending', () => {
-        console.log("30 face images have been saved, stopping.");
-        setIsCollectionComplete(true); // Indicate collection completion
-        if (videoRef.current && videoRef.current.srcObject) {
-            const tracks = videoRef.current.srcObject.getTracks();
-            tracks.forEach(track => track.stop());
-            videoRef.current.srcObject = null;
-        }});
+            console.log("30 face images have been saved, stopping.");
+            setIsCollectionComplete(true); // Indicate collection completion
+            if (videoRef.current && videoRef.current.srcObject) {
+                const tracks = videoRef.current.srcObject.getTracks();
+                tracks.forEach(track => track.stop());
+                videoRef.current.srcObject = null;
+            }
+        });
 
         // 소켓 이벤트 핸들러
         newSocket.on('connect', () => {
@@ -89,7 +87,8 @@ const UserRecCam = () => {
                 console.log("스트림이 열려있으면 닫기")
             }
         }
-    },[]);
+    }, []);
+
     useEffect(() => {
         if (recognitionComplete) {
             // 인식이 완료된 후 소켓 연결 종료
@@ -103,8 +102,7 @@ const UserRecCam = () => {
             }
         }
     }, [recognitionComplete, socket]);
-    
-    
+
     // 클라이언트의 캠화면 전송
     useEffect(() => {
         const FPS = 10;
@@ -136,7 +134,6 @@ const UserRecCam = () => {
         setModalOpen(recognitionComplete);
     }, [recognitionComplete]);
 
-
     // 버튼에 대한 이벤트 핸들러 정의
     const handleYes = () => {
         console.log("YES 클릭");
@@ -158,7 +155,13 @@ const UserRecCam = () => {
         // RETRY 버튼 로직 구현
     };
 
-  return (
+    // 로그인 (userId를 로컬 스토리지에 저장)
+    useEffect(() => {
+        // recognizedUser.id 값을 로컬 스토리지에 저장
+        localStorage.setItem('userId', recognizedUser.id);
+    }, [recognizedUser]);
+
+    return (
         <div>
             <FaceRecNavBar />
             <div className="container d-flex align-items-center justify-content-center vh-50" style={{paddingTop:'50px'}}>
@@ -197,7 +200,6 @@ const UserRecCam = () => {
                         {/* The canvas is used for capturing frames but is not displayed */}
                         <canvas ref={canvasRef} style={{ display: 'none' }}></canvas>
                     </div>
-                    <Link to='/user/menu/1'>메뉴 보기</Link>
                     <UserRecResultModal 
                         content={`당신은 이름: ${recognizedUser.name} ID: ${recognizedUser.id}입니까?`}
                         isOpen={modalOpen}

@@ -70,6 +70,11 @@ export const UserPayModal = ({ content }) => {
     setIsOpen(!isOpen);
   };
 
+  const handleConfirm = () => {
+    // 로컬 스토리지에서 userId 값 삭제
+    localStorage.removeItem('userId');
+  };
+
   return (
     <>
       <ModalContainer>
@@ -84,9 +89,9 @@ export const UserPayModal = ({ content }) => {
               <img src={require('../img/Logo.png')} alt="Pay" className="pay-image" style={{ width: '150px', height: 'auto' }} />
               <div className='desc' style={{ fontFamily: 'SansM', fontSize: '20px' }}>{content}</div>
               <Link to="/" style={{ textDecoration: 'none' }}>
-                  <button className="btn btn-primary">
-                      확인
-                  </button>
+                <button className="btn btn-primary" onClick={handleConfirm}>
+                  확인
+                </button>
               </Link>
             </ModalView>
           </ModalBackdrop>
