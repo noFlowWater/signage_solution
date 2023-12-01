@@ -22,11 +22,11 @@ const UserAltCertPage = () => {
             });
 
             // 서버 응답이 성공한 경우
-            
             console.log(response.data); // 응답 데이터를 콘솔에 출력
             setUserData(response.data);
-            console.log("SUCESS!!!")
-
+            console.log("SUCCESS!!!")
+            localStorage.setItem('userId',response.data.user_id);
+            navigate('/user/menu/1')
         } catch (error) {
             // 서버 응답이 실패한 경우
             setModalControl(!modalControl);

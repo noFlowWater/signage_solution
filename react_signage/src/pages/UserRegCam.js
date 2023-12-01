@@ -19,6 +19,7 @@ const UserRegCam = () => {
     const [isRegCompleteResult, setIsRegCompleteResult] = useState('');
     const [userAllergyModalOpen, setUserAllergyModalOpen] = useState(false);
     const [complete,setComplete] = useState(0);
+    const [userId,setUserId] = useState('');
 
     // 웹캠 스트림 설정
     useEffect(() => {
@@ -53,6 +54,7 @@ const UserRegCam = () => {
                 console.log("Name:", data.name);
                 console.log("Phone Number:", data.phone_number);
                 // 추가적인 성공 로직 처리
+                setUserId(data.user_id);
             } else if (data.status === "failed") {
                 setIsRegCompleteResult("failed");
                 console.error("Registration failed:", data.error);
@@ -200,6 +202,7 @@ const UserRegCam = () => {
                         content="알러지를 선택하세요"
                         isOpen={userAllergyModalOpen}
                         setIsOpen={setUserAllergyModalOpen}
+                        userId = {userId}
                     />
                 </div>
             </div>
