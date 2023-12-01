@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { bool } from 'prop-types';
 import axios from "axios";
+import { kiosk } from "../constants";
 
 const AdminMenuForm = ({editing}) => {
     const[name, setName] = useState();
@@ -19,7 +20,7 @@ const AdminMenuForm = ({editing}) => {
 
     useEffect(()=>{
         if(editing){
-            axios.get(`http://172.20.37.141:4000/menu/detail/${id}`)
+            axios.get(`${kiosk}/menu/detail/${id}`)
             .then(response => {
                 setName(response.data.menu_name);
                 setExplan(response.data.menu_description);
@@ -49,7 +50,7 @@ const AdminMenuForm = ({editing}) => {
                 allergy : allergy,
                 is_soldout : isChecked
             };
-            axios.put(`http://172.20.37.141:4000/admin/${id}`, JSON.stringify(data), {
+            axios.put(`${kiosk}/admin/${id}`, JSON.stringify(data), {
                     headers: {
                         'Content-Type': 'application/json'
                     }
@@ -67,7 +68,7 @@ const AdminMenuForm = ({editing}) => {
         else{
             const formData = new FormData();
             formData.append('file', file);
-            axios.post('http://172.20.37.141:4000/admin/image', formData, {
+            axios.post(`${kiosk}/admin/image`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
@@ -85,7 +86,7 @@ const AdminMenuForm = ({editing}) => {
                 };
 
                 // 나머지 데이터 전송
-                return axios.post('http://172.20.37.141:4000/admin/menu', JSON.stringify(data), {
+                return axios.post(`${kiosk}/admin/menu`, JSON.stringify(data), {
                     headers: {
                         'Content-Type': 'application/json'
                     }

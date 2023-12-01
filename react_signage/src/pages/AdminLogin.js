@@ -1,6 +1,7 @@
 import {useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { kiosk } from '../constants';
 
 const AdminLogin = () => {
     const navigate = useNavigate();
@@ -11,7 +12,7 @@ const AdminLogin = () => {
           password: pwd
         };
       
-        axios.post('http://172.20.37.141:4000/admin/login', JSON.stringify(data), {
+        axios.post(`${kiosk}/admin/login`, JSON.stringify(data), {
           headers: {
             'Content-Type': 'application/json'
           }

@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import AdminMenuCard from "./AdminMenuCard";
 import { useNavigate } from "react-router-dom";
+import { kiosk } from "../constants";
 
 const AdminMenuList = () => {
     const navigate = useNavigate();
@@ -9,7 +10,7 @@ const AdminMenuList = () => {
     const [selectedMenu, setSelectedMenu] = useState(1); // 선택된 메뉴 버튼의 기본값은 1로 설정
 
     const getMenus = () => {
-        axios.get(`http://172.20.37.141:4000/admin/${selectedMenu}`)
+        axios.get(`${kiosk}/admin/${selectedMenu}`)
             .then(response => {
                 const menusData = response.data;
                 setMenus(menusData);
@@ -29,7 +30,7 @@ const AdminMenuList = () => {
 
     const deleteMenu = (e, id) => {
         e.stopPropagation();
-        axios.delete(`http://172.20.37.141:4000/admin/${id}`).then(()=>{
+        axios.delete(`${kiosk}/admin/${id}`).then(()=>{
             setMenus(prevMenus => prevMenus.filter(menus=> menus.menu_id !== id))
         })
     }
