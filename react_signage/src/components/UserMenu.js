@@ -11,9 +11,8 @@ const UserMenu = () => {
     const [menus, setMenus] = useState([]);
     const { cart, dispatch } = useContext(CartContext);
 
-    //testing
     const userId = localStorage.getItem('userId');
-    console.log(userId);
+    console.log("현재 사용자 : ", userId);
 
     useEffect(() => {
         const fetchMenus = async () => {
@@ -38,9 +37,21 @@ const UserMenu = () => {
     };
 
     return (
-        <div>
+        // 원래 코드 : 세로로 하나씩 출력
+        // <div>
+        //     {menus.map((menu, index) => (
+        //         <div key={index} onClick={() => addToCart(menu)}>
+        //             <h1>{menu.menu_name}</h1>
+        //             <p>{menu.price}</p>
+        //         </div>
+        //     ))}
+        // </div>
+
+        // 수정 코드 : 한 열에 3개씩 출력 (사진/메뉴 이름/가격)
+        <div style={{ display: 'flex', flexWrap: 'wrap' }}>
             {menus.map((menu, index) => (
-                <div key={index} onClick={() => addToCart(menu)}>
+                <div key={index} onClick={() => addToCart(menu)} style={{ width: '33%', padding: '10px' }}>
+                    <img src={menu.file_path} alt={menu.menu_name} style={{ width: '100%', marginBottom: '10px' }} />
                     <h1>{menu.menu_name}</h1>
                     <p>{menu.price}</p>
                 </div>
