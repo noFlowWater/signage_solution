@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import io from 'socket.io-client';
-import { flask } from '../constants';
+import { flask, kiosk } from '../constants';
 import { Link, useNavigate } from 'react-router-dom';
 import shortUUID from 'short-uuid';
 import UserRecResultModal from '../components/UserRecResultModal';
 import FaceRecNavBar from '../components/FaceRecNavBar';
+import axios from 'axios';
 
 const CLIENT_ID = shortUUID.generate();
 
@@ -160,6 +161,28 @@ const UserRecCam = () => {
 
     // 버튼에 대한 이벤트 핸들러 정의
     const handleYes = () => {
+        const userId = localStorage.getItem('userId');
+
+    // userId가 존재하는 경우에만 요청을 보냅니다
+        if (userId) {
+            const data = {
+                user_id:userId
+            };
+
+            axios.post(`${kiosk}/users/all`, JSON.stringify(data),{
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+            .then(response => {
+                localStorage.setItem('userAl', JSON.stringify(response.data));
+                console.log("받아온 알러지 타입",typeof(JSON.stringify(response.data)));
+                console.log(response.data)
+            })
+            .catch(error => {
+                console.error(error);
+            });
+        }
         navigate('/user/menu/1')
         console.log("YES 클릭");
         // YES 버튼 로직 구현

@@ -1,6 +1,6 @@
 import React, {useState, useEffect } from 'react';
 import axios from 'axios';
-import { flask } from '../constants';
+import { flask, kiosk } from '../constants';
 import { Link, useNavigate } from 'react-router-dom';
 import AltCertNavBar from '../components/AltCertNavBar'
 import AltCertResultModal from '../components/AltCertResultModal'
@@ -25,6 +25,23 @@ const UserAltCertPage = () => {
             console.log(response.data); // 응답 데이터를 콘솔에 출력
             setUserData(response.data);
             console.log("SUCCESS!!!")
+            if (response.data.user_id) {
+                const data = {
+                    user_id:response.data.user_id
+                };
+    
+                axios.post(`${kiosk}/users/all`, JSON.stringify(data),{
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                })
+                .then(response => {
+                    localStorage.setItem('userAl', response.data.data);
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+            }
             localStorage.setItem('userId',response.data.user_id);
             navigate('/user/menu/1')
         } catch (error) {

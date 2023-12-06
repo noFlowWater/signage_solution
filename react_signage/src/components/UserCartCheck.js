@@ -8,11 +8,13 @@ const UserCartCheck = () => {
   return (
     <div  style={{ display: 'flex', flexWrap: 'wrap' }}>
       {cartItems.map((item, index) => (
+        <div key={index} style={{ width: '33%', padding: '10px' }}>
         <div key={index}>
           <img src={`${kiosk}/${item.file_path}`}  alt={item.menu_name} style={{ width: '30%', height:"auto",marginBottom: '10px' }} />
-          <h1>{item.menu_name}</h1>
-          <p>{item.price}</p>
-          <p>수량: {item.quantity}</p>
+          <div style={{fontFamily:"SansB",fontSize:'30px'}}>{item.menu_name}</div>
+          <div style={{fontFamily:"SansM",fontSize:'20px'}}>￦{item.price}</div>
+          <div style={{fontFamily:"SansM",fontSize:'20px'}}>수량: {item.quantity}</div>
+        </div>
         </div>
       ))}
     </div>

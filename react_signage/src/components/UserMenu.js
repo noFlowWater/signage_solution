@@ -3,6 +3,7 @@ import axios from 'axios';
 import { CartContext } from './UserCartContext';
 import { kiosk } from '../constants';
 import { useLocation, useParams } from 'react-router-dom';
+import { type } from '@testing-library/user-event/dist/type';
 
 const UserMenu = () => {
     const location = useLocation();
@@ -13,6 +14,9 @@ const UserMenu = () => {
   
     const userId = localStorage.getItem('userId');
     console.log("현재 사용자 : ", userId);
+    const userAl = localStorage.getItem('userAl');
+    console.log("알러지 로컬스토리지 타입:",typeof(userAl));
+    console.log("현재 사용자 알러지 : ",userAl);
   
     // 모달 상태 관리
     const [modalOpen, setModalOpen] = useState(false);
@@ -81,8 +85,61 @@ const UserMenu = () => {
       addToCartEnabled = true;
     };
   
-    // 모달 컴포넌트를 UserMenu 컴포넌트 내부에 정의하고 사용합니다.
-    const Modal = ({ menu, onClose }) => {
+    // // 모달 컴포넌트를 UserMenu 컴포넌트 내부에 정의하고 사용합니다.
+    // const Modal = ({ menu, onClose }) => {
+    //     return (
+    //       <div
+    //         style={{
+    //           position: 'fixed',
+    //           top: '50%',
+    //           left: '50%',
+    //           transform: 'translate(-50%, -50%)',
+    //           width: '400px', // 원하는 너비로 설정
+    //           backgroundColor: '#EBF6EE',
+    //           padding: '20px',
+    //           display: 'flex',
+    //           flexDirection: 'column',
+    //           alignItems: 'center',
+    //           zIndex: '9999',
+    //           borderRadius: '5px',
+    //         }}
+    //       >
+    //         <div style={{fontFamily:"SansB",fontSize:'30px'}}>{menu.menu_name}</div>
+    //         <div style={{fontFamily:"SansM",fontSize:'20px'}}> ￦{menu.price}</div>
+    //         <div style={{fontFamily:"SansM",fontSize:'20px'}}>{menu.menu_description}</div>
+    //         <div style={{ display: 'flex', alignItems: 'center' }}>
+    //             <div style={{ fontFamily: 'SansB', fontSize: '20px' }}>알러지:</div>
+    //             <div style={{ fontFamily: 'SansM', fontSize: '20px', display: 'inline-block' }}>{menu.allergies.join('/')}</div>
+    //         </div>
+    //         <button className="btn btn-danger" onClick={onClose} style={{ marginTop: '10px',fontFamily:"SansM",fontSize:'20px'}}>닫기</button>
+    //       </div>
+    //     );
+    //   };
+    const Modal = ({ menu, onClose}) => {
+        const userAl = localStorage.getItem('userAl');
+        console.log("Modal 안에서 userAl:",userAl);
+        // userAl 값을 배열로 변환
+        const userAllergies = userAl.split(',').map(allergy => allergy.trim());
+        console.log("사용자 알러지",userAllergies);
+        // menu.allergies와 userAllergies를 비교하여 일치하는 알러지가 있는지 확인
+        const hasMatchingAllergy = menu.allergies.some(menuAllergy => {
+            
+            // userAllergies 배열에서 해당 알러지와 일치하는 객체를 찾음
+            const matchingAllergy = userAllergies.find(userAllergy => {
+                console.log(userAllergy)
+                console.log(menuAllergy)
+              return userAllergy == menuAllergy;
+            });
+          
+            // 일치하는 알러지가 있으면 true 반환, 없으면 false 반환
+            return matchingAllergy !== undefined;
+          });
+          
+        console.log(typeof(menu.allergies))
+        console.log('menu.allergies:', menu.allergies);
+        console.log('hasMatchingAllergy:', hasMatchingAllergy);
+
+
         return (
           <div
             style={{
@@ -90,36 +147,60 @@ const UserMenu = () => {
               top: '50%',
               left: '50%',
               transform: 'translate(-50%, -50%)',
-              backgroundColor: '#fff',
+              width: '400px', // 원하는 너비로 설정
+              backgroundColor: '#EBF6EE',
               padding: '20px',
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
               zIndex: '9999',
+              borderRadius: '5px',
             }}
           >
-            <h1>{menu.menu_name}</h1>
-            <p>{menu.price}</p>
-            <p>{menu.menu_description}</p>
-            <p>{menu.category_id}</p>
-            <p>{menu.allergies}</p>
-            <button onClick={onClose} style={{ marginTop: '10px' }}>닫기</button>
+            <div style={{ fontFamily: "SansB", fontSize: '30px' }}>{menu.menu_name}</div>
+            <div style={{ fontFamily: "SansM", fontSize: '20px' }}>￦{menu.price}</div>
+            <div style={{ fontFamily: "SansM", fontSize: '20px' }}>{menu.menu_description}</div>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+                <div style={{ fontFamily: 'SansB', fontSize: '20px' }}>알러지:</div>
+                {menu.allergies.map((allergy, index) => (
+                    <div
+                    key={allergy}
+                    style={{
+                        fontFamily: 'SansM',
+                        fontSize: '20px',
+                        display: 'inline-block',
+                        color: userAllergies.includes(allergy) ? 'red' : 'inherit',
+                        marginLeft: index > 0 ? '5px' : '0'
+                    }}
+                    >
+                    {index > 0 && '/'} {allergy}
+                    </div>
+                ))}
+            </div>
+
+            {hasMatchingAllergy && (
+              <div style={{ color: 'red' }}>이 메뉴에 사용자의 알러지 정보와 일치하는 알러지가 있습니다.</div>
+            )}
+            <button className="btn btn-danger" onClick={onClose} style={{ marginTop: '10px', fontFamily: "SansM", fontSize: '20px' }}>닫기</button>
           </div>
         );
       };
+      
+      
+      
       
   
       return (
         <div style={{ display: 'flex', flexWrap: 'wrap' }}>
           {menus.map((menu, index) => (
             <div key={index} onClick={() => addToCart(menu)} style={{ width: '33%', padding: '10px' }}>
-              {/* <img src={`${kiosk}/${menu.file_path}`} alt={menu.menu_name} style={{ width: '30%', height: 'auto', marginBottom: '10px' }} /> */}
-              <h1>{menu.menu_name}</h1>
-              <p>{menu.price}</p>
-              <button onClick={() => openModal(menu)}>상세 정보</button>
-              {cid === '0' && index === 0 && <p>최근에 먹은 메뉴</p>}
-              {cid === '0' && index === 1 && <p>가장 많이 먹은 메뉴</p>}
-              {cid === '0' && index === 2 && <p>나와 비슷한 사용자의 선호 메뉴</p>}
+              <img src={`${kiosk}/${menu.file_path}`} alt={menu.menu_name} style={{ width: '30%', height: 'auto', marginBottom: '10px' }} />
+              <div style={{fontFamily:"SansB",fontSize:'30px'}}>{menu.menu_name}</div>
+              <div style={{fontFamily:"SansM",fontSize:'20px'}}>￦{menu.price}</div>
+              <button onClick={() => openModal(menu)} style={{fontFamily:"SansB",fontSize:'15px'}}>상세 정보</button>
+              {cid === '0' && index === 0 && <div style={{fontFamily:"SansB",fontSize:'20px',color: 'red'}}>최근에 먹은 메뉴</div>}
+              {cid === '0' && index === 1 && <div style={{fontFamily:"SansB",fontSize:'20px',color: 'blue'}}>가장 많이 먹은 메뉴</div>}
+              {cid === '0' && index === 2 && <div style={{fontFamily:"SansB",fontSize:'20px',color: 'green'}}>나와 비슷한 사용자의 선호 메뉴</div>}
             </div>
           ))}
           {modalOpen && <Modal menu={selectedMenu} onClose={closeModal} />}

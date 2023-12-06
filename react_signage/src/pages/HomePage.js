@@ -14,6 +14,10 @@ const HomePage = () => {
 
   // 컴포넌트가 마운트될 때와 화면 크기가 변경될 때 이벤트 리스너 등록
   useEffect(() => {
+    localStorage.removeItem('userId');
+    localStorage.removeItem('userCart');
+    localStorage.removeItem('total');
+    
     const screenHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
     const paddingTopValue = screenHeight * paddingTopRatio;
     document.documentElement.style.setProperty('--padding-top', `${paddingTopValue}px`);

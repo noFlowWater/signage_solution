@@ -99,20 +99,24 @@ const UserCart = () => {
             </div>
             {cart.map((item, index) => (
                 <div key={index}>
-                    <h1>{item.menu_name}</h1>
-                    <p>{item.price}</p>
-                    <div>
-                        <button onClick={() => handleDecrease(item)}>-</button>
-                        수량: {calculateQuantity(item)}
-                        <button onClick={() => handleIncrease(item)}>+</button>
-                        <div><button onClick={() => handleRemove(item)}>X</button></div>
-                    </div>
+                <div style={{ display: "flex", alignItems: "center" }}>
+                  <div style={{ fontFamily: "SansB", fontSize: "30px",marginRight: "10px" }}>{item.menu_name}</div>
+                  <button onClick={() => handleRemove(item)}>X</button>
                 </div>
+                <div style={{ fontFamily: "SansM", fontSize: "20px" }}>￦{item.price}</div>
+                <div style={{ display: "flex", alignItems: "center" }}>
+                  <button onClick={() => handleDecrease(item)}>-</button>
+                  <div style={{ fontFamily: "SansM", fontSize: "20px" }}>
+                    수량: {calculateQuantity(item)}
+                  </div>
+                  <button onClick={() => handleIncrease(item)}>+</button>
+                </div>
+              </div>              
             ))}
             <hr style={{ borderTop: '1px solid black', width: '100%' }} />
             <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center',}}>
                 <div style={{ fontFamily: 'SansB', fontSize: '20px' }}>
-                    TOTAL: {calculateTotal()} {/* 총 금액 표시 */}
+                    TOTAL: ￦{calculateTotal()} {/* 총 금액 표시 */}
                 </div>
                 <hr style={{ borderTop: '1px solid black', width: '100%' }} />
                 <div style={{ fontFamily: 'SansM'}}>

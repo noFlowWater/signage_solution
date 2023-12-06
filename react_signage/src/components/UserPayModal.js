@@ -107,6 +107,7 @@ export const UserPayModal = ({ content }) => {
 
       // 페이지 이동 및 리렌더링
       navigate("/");
+      window.location.reload(); // 페이지 새로고침
     } catch (error) {
       console.log(error);
     }
