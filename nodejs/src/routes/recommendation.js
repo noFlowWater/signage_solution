@@ -53,7 +53,7 @@ function calculateMagnitude(userOrders, commonMenuIds) {
 }
 
 // 상위 유사한 사용자들이 주문한 메뉴 중에서 가장 많이 주문된 메뉴 선택 함수
-async function getMostOrderedMenu(topSimilarUsers) {
+async function getMostOrderedMenu(topSimilarUsers, targetUserOrders) {
   const recommendedMenus = [];
 
   for (const similarUser of topSimilarUsers) {
@@ -72,8 +72,13 @@ async function getMostOrderedMenu(topSimilarUsers) {
       return menu.order_count > mostOrdered.order_count ? menu : mostOrdered;
     }, { order_count: 0 });
 
-    // 추천 목록에 추가
-    recommendedMenus.push(mostOrderedMenu);
+    // 이미 추천 목록에 있는 메뉴인지 확인
+    const isAlreadyRecommended = recommendedMenus.some(menu => menu.menuID === mostOrderedMenu.menuID);
+
+    // 해당 사용자가 주문한 적 없는 메뉴라면 추천 목록에 추가
+    if (!isAlreadyRecommended && !targetUserOrders.some(order => order.menuID === mostOrderedMenu.menuID)) {
+      recommendedMenus.push(mostOrderedMenu);
+    }
   }
 
   // 가장 많이 주문된 메뉴 선택
@@ -126,9 +131,10 @@ async function recommendMenuForUser(targetUserId, N) {
   const topSimilarUsers = similarUsers.slice(0, N);
 
   // 상위 유사한 사용자들이 주문한 메뉴 중에서 가장 많이 주문된 메뉴 선택
-  const mostOrderedMenu = await getMostOrderedMenu(topSimilarUsers);
+  const mostOrderedMenu = await getMostOrderedMenu(topSimilarUsers, targetUserOrders);
 
   return mostOrderedMenu;
 }
 
 module.exports = { recommendMenuForUser };
+
