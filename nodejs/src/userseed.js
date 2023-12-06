@@ -15,84 +15,62 @@ database.$connect()
         console.log(err);
     })
 
-async function user(){
-    //참치김밥
-    await database.user.upsert ({
-        where : {user_id : "2"},
-        update : {},
-        create : {
-            user_id : "2",
-            user_name : "오제덕",
-            phoneNumber : "010-1234-5678",
-
-        }
-    }),
-    await database.user.upsert ({
-        where : {user_id : "3"},
-        update : {},
-        create : {
-            user_id : "3",
-            user_name : "윤석열",
-            phoneNumber : "010-2222-2222",
-            
-        }
-    })
-    await database.user.upsert ({
-        where : {user_id : "4"},
-        update : {},
-        create : {
-            user_id : "4",
-            user_name : "윤성섭",
-            phoneNumber : "010-3556-7694",
-            
-        }
-    })
-
-    await database.user.upsert ({
-        where : {user_id : "5"},
-        update : {},
-        create : {
-            user_id : "5",
-            user_name : "오구라 유나",
-            phoneNumber : "010-5536-3536",
-            
-        }
-    })
-
-    await database.user.upsert ({
-        where : {user_id : "6"},
-        update : {},
-        create : {
-            user_id : "6",
-            user_name : "김진섭",
-            phoneNumber : "010-3333-3333",
-            
-        }
-    })
-
-    await database.user.upsert ({
-        where : {user_id : "7"},
-        update : {},
-        create : {
-            user_id : "7",
-            user_name : "전두광",
-            phoneNumber : "010-0518-1212",
-            
-        }
-    })
-
-    await database.user.upsert ({
-        where : {user_id : "8"},
-        update : {},
-        create : {
-            user_id : "8",
-            user_name : "박지환",
-            phoneNumber : "010-2807-1320",
-        }
+//알러지 시드 생성 (21개)
+async function allergy(){
+    await database.allergy.createMany({
+        data : [
+            {allergy_name : "메밀"},
+            {allergy_name : "밀"},
+            {allergy_name : "대두"},
+            {allergy_name : "호두"},
+            {allergy_name : "땅콩"},
+            {allergy_name : "복숭아"},
+            {allergy_name : "토마토"},
+            {allergy_name : "돼지고기"},
+            {allergy_name : "난류(가금류)"},
+            {allergy_name : "우유"},
+            {allergy_name : "닭고기"},
+            {allergy_name : "쇠고기"},
+            {allergy_name : "새우"},
+            {allergy_name : "고등어"},
+            {allergy_name : "홍합"},
+            {allergy_name : "전복"},
+            {allergy_name : "굴"},
+            {allergy_name : "조개류"},
+            {allergy_name : "게"},
+            {allergy_name : "오징어"},
+            {allergy_name : "아황산 포함식품"}
+        ]
     })
 }
 
-user()
+//category 시드 생성
+async function category(){
+    await database.category.createMany({
+        data : [
+            {category_name : "추천", category_id : "0" },
+            {category_name : "김밥", category_id : "1" },
+            {category_name : "라면", category_id : "2" },
+            {category_name : "떡볶이", category_id : "3" },
+            {category_name : "돈가스", category_id : "4" },
+            {category_name : "사이드", category_id : "5" }
+        ]
+    })
+    console.log("success")
+}
+
+//카테고리 생성 함수 호출
+allergy()
+    .catch(e => {
+        console.error(e)
+        process.exit(1)
+    })
+    .finally(async () => {
+        await database.$disconnect()
+    })
+
+//알러지 생성 함수 호출
+category()
     .catch(e => {
         console.error(e)
         process.exit(1)

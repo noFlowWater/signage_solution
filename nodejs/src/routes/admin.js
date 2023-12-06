@@ -53,11 +53,26 @@ router.post('/image', async(req,res,err) => {
             console.log(err);
             return res.status(500).send(err);
         }
+        //console.log(res.req.file.filename);
+        file_path = res.req.file.filename;
+        return res.json({file : res.req.file.filename})
+    }) 
+})
+//admin menu 이미지 수정
+router.put('/image', async(req,res,err) => {
+    console.log(req.file);
+    //파일 업로드
+    uploads(req,res,err => {
+        if(err) {
+            console.log(err);
+            return res.status(500).send(err);
+        }
         console.log(res.req.file.filename);
         file_path = res.req.file.filename;
         return res.json({file : res.req.file.filename})
     }) 
 })
+
 
 //admin menuadd
 router.post('/menu', async(req,res,error) => {
@@ -201,7 +216,7 @@ router.put('/:menu_id', async(req,res,error) => {
             menu_name: req.body.menu_name,
             menu_description: req.body.menu_description,
             price: price,
-            file_path: req.body.file_path,
+            file_path: file_path,
             is_soldout: req.body.is_soldout,
             category_id: req.body.category_id
         }
