@@ -56,3 +56,10 @@ code {
   background-color: brown;
   color: white;
 }
+
+.card.square-card {
+  width: 250px; /* 정사각형 카드의 크기를 조절하려면 이 값을 조절하세요. */
+  height: 250px;
+  float: left; /* 카드를 가로로 배열하기 위한 속성 */
+}
+

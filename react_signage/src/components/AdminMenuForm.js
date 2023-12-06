@@ -10,7 +10,7 @@ const AdminMenuForm = ({editing}) => {
     const[cost, setCost] = useState();
     const[cid, setCid] = useState("1");
     const[img, setImg] = useState();
-    const[allergy, setAllergy] = useState([]);
+    const [allergy, setAllergy] = useState([]);
     const [isChecked, setIsChecked] = useState(false);
     const [preview, setPreview] = useState();
     const [file, setFile] = useState();
@@ -26,9 +26,13 @@ const AdminMenuForm = ({editing}) => {
                 setExplan(response.data.menu_description);
                 setCost(response.data.price);
                 setCid(response.data.category_id);
-                setImg(response.data.file_path);
                 setIsChecked(response.data.is_soldout);
-                
+                if (response.data.allergies.length === 0){
+                    setAllergy(['없음']);
+                }else{
+                setAllergy(response.data.allergies);
+                }
+                console.log(response);
             })
             .catch(error => {
                 console.error(error);
@@ -39,31 +43,46 @@ const AdminMenuForm = ({editing}) => {
     const navigate = useNavigate();
 
     const onSubmit = () => {
-
+        if (!file) {
+            alert("이미지를 등록하세요.");
+            return;
+        }
         if (editing){
-            const data = {
-                menu_name : name,
-                menu_description : explan,
-                price : cost,
-                file_path : img,
-                category_id : cid,
-                allergy : allergy,
-                is_soldout : isChecked
-            };
-            axios.put(`${kiosk}/admin/${id}`, JSON.stringify(data), {
+            const formData = new FormData();
+            formData.append('file', file);
+            axios.post(`${kiosk}/admin/image`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+            .then(res => {
+                // 이미지 전송 성공 시
+                const data = {
+                    menu_name : name,
+                    menu_description : explan,
+                    price : cost,
+                    category_id : cid,
+                    allergy : allergy,
+                    is_soldout : isChecked,
+                    //file_path: res.data.file_path
+                };
+                
+                // 나머지 데이터 전송
+                return axios.put(`${kiosk}/admin/${id}`, JSON.stringify(data), {
                     headers: {
                         'Content-Type': 'application/json'
                     }
-                })
-              .then(res=> {
-                const data = res.data
-                console.log(data.status)
+                });
+            })
+            .then(res=> {
+                const data = res.data;
+                console.log(data.status);
                 navigate(`/admin/menu/${id}`);
-              })
+            })
             .catch(error => {
                 alert("등록 불가");
                 console.error(error);
-              });
+            });
         }
         else{
             const formData = new FormData();
@@ -82,7 +101,7 @@ const AdminMenuForm = ({editing}) => {
                     category_id: cid,
                     allergy: allergy,
                     is_soldout: isChecked,
-                    // file_path: res.data.file_path  
+                    // file_path: res.data.file_path 
                 };
 
                 // 나머지 데이터 전송
@@ -121,7 +140,7 @@ const AdminMenuForm = ({editing}) => {
             navigate(`/admin/menu/${id}`)
         }
         else{
-                navigate('/admin/menu');
+            navigate('/admin/menu');
         }
     }
     const handleFileChange = (e) => {
@@ -150,7 +169,9 @@ const AdminMenuForm = ({editing}) => {
             <div className="form-control">
                 <div className="ms-5">
                     <div className ="mb-4">
-                        <label className="from-label mb-1">메뉴 이름</label>
+                        <label className="from-label mb-1"
+                        style = {{fontFamily: 'SansM', fontSize:'30px'}}
+                        >메뉴 이름</label>
                         <input
                             className="form-control"
                             value={name}
@@ -161,7 +182,8 @@ const AdminMenuForm = ({editing}) => {
                         />
                     </div>
                     <div className ="mb-4">
-                        <label className="from-label mb-1">상세 설명</label>
+                        <label className="from-label mb-1"
+                        style = {{fontFamily: 'SansM', fontSize:'30px'}}>상세 설명</label>
                         <textarea
                             className="form-control"
                             value={explan}
@@ -172,7 +194,8 @@ const AdminMenuForm = ({editing}) => {
                         />
                     </div>
                     <div className="mb-4">
-                        <label className="form-label mb-1">사진 등록</label>
+                        <label className="form-label mb-1"
+                        style = {{fontFamily: 'SansM', fontSize:'30px'}}>사진 등록(사진 필수)</label>
                         <div className="mb-3">
                         <input 
                             type="file" 
@@ -181,15 +204,17 @@ const AdminMenuForm = ({editing}) => {
                         </div>
                     </div>
                     <div className="mb-4">
-                        <label className="form-label mb-1">사진 미리보기</label>
+                        <label className="form-label mb-1"
+                        style = {{fontFamily: 'SansM', fontSize:'30px'}}>사진 미리보기</label>
                         <div className="mb-3">
                             { preview && (
-                                <img src={preview} alt="Preview" style={{width: '300px', height: 'auto'}}/>
+                                <img src={preview} alt="Preview" style={{width: '15%', height: 'auto'}}/>
                             )}
                         </div>
                     </div>
                     <div className="mb-4">
-                        <label className="from-label mb-1">메뉴 가격</label>
+                        <label className="from-label mb-1"
+                        style = {{fontFamily: 'SansM', fontSize:'30px'}}>메뉴 가격</label>
                         <input
                             className="form-control"
                             value={cost}
@@ -200,14 +225,15 @@ const AdminMenuForm = ({editing}) => {
                         />
                     </div>
                     <div className="mb-4">
-                        <label className="from-label mb-1">카테고리 ID</label>
+                        <label className="from-label mb-1"
+                        style = {{fontFamily: 'SansM', fontSize:'30px'}}>카테고리 ID</label>
                         <select
                             className="form-control"
                             value={cid}
                             onChange={(e)=>{
                                 setCid(e.target.value);
                             }}
-                            style={{ width: "80px" }}
+                            style={{ width: "100px" , fontFamily: 'SansM', fontSize:'20px'}}
                         >
                             <option value="1">김밥</option>
                             <option value="2">라면</option>
@@ -217,16 +243,18 @@ const AdminMenuForm = ({editing}) => {
                         </select>
                     </div>
                     <div className="mb-4">
-                        <label className="form-label mb-1">알레르기 정보</label>
+                        <label className="form-label mb-1"
+                        style = {{fontFamily: 'SansM', fontSize:'30px'}}>알레르기 정보</label>
                             <div 
-                                style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
-                                {["없음", "메밀", "밀", "대두", "호두", "땅콩", "복숭아", "토마토", "돼지고기", "난류(가금류)", "우유", "닭고기", "쇠고기", "새우", "고등어", "홍합", "전복", "굴", "조개류", "게", "오징어", "아황산 포함식품"].map((item, index) => (
-                                    <div key={index} style={{ marginRight: '10px' }}>
+                                style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' ,fontFamily: 'SansM', fontSize:'15px'}}>
+                                {["없음", "메밀", "밀", "잣","대두", "호두", "땅콩", "복숭아", "토마토", "돼지고기", "난류(가금류)", "우유", "닭고기", "쇠고기", "새우", "고등어", "홍합", "전복", "굴", "조개류", "게", "오징어", "아황산 포함식품"].map((item, index) => (
+                                    <div key={index} style={{ marginRight: '15px', width: '14%' }}>
                                         <input
                                             type="checkbox"
                                             id={`allergy${index}`}
                                             name="allergy"
                                             value={item}
+                                            checked={allergy.includes(item)} // 해당 항목이 선택된 알레르기 항목에 포함되어 있는지 확인
                                             onChange={handleAllergyChange}
                                         />
                                         <label htmlFor={`allergy${index}`}>{item}</label>
@@ -235,11 +263,12 @@ const AdminMenuForm = ({editing}) => {
                             </div>
                     </div>
                     <div className="mb-4">
-                        <label className="form-label mb-1">매진 여부(체크 하면 매진, 체크 하지 않으면 매진 X)</label>
+                        <label className="form-label mb-1"
+                        style = {{fontFamily: 'SansM', fontSize:'30px'}}>매진 여부(체크 하면 매진, 체크 하지 않으면 매진 X)</label>
                         <div>
                             <input
                                 type="checkbox"
-                                checked={isChecked}
+                                checked={isChecked}  // 체크 상태 설정
                                 onChange={handleCheckboxChange}
                             />
                         </div>
@@ -248,12 +277,14 @@ const AdminMenuForm = ({editing}) => {
                         <div 
                         className ="btn btn-primary"
                         onClick={onSubmit}
+                        style = {{fontFamily: 'SansM', fontSize:'20px'}}
                         >
                             {editing ? '메뉴 수정' : '메뉴 등록'}
                         </div>
                         <div 
                         className ="btn btn-danger ms-2"
                         onClick={goBack}
+                        style = {{fontFamily: 'SansM', fontSize:'20px'}}
                         >
                             돌아가기
                         </div>
