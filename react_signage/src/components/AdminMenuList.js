@@ -7,7 +7,8 @@ import { kiosk } from "../constants";
 const AdminMenuList = () => {
     const navigate = useNavigate();
     const [menus, setMenus] = useState([]);
-    const [selectedMenu, setSelectedMenu] = useState(1); // 선택된 메뉴 버튼의 기본값은 1로 설정
+    const [selectedMenu, setSelectedMenu] = useState(1);
+    const [selectedMenuTitle, setSelectedMenuTitle] = useState("김밥 카테고리");
 
     const getMenus = () => {
         axios.get(`${kiosk}/admin/${selectedMenu}`)
@@ -24,8 +25,9 @@ const AdminMenuList = () => {
         getMenus();
     }, [selectedMenu]);
 
-    const handleMenuButtonClick = (menuNumber) => {
+    const handleMenuButtonClick = (menuNumber, menuTitle) => { // 메뉴 타이틀 인자 추가
         setSelectedMenu(menuNumber);
+        setSelectedMenuTitle(menuTitle); // 메뉴 타이틀 업데이트
     };
 
     const deleteMenu = (e, id) => {
@@ -39,18 +41,19 @@ const AdminMenuList = () => {
         return (
             <div style={{ marginTop: "16px" }}>
                 {menus.map(menu => (
-                    <AdminMenuCard
-                        key={menu.menu_id}
-                        menu_name={menu.menu_name}
-                        onClick={()=>navigate(`/admin/menu/${menu.menu_id}`)}
-                    >
-                        <button
-                        className = "btn btn-danger btn-sm"
-                        onClick={(e) => deleteMenu(e, menu.menu_id)}
-                        >
-                            메뉴 삭제
-                        </button>
-                        </AdminMenuCard>
+                <AdminMenuCard
+                key={menu.menu_id}
+                menu_name={menu.menu_name}
+                onClick={()=>navigate(`/admin/menu/${menu.menu_id}`)}
+            >
+                <button
+                className = "btn btn-danger btn-sm"
+                onClick={(e) => deleteMenu(e, menu.menu_id)}
+                style = {{fontFamily: 'SansM', fontSize:'15px'}}
+                >
+                    메뉴 삭제
+                </button>
+                </AdminMenuCard>
                 ))}
             </div>
         );
@@ -58,13 +61,18 @@ const AdminMenuList = () => {
     };
 
     return (
-        <div style={{ textAlign: "center" }}>
-            <div style={{ display: "flex", justifyContent: "center", marginBottom: "16px" }}>
-                <button className="btn btn-success" style={{ marginRight: "10px" }} onClick={() => handleMenuButtonClick(1)}>김밥</button>
-                <button className="btn btn-warning" style={{ marginRight: "10px", color: "white" }} onClick={() => handleMenuButtonClick(2)}>라면</button>
-                <button className="btn btn-danger" style={{ marginRight: "10px" }} onClick={() => handleMenuButtonClick(3)}>떡볶이</button>
-                <button className="btn" style={{ marginRight: "10px", backgroundColor: "brown", color: "white" }} onClick={() => handleMenuButtonClick(4)}>돈가스</button>
-                <button className="btn btn-dark" style={{ marginRight: "10px" }} onClick={() => handleMenuButtonClick(5)}>사이드</button>
+        <div className="nav-bar navbar-height" style={{ textAlign: "center" }}>
+            <h1 
+            className="ms-5" 
+            style={{ textAlign: "start", marginLeft: "16px", fontFamily: 'SansM', fontSize:'35px' }}
+            >{selectedMenuTitle}
+            </h1>
+            <div style={{ display: "flex", justifyContent: "center", marginBottom: "16px",fontFamily: 'SansM', fontSize:'30px'}}>
+                <button className="btn btn-success" style={{ marginRight: "10px" }} onClick={() => handleMenuButtonClick(1, "김밥 카테고리")}>김밥</button>
+                <button className="btn btn-warning" style={{ marginRight: "10px", color: "white" }} onClick={() => handleMenuButtonClick(2, "라면 카테고리")}>라면</button>
+                <button className="btn btn-danger" style={{ marginRight: "10px" }} onClick={() => handleMenuButtonClick(3, "떡볶이 카테고리")}>떡볶이</button>
+                <button className="btn" style={{ marginRight: "10px", backgroundColor: "brown", color: "white" }} onClick={() => handleMenuButtonClick(4, "돈가스 카테고리")}>돈가스</button>
+                <button className="btn btn-dark" style={{ marginRight: "10px" }} onClick={() => handleMenuButtonClick(5, "사이드 카테고리")}>사이드</button>
             </div>
             {renderMenuList()}
         </div>
