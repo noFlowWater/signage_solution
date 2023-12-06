@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `Admin` MODIFY `user_id` VARCHAR(191) NOT NULL DEFAULT '1';

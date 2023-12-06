@@ -16,12 +16,37 @@ const storage = multer.diskStorage({
 });
 
 var is_auth = false;
-
+//관리자 비밀번호 변경
+router.put('/', async(req,res,error) => {
+    try{
+        const admin = await prisma.admin.update(
+            {
+                where : {
+                    user_id : "1"
+                },
+                data : {
+                    password : req.body.password
+                }
+            }
+        )
+        console.log(admin)
+        res.json({"status" : "success"})
+    } catch(error){
+        console.log(error)
+        res.json({"status" : "failed"})
+    }
+})
 
 //admin login
 router.post('/login', async(req,res,error) => {
     try {
-        if (req.body.password == process.env.ADMIN_PASSWORD){
+        const admin = await prisma.admin.findUnique(
+            {where : {
+                user_id : req.body.user_id
+            }
+        }
+        )
+        if (req.body.password == admin.password){
             is_auth = true;
             console.log('login success');
             res.json({"status": "success"});
@@ -29,7 +54,7 @@ router.post('/login', async(req,res,error) => {
         else {
             console.log('login failed');
             is_auth = false;
-            res.sendStatus(200);
+            res.json({"status" : "fail"});
         }
     } catch(error) {
         console.log(`error : ${error}`);
@@ -189,17 +214,23 @@ router.delete('/:menu_id', async(req,res,error) => {
     const thismenu_id = req.params.menu_id; //menu_id 가져와서
     console.log("menu_id : ",thismenu_id);
     //삭제하는 구문
-    try{const result = await prisma.menu.delete({
-        where: {
-            menu_id : thismenu_id,
-        },
-    })}catch(error){
+    try{
+        const result1 = await prisma.menuOrderInfo.deleteMany({
+            where : {
+                menuID : thismenu_id,
+            }
+        })
+        const result = await prisma.menu.delete({
+            where: {
+                menu_id : thismenu_id,
+            },
+        })
+        //성공시 200
+        res.sendStatus(200);
+    } catch(error){
         console.log(`error : ${error}`);
         res.sendStatus(500); //실패시 500
     }
-
-    //성공시 200
-    res.sendStatus(200);
 });
  
 //메뉴 수정

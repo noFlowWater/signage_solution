@@ -2,7 +2,6 @@ const express = require('express');
 const path = require('path');
 const app = express();
 const cors = require('cors');
-const port = 4000
 const database = require('./database')
 const { swaggerUi, specs } = require('./swagger/swagger');
 
@@ -41,5 +40,5 @@ app.use((error, req, res, next) => {
 })
 
 app.listen(4000,'0.0.0.0', () => {
-    console.log(`${port}번에서 실행이 되었습니다.`);
+    console.log(`4000번에서 실행이 되었습니다.`);
 })

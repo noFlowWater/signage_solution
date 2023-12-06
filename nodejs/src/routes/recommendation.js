@@ -5,6 +5,12 @@ const prisma = new PrismaClient();
 
 // 코사인 유사성 계산 함수
 function calculateCosineSimilarity(user1Orders, user2Orders) {
+  // user2Orders가 배열인지 확인
+  if (!Array.isArray(user2Orders)) {
+    console.error('오류: user2Orders가 배열이 아닙니다');
+    return 0;
+  }
+
   const commonMenuIds = getCommonMenuIds(user1Orders, user2Orders);
 
   if (commonMenuIds.length === 0) {

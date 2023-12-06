@@ -60,11 +60,9 @@ async function allergy(){
     })
 }
 async function allergy_edit(){
-    await database.allergy.update({
-        where : {allergy_name : "난류"},
-        data : {
-            allergy_name : "난류(가금류)"
-        }
+    await database.allergy.create({
+        data : 
+            {allergy_name : "잣"}
     })
 }
 //메뉴 시드 생성 (카테고리별로 하나씩)
