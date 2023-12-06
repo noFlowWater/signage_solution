@@ -18,18 +18,44 @@ const UserMenu = () => {
     const [modalOpen, setModalOpen] = useState(false);
     const [selectedMenu, setSelectedMenu] = useState(null);
   
+    // useEffect(() => {
+    //   const fetchMenus = async () => {
+    //     try {
+    //       const response = await axios.get(`${kiosk}/menu/${cid}`);
+    //       console.log(response.data)
+    //       setMenus(response.data);
+    //     } catch (error) {
+    //       console.log(error);
+    //     }
+    //   }
+    //   fetchMenus();
+    // }, [cid]);
+
     useEffect(() => {
-      const fetchMenus = async () => {
-        try {
-          const response = await axios.get(`${kiosk}/menu/${cid}`);
-          console.log(response.data)
-          setMenus(response.data);
-        } catch (error) {
-          console.log(error);
-        }
-      }
-      fetchMenus();
-    }, [cid]);
+        const fetchMenus = async () => {
+            const data = {
+                user_id:userId
+            };
+          try {
+            if (cid === '0') {
+              const response = await axios.post(`${kiosk}/menu/${cid}`, JSON.stringify(data), {
+                headers: {
+                    'Content-Type': 'application/json',
+                  },
+              });
+              console.log("추천 알고리즘",response.data);
+              setMenus(response.data);
+            } else {
+              const response = await axios.get(`${kiosk}/menu/${cid}`);
+              console.log(response.data);
+              setMenus(response.data);
+            }
+          } catch (error) {
+            console.log(error);
+          }
+        };
+        fetchMenus();
+      }, [cid]);
   
     let addToCartEnabled = true;
   
@@ -83,19 +109,23 @@ const UserMenu = () => {
       };
       
   
-    return (
-      <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-        {menus.map((menu, index) => (
-          <div key={index} onClick={() => addToCart(menu)} style={{ width: '33%', padding: '10px' }}>
-            <img src={menu.file_path} alt={menu.menu_name} style={{ width: '100%', marginBottom: '10px' }} />
-            <h1>{menu.menu_name}</h1>
-            <p>{menu.price}</p>
-            <button onClick={() => openModal(menu)}>상세 정보</button>
-          </div>
-        ))}
-        {modalOpen && <Modal menu={selectedMenu} onClose={closeModal} />}
-      </div>
-    );
+      return (
+        <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+          {menus.map((menu, index) => (
+            <div key={index} onClick={() => addToCart(menu)} style={{ width: '33%', padding: '10px' }}>
+              {/* <img src={`${kiosk}/${menu.file_path}`} alt={menu.menu_name} style={{ width: '30%', height: 'auto', marginBottom: '10px' }} /> */}
+              <h1>{menu.menu_name}</h1>
+              <p>{menu.price}</p>
+              <button onClick={() => openModal(menu)}>상세 정보</button>
+              {cid === '0' && index === 0 && <p>최근에 먹은 메뉴</p>}
+              {cid === '0' && index === 1 && <p>가장 많이 먹은 메뉴</p>}
+              {cid === '0' && index === 2 && <p>나와 비슷한 사용자의 선호 메뉴</p>}
+            </div>
+          ))}
+          {modalOpen && <Modal menu={selectedMenu} onClose={closeModal} />}
+        </div>
+      );
+      
   }
   
   export default UserMenu;

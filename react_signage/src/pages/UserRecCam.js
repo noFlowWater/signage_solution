@@ -8,6 +8,22 @@ import FaceRecNavBar from '../components/FaceRecNavBar';
 
 const CLIENT_ID = shortUUID.generate();
 
+// 게이지 로딩 바 컴포넌트
+const LoadingBar = ({ progress }) => {
+    const barStyle = {
+      width: `${progress * 10}%`, // 10% 단위로 게이지 증가
+      height: '30px',
+      backgroundColor: 'green',
+      maxWidth: '400px', // 가로 폭의 최대값 설정
+    };
+  
+    return (
+      <div style={{ width: '300px', height: '30px', border: '1px solid gray', maxWidth: '300px' }}>
+        <div style={barStyle}></div>
+      </div>
+    );
+  };
+
 const UserRecCam = () => {
     const videoRef = useRef(null);
     const canvasRef = useRef(null);
@@ -19,6 +35,7 @@ const UserRecCam = () => {
     const [isModelLoaded, setIsModelLoaded] = useState(false);
     const [modalOpen, setModalOpen] = useState(false); // 모달 상태 관리
     const [recognizedUser, setRecognizedUser] = useState({ name: '', id: '' });
+    const [loadingProgress, setLoadingProgress] = useState(0);
     
     const navigate = useNavigate();
     // 웹캠 스트림 설정
@@ -57,6 +74,12 @@ const UserRecCam = () => {
             setProcessedImage(image);
             console.log('!!!');
         });
+
+        // 로딩바 초기 디자인
+        // newSocket.on('image_processed', (image) => {
+        //     setProcessedImage(image);
+        //     setLoadingProgress(prevProgress => prevProgress + 1);
+        //   });
 
         newSocket.on('user_recognized', (data) => {
             setRecognizedUser({ name: data.predicted_user_name, id: data.predicted_user_id });
@@ -199,6 +222,7 @@ const UserRecCam = () => {
                                             transform: 'rotateY(180deg)'
                                         }}
                                     />
+                                    <LoadingBar progress={loadingProgress} />
                                 </div>
                             )}
                         {/* The canvas is used for capturing frames but is not displayed */}
