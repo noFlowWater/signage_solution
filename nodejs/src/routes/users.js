@@ -96,7 +96,7 @@ try {
                 const existingAllergy = await prisma.allergy.findUnique({
                     where: { allergy_name },
                     });
-                    // 메뉴와 알러지 연결
+                    // 사용자와 알러지 연결
                     await prisma.relation_user_allergy.create({
                     data: {
                         users: { connect: { user_id: req.body.user_id } },

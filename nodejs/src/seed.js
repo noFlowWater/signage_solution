@@ -59,6 +59,14 @@ async function allergy(){
         ]
     })
 }
+async function allergy_edit(){
+    await database.allergy.update({
+        where : {allergy_name : "난류"},
+        data : {
+            allergy_name : "난류(가금류)"
+        }
+    })
+}
 //메뉴 시드 생성 (카테고리별로 하나씩)
 async function menu(){
     //참치김밥
@@ -154,7 +162,7 @@ async function menutoallergy() {
     console.log("success")
 }
 //함수 호출
-menutoallergy()
+allergy_edit()
     .catch(e => {
         console.error(e)
         process.exit(1)
