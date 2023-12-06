@@ -8,7 +8,7 @@ dotenv.config()
 //사용자의 메뉴 기능들
 
 //추천 메뉴리스트 보기 
-router.get('/menu/0', async (req, res, error) => {
+router.post('/0', async (req, res, err) => {
   const thisuser_id = req.body.user_id;
   console.log("user_id : ", thisuser_id);
   resultarr = [];
@@ -16,58 +16,65 @@ router.get('/menu/0', async (req, res, error) => {
   // 내가 최근에 먹은 메뉴
   const result1 = await prisma.MenuOrderInfo.findFirst({
       where: {
-          user_id: thisuser_id
+          userID: thisuser_id
       },
       select: {
-          menu_id: true,
-          menu_name: true,
-          price: true,
-          file_path: true,
-          is_soldout: true,
-          orderBy: {
-              last_order_time: "desc",
-          },
-      }
-  });
-
-  resultarr.push(result1); // result1을 배열에 추가
-
-  // 내가 가장 많이 먹은 메뉴
-  const result2 = await prisma.menuOrderInfo.groupBy({
-      by: ['menu_id', 'menu_name', 'price', 'file_path', 'is_soldout'],
-      _count: {
-          menu_id: true
-      },
-      where: {
-          user_id: thisuser_id
+          menuID: true,
+          //menu_name: true,
+          //price: true,
+          //file_path: true,
+          //is_soldout: true,
       },
       orderBy: {
-          _count: {
-              menu_id: 'desc'
-          }
-      },
-      select: {
-          menu_id: true,
-          menu_name: true,
-          price: true,
-          file_path: true,
-          is_soldout: true
-      }
+        last_order_time: "desc",
+    },
   });
+    const recentMenu = await prisma.menu.findUnique({
+        where : {
+        menu_id : result1.menuID
+    }
+    })
+    console.log("recentMenu",recentMenu);
+  resultarr.push(recentMenu); // result1을 배열에 추가
 
-  resultarr.push(result2); // result2를 배열에 추가
+  // 내가 가장 많이 먹은 메뉴
+  const result2 = await prisma.menuOrderInfo.findFirst({
+    where: {
+        userID: thisuser_id
+    },
+    select: {
+        menuID: true,
+    },
+    orderBy: {
+      order_count: "desc",
+    },
+  });
+  const countMost = await prisma.menu.findUnique({
+    where : {
+        menu_id : result2.menuID
+    }
+    })
+  console.log("countMost",countMost);
+  resultarr.push(countMost); 
 
-  const N = 5; // 상위 N개의 유사한 사용자 가져오기
+  //추천 알고리즘
+  const N = 3; // 상위 N개의 유사한 사용자 가져오기
   try {
-      const result3 = await recommendationModule.recommendMenuForUser(targetUserId, N);
-      resultarr.push(result3); // result3를 배열에 추가
-
+      const result3 = await recommendationModule.recommendMenuForUser(thisuser_id, N);
+      const similarMenu = await prisma.menu.findUnique({
+        where : {
+            menu_id : result3.menuID
+        }
+      })
+      console.log("similarMenu", similarMenu)
+      //배열에추가
+      resultarr.push(similarMenu);
       // 여기서 resultarr을 사용하여 클라이언트에게 응답을 보낼 수 있음
   } catch (error) {
-      next(error);
+      console.log(error);
   }
-
-  res.json(resultarr);ㅊ3
+  console.log(resultarr);
+  res.json(resultarr);
 });
 
 
@@ -108,8 +115,8 @@ router.get('/detail/:menu_id', async(req,res,error) => { //<- :menu_id는 req.pa
         //메뉴와 알러지 정보 합치기
         const menuWithAllergy = Object.assign(result, { allergies: allergies })
         res.json(menuWithAllergy);
-    } catch (error) {
-        console.log(error)
+    } catch (err) {
+        console.log(err)
     }
     // console.log("menu_name : ",result.menu_name);
     // console.log("menu_description : ",result.menu_description);
