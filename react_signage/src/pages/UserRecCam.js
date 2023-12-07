@@ -183,7 +183,7 @@ const UserRecCam = () => {
                 console.error(error);
             });
         }
-        navigate('/user/menu/1')
+        navigate('/user/menu/1')  // 추천알고리즘 완료 되면 0으로 수정해야 됨
         console.log("YES 클릭");
         // YES 버튼 로직 구현
     };

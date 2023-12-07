@@ -25,9 +25,11 @@ const UserAltCertPage = () => {
             console.log(response.data); // 응답 데이터를 콘솔에 출력
             setUserData(response.data);
             console.log("SUCCESS!!!")
-            if (response.data.user_id) {
+
+            const userId = localStorage.setItem('userId',response.data.user_id);
+            if (userId) {
                 const data = {
-                    user_id:response.data.user_id
+                    user_id:userId
                 };
     
                 axios.post(`${kiosk}/users/all`, JSON.stringify(data),{
@@ -36,14 +38,15 @@ const UserAltCertPage = () => {
                     },
                 })
                 .then(response => {
-                    localStorage.setItem('userAl', response.data.data);
+                    localStorage.setItem('userAl', JSON.stringify(response.data));
+                    console.log("받아온 알러지 타입",typeof(JSON.stringify(response.data)));
+                    console.log(response.data)
                 })
                 .catch(error => {
                     console.error(error);
                 });
             }
-            localStorage.setItem('userId',response.data.user_id);
-            navigate('/user/menu/1')
+            navigate('/user/menu/1')  // 추천알고리즘 완료 되면 0으로 수정해야 됨
         } catch (error) {
             // 서버 응답이 실패한 경우
             setModalControl(!modalControl);

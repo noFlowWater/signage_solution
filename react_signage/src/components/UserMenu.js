@@ -21,19 +21,6 @@ const UserMenu = () => {
     // 모달 상태 관리
     const [modalOpen, setModalOpen] = useState(false);
     const [selectedMenu, setSelectedMenu] = useState(null);
-  
-    // useEffect(() => {
-    //   const fetchMenus = async () => {
-    //     try {
-    //       const response = await axios.get(`${kiosk}/menu/${cid}`);
-    //       console.log(response.data)
-    //       setMenus(response.data);
-    //     } catch (error) {
-    //       console.log(error);
-    //     }
-    //   }
-    //   fetchMenus();
-    // }, [cid]);
 
     useEffect(() => {
         const fetchMenus = async () => {
@@ -85,36 +72,6 @@ const UserMenu = () => {
       addToCartEnabled = true;
     };
   
-    // // 모달 컴포넌트를 UserMenu 컴포넌트 내부에 정의하고 사용합니다.
-    // const Modal = ({ menu, onClose }) => {
-    //     return (
-    //       <div
-    //         style={{
-    //           position: 'fixed',
-    //           top: '50%',
-    //           left: '50%',
-    //           transform: 'translate(-50%, -50%)',
-    //           width: '400px', // 원하는 너비로 설정
-    //           backgroundColor: '#EBF6EE',
-    //           padding: '20px',
-    //           display: 'flex',
-    //           flexDirection: 'column',
-    //           alignItems: 'center',
-    //           zIndex: '9999',
-    //           borderRadius: '5px',
-    //         }}
-    //       >
-    //         <div style={{fontFamily:"SansB",fontSize:'30px'}}>{menu.menu_name}</div>
-    //         <div style={{fontFamily:"SansM",fontSize:'20px'}}> ￦{menu.price}</div>
-    //         <div style={{fontFamily:"SansM",fontSize:'20px'}}>{menu.menu_description}</div>
-    //         <div style={{ display: 'flex', alignItems: 'center' }}>
-    //             <div style={{ fontFamily: 'SansB', fontSize: '20px' }}>알러지:</div>
-    //             <div style={{ fontFamily: 'SansM', fontSize: '20px', display: 'inline-block' }}>{menu.allergies.join('/')}</div>
-    //         </div>
-    //         <button className="btn btn-danger" onClick={onClose} style={{ marginTop: '10px',fontFamily:"SansM",fontSize:'20px'}}>닫기</button>
-    //       </div>
-    //     );
-    //   };
     const Modal = ({ menu, onClose}) => {
         const userAl = localStorage.getItem('userAl');
         console.log("Modal 안에서 userAl:",userAl);
@@ -178,9 +135,10 @@ const UserMenu = () => {
                 ))}
             </div>
 
-            {hasMatchingAllergy && (
-              <div style={{ color: 'red' }}>이 메뉴에 사용자의 알러지 정보와 일치하는 알러지가 있습니다.</div>
-            )}
+            {hasMatchingAllergy && 
+            (<div style={{ color: 'red' }}> * 주의 *</div>) && 
+            (<div style={{ color: 'red' }}>이 메뉴에 사용자의 알러지와 일치하는 알러지가 있습니다!</div>)
+            }
             <button className="btn btn-danger" onClick={onClose} style={{ marginTop: '10px', fontFamily: "SansM", fontSize: '20px' }}>닫기</button>
           </div>
         );
