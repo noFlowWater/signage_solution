@@ -113,6 +113,26 @@ const UserCart = () => {
                 </div>
               </div>              
             ))}
+
+            //흰색 박스로 구분
+            {/* {cart.map((item, index) => (
+                <div key={index} style={{ backgroundColor: "white", padding: "10px", marginBottom: "10px" }}>
+                    <div style={{ display: "flex", alignItems: "center" }}>
+                    <div style={{ fontFamily: "SansB", fontSize: "30px", marginRight: "10px" }}>{item.menu_name}</div>
+                    <button onClick={() => handleRemove(item)}>X</button>
+                    </div>
+                    <div style={{ fontFamily: "SansM", fontSize: "20px" }}>￦{item.price}</div>
+                    <div style={{ display: "flex", alignItems: "center" }}>
+                    <button onClick={() => handleDecrease(item)}>-</button>
+                    <div style={{ fontFamily: "SansM", fontSize: "20px" }}>
+                        수량: {calculateQuantity(item)}
+                    </div>
+                    <button onClick={() => handleIncrease(item)}>+</button>
+                    </div>
+                </div>
+            ))} */}
+
+            
             <hr style={{ borderTop: '1px solid black', width: '100%' }} />
             <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center',}}>
                 <div style={{ fontFamily: 'SansB', fontSize: '20px' }}>
