@@ -147,21 +147,6 @@ router.post('/menu', async(req,res,error) => {
                   });
             }
         }
-        // const allergyMenuConnections = connections.map(allergyConnection => {
-        //     return {
-        //         menus: {
-        //             connect: { menu_name: req.body.menu_name }
-        //           },
-        //         allergies: {
-        //             connect: { allergy_name: allergyConnection}
-        //         }
-        //     };
-        //   });
-        // console.log("allergyMenuConnections: ", allergyMenuConnections);
-        // const allergy_table = await prisma.relation_menu_allergy.create ({
-        //     data : allergyMenuConnections
-        // })
-        // console.log("success");
     }
     res.status(200).send(menu);
 })
@@ -252,12 +237,38 @@ router.put('/:menu_id', async(req,res,error) => {
             category_id: req.body.category_id
         }
     })
-
-    // console.log("menu_id : ",result.menu_id);
-    // console.log("menu_name : ",result.menu_name);
-    // console.log("price : ",result.price);
-    // console.log("file_path : ",result.file_path);
-    // console.log("is_soldout : ",result.is_soldout);
+    if(req.body.allergy.length > 0){
+        //배열 parsing하기
+        let all = req.body.allergy;
+        console.log("all:",all);
+        var allergies = all.join(',').split(',');
+        console.log("allergies",allergies);
+        const connections = allergies.map(allergyName => {
+            return {allergy_name : allergyName}
+        })
+        console.log("connections",connections);
+        //수정 시 알러지 배열은 싹 다 비워야함
+        const deleteAll = await prisma.relation_menu_allergy.deleteMany({
+            where : {menuID : thismenu_id}
+        })
+        //메뉴에 알러지 정보 넣기
+        console.log("name: ",req.body.menu_name);
+        for (const allergy_name of allergies) {
+            // 데이터베이스에서 알러지 찾기
+            if (allergy_name != "없음"){
+                const existingAllergy = await prisma.allergy.findUnique({
+                    where: { allergy_name },
+                  });
+                  // 메뉴와 알러지 연결
+                  await prisma.relation_menu_allergy.create({
+                    data: {
+                      menus: { connect: { menu_id: thismenu_id } },
+                      allergies: { connect: { allergy_id: existingAllergy.allergy_id } },
+                    },
+                  });
+            }
+        }
+    }
     //res.json() 해서 메뉴표시에 필요한것들 보내주면 된다.
     res.json(result);
 });

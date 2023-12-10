@@ -59,6 +59,29 @@ async function category(){
     console.log("success")
 }
 
+//admin 초기 계정 생성
+const createAdmin = async () => {
+    try {
+        const user = await database.admin.create({
+        data : {
+            user_id : "1",
+            password: "1111"
+        }})
+        console.log('User created:', user);
+    } catch (error) {
+        console.error('Error creating user:', error);
+    } 
+};
+
+//관리자 호출
+createAdmin()
+    .catch(e => {
+        console.error(e)
+        process.exit(1)
+    })
+    .finally(async () => {
+        await database.$disconnect()
+    })
 //카테고리 생성 함수 호출
 allergy()
     .catch(e => {

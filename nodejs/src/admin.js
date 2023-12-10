@@ -18,15 +18,11 @@ database.$connect()
 
 const createAdmin = async () => {
     try {
-        const user = await database.admin.upsert({
-        where: {
-            user_id : "817d8cb2-8813-4d8d-8ab5-8df3835e7ca5"
-        },
-        create : {
-            password : "1111"
-        },
-        update : {user_id : "1"}
-        });
+        const user = await database.admin.create({
+        data : {
+            user_id : "1",
+            password: "1111"
+        }})
         console.log('User created:', user);
     } catch (error) {
         console.error('Error creating user:', error);
