@@ -7,12 +7,13 @@ import UserRecResultModal from '../components/UserRecResultModal';
 import FaceRecNavBar from '../components/FaceRecNavBar';
 import axios from 'axios';
 
+// 게이지 로딩 바 컴포넌트
+
 const CLIENT_ID = shortUUID.generate();
 
-// 게이지 로딩 바 컴포넌트
 const LoadingBar = ({ progress }) => {
     const barStyle = {
-      width: `${progress * 10}%`, // 10% 단위로 게이지 증가
+      width: `${progress * 3.3}%`, // 10% 단위로 게이지 증가
       height: '30px',
       backgroundColor: 'green',
       maxWidth: '400px', // 가로 폭의 최대값 설정
@@ -26,6 +27,7 @@ const LoadingBar = ({ progress }) => {
   };
 
 const UserRecCam = () => {
+    
     const videoRef = useRef(null);
     const canvasRef = useRef(null);
     const [socket, setSocket] = useState(null);
@@ -77,10 +79,10 @@ const UserRecCam = () => {
         });
 
         // 로딩바 초기 디자인
-        // newSocket.on('image_processed', (image) => {
-        //     setProcessedImage(image);
-        //     setLoadingProgress(prevProgress => prevProgress + 1);
-        //   });
+        newSocket.on('send_success', (image) => {
+            setProcessedImage(image);
+            setLoadingProgress(prevProgress => prevProgress + 1);
+          });
 
         newSocket.on('user_recognized', (data) => {
             setRecognizedUser({ name: data.predicted_user_name, id: data.predicted_user_id });
