@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon src/index.js",
     "dev": "nodemon src/index.js",
-    "seed": "nodemon src/seed.js",
+    "seed": "nodemon src/userseed.js",
     "admin": "nodemon src/admin.js"
   },
   "author": "",
