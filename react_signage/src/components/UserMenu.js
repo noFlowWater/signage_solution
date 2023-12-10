@@ -13,10 +13,15 @@ const UserMenu = () => {
   
     const userId = localStorage.getItem('userId');
     console.log("현재 사용자 : ", userId);
+
+    // Safely getting and parsing the userAl item from localStorage
     const userAl = localStorage.getItem('userAl');
-    const userAllergies = JSON.parse(userAl).data;
-    console.log("알러지 로컬스토리지 타입:",typeof(userAl));
-    console.log("현재 사용자 알러지 : ",userAl);
+    let userAllergies = [];
+    if (userAl) {
+        userAllergies = JSON.parse(userAl).data;
+    } else {
+        console.log("No allergy data found in localStorage.");
+    }
   
     // 모달 상태 관리
     const [modalOpen, setModalOpen] = useState(false);
@@ -79,7 +84,6 @@ const UserMenu = () => {
     const Modal = ({ menu, onClose}) => {
         // menu.allergies와 userAllergies를 비교하여 일치하는 알러지가 있는지 확인
         const hasMatchingAllergy = menu.allergies.some(menuAllergy => {
-            
             // userAllergies 배열에서 해당 알러지와 일치하는 객체를 찾음
             const matchingAllergy = userAllergies.find(userAllergy => {
                 console.log(">> userAllergy : ",userAllergy)
@@ -103,7 +107,7 @@ const UserMenu = () => {
               top: '50%',
               left: '50%',
               transform: 'translate(-50%, -50%)',
-              width: '400px', // 원하는 너비로 설정
+              width: '500px', // 원하는 너비로 설정
               backgroundColor: '#EBF6EE',
               padding: '20px',
               display: 'flex',
@@ -111,6 +115,7 @@ const UserMenu = () => {
               alignItems: 'center',
               zIndex: '9999',
               borderRadius: '5px',
+              boxShadow: "0px 4px 10px rgba(0, 0, 0, 5)"
             }}
           >
             <div style={{ fontFamily: "SansB", fontSize: '30px' }}>{menu.menu_name}</div>
@@ -178,7 +183,7 @@ const UserMenu = () => {
                             fontFamily: "SansM"
                         }}>알러지 주의</div>
                     }
-                    <img src={`${kiosk}/${menu.file_path}`} alt={menu.menu_name} style={{ width: '60%', height: 'auto', marginBottom: '10px' }} />
+                    <img src={`${kiosk}/${menu.file_path}`} alt={menu.menu_name} style={{ width: '40%', height: 'auto', marginBottom: '10px' }} />
                     <div style={{ fontFamily: "SansB", fontSize: '30px', textAlign: 'center' }}>{menu.menu_name}</div>
                     <div style={{ fontFamily: "SansM", fontSize: '20px', textAlign: 'center' }}>￦{menu.price}</div>
                     <button onClick={() => openModal(menu)} style={{ fontFamily: "SansB", fontSize: '15px', marginTop: '10px' }}>상세 정보</button>
