@@ -75,8 +75,7 @@ const UserMenu = () => {
         const userAl = localStorage.getItem('userAl');
         console.log("Modal 안에서 userAl:",userAl);
         // userAl 값을 배열로 변환
-        const userAllergies = userAl.split(',').map(allergy => allergy.trim());
-        console.log("사용자 알러지",userAllergies);
+        const userAllergies = JSON.parse(userAl).data;
         // menu.allergies와 userAllergies를 비교하여 일치하는 알러지가 있는지 확인
         const hasMatchingAllergy = menu.allergies.some(menuAllergy => {
             
