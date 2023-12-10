@@ -132,7 +132,7 @@ const UserMenu = () => {
                     {index > 0 && '/'} {allergy}
                     </div>
                 ))}
-            </div>
+                </div>
 
             {hasMatchingAllergy && 
             (<div style={{ color: 'red' }}> * 주의 *</div>) && 
@@ -142,47 +142,25 @@ const UserMenu = () => {
           </div>
         );
       };
-      
-      
-      
-      
-  
+                  
       return (
         <div style={{ display: 'flex', flexWrap: 'wrap' }}>
           {menus.map((menu, index) => (
             <div key={index} onClick={() => addToCart(menu)} style={{ width: '33%', padding: '10px' }}>
-              <img src={`${kiosk}/${menu.file_path}`} alt={menu.menu_name} style={{ width: '30%', height: 'auto', marginBottom: '10px' }} />
-              <div style={{fontFamily:"SansB",fontSize:'30px'}}>{menu.menu_name}</div>
-              <div style={{fontFamily:"SansM",fontSize:'20px'}}>￦{menu.price}</div>
-              <button onClick={() => openModal(menu)} style={{fontFamily:"SansB",fontSize:'15px'}}>상세 정보</button>
-              {cid === '0' && index === 0 && <div style={{fontFamily:"SansB",fontSize:'20px',color: 'red'}}>최근에 먹은 메뉴</div>}
-              {cid === '0' && index === 1 && <div style={{fontFamily:"SansB",fontSize:'20px',color: 'blue'}}>가장 많이 먹은 메뉴</div>}
-              {cid === '0' && index === 2 && <div style={{fontFamily:"SansB",fontSize:'20px',color: 'green'}}>나와 비슷한 사용자의 선호 메뉴</div>}
+                <div style={{ backgroundColor: 'white', width: '100%', height: '300px', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: '20px', borderRadius: '5px', boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.2)"  }}>
+                    <img src={`${kiosk}/${menu.file_path}`} alt={menu.menu_name} style={{ width: '60%', height: 'auto', marginBottom: '10px' }} />
+                    <div style={{ fontFamily: "SansB", fontSize: '30px', textAlign: 'center' }}>{menu.menu_name}</div>
+                    <div style={{ fontFamily: "SansM", fontSize: '20px', textAlign: 'center' }}>￦{menu.price}</div>
+                    <button onClick={() => openModal(menu)} style={{ fontFamily: "SansB", fontSize: '15px', marginTop: '10px' }}>상세 정보</button>
+                    {cid === '0' && index === 0 && <div style={{ fontFamily: "SansB", fontSize: '20px', color: 'red', marginTop: '10px' }}>최근에 먹은 메뉴</div>}
+                    {cid === '0' && index === 1 && <div style={{ fontFamily: "SansB", fontSize: '20px', color: 'blue', marginTop: '10px' }}>가장 많이 먹은 메뉴</div>}
+                    {cid === '0' && index === 2 && <div style={{ fontFamily: "SansB", fontSize: '20px', color: 'green', marginTop: '10px' }}>나와 비슷한 사용자의 선호 메뉴</div>}
+                </div>
             </div>
           ))}
           {modalOpen && <Modal menu={selectedMenu} onClose={closeModal} />}
         </div>
       );
-
-      //흰 색 박스로 구분
-    //   return (
-    //     <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-    //       {menus.map((menu, index) => (
-    //         <div key={index} onClick={() => addToCart(menu)} style={{ width: '33%', padding: '10px' }}>
-    //           <div style={{ backgroundColor: 'white', width: '100%', height: '300px', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: '20px', borderRadius: '5px' }}>
-    //             <img src={`${kiosk}/${menu.file_path}`} alt={menu.menu_name} style={{ width: '60%', height: 'auto', marginBottom: '10px' }} />
-    //             <div style={{ fontFamily: "SansB", fontSize: '30px', textAlign: 'center' }}>{menu.menu_name}</div>
-    //             <div style={{ fontFamily: "SansM", fontSize: '20px', textAlign: 'center' }}>￦{menu.price}</div>
-    //             <button onClick={() => openModal(menu)} style={{ fontFamily: "SansB", fontSize: '15px', marginTop: '10px' }}>상세 정보</button>
-    //             {cid === '0' && index === 0 && <div style={{ fontFamily: "SansB", fontSize: '20px', color: 'red', marginTop: '10px' }}>최근에 먹은 메뉴</div>}
-    //             {cid === '0' && index === 1 && <div style={{ fontFamily: "SansB", fontSize: '20px', color: 'blue', marginTop: '10px' }}>가장 많이 먹은 메뉴</div>}
-    //             {cid === '0' && index === 2 && <div style={{ fontFamily: "SansB", fontSize: '20px', color: 'green', marginTop: '10px' }}>나와 비슷한 사용자의 선호 메뉴</div>}
-    //           </div>
-    //         </div>
-    //       ))}
-    //       {modalOpen && <Modal menu={selectedMenu} onClose={closeModal} />}
-    //     </div>
-    //   );
       
       
   }

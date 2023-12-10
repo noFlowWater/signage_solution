@@ -27,6 +27,7 @@ const UserAltCertPage = () => {
             console.log("SUCCESS!!!")
 
             const userId = localStorage.setItem('userId',response.data.user_id);
+            console.log(userId)
             if (userId) {
                 const data = {
                     user_id:userId
@@ -38,7 +39,7 @@ const UserAltCertPage = () => {
                     },
                 })
                 .then(response => {
-                    localStorage.setItem('userAl', JSON.stringify(response.data));
+                    localStorage.setItem('userAl',JSON.stringify(response.data));
                     console.log("받아온 알러지 타입",typeof(JSON.stringify(response.data)));
                     console.log(response.data)
                 })

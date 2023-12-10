@@ -162,33 +162,31 @@ const UserRecCam = () => {
     // 버튼에 대한 이벤트 핸들러 정의
     const handleYes = () => {
         const userId = localStorage.getItem('userId');
+        console.log("잇사에서 테스트하는 부분:",userId)
+        const data = {
+            user_id:userId
+        };
 
-    // userId가 존재하는 경우에만 요청을 보냅니다
-        if (userId) {
-            const data = {
-                user_id:userId
-            };
-
-            axios.post(`${kiosk}/users/all`, JSON.stringify(data),{
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            })
-            .then(response => {
-                localStorage.setItem('userAl', JSON.stringify(response.data));
-                console.log("받아온 알러지 타입",typeof(JSON.stringify(response.data)));
-                console.log(response.data)
-            })
-            .catch(error => {
-                console.error(error);
-            });
-        }
+        axios.post(`${kiosk}/users/all`, JSON.stringify(data),{
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+        .then(response => {
+            localStorage.setItem('userAl', JSON.stringify(response.data));
+            console.log("받아온 알러지 타입",typeof(JSON.stringify(response.data)));
+            console.log(response.data)
+        })
+        .catch(error => {
+            console.error(error);
+        });
         navigate('/user/menu/1')  // 추천알고리즘 완료 되면 0으로 수정해야 됨
         console.log("YES 클릭");
         // YES 버튼 로직 구현
     };
 
     const handleAlternative = () => {
+        localStorage.removeItem('userId');
         navigate('/user/rec/alt')
         console.log("대체인증 클릭");
         // 대체인증 버튼 로직 구현
