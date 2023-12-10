@@ -2,11 +2,15 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { kiosk } from '../constants';
 import axios from 'axios';
+import AdminChangePwModal from '../components/AdminChangePwModal';
+import { useEffect } from 'react';
 
 const AdminChangePw= () => {
     const[beforepw, setBeforepw] = useState();
     const[afterpw, setAfterpw] = useState();
     const navigate = useNavigate();
+    const [showModal, setShowModal] = useState(false);
+    const [modalMessage, setModalMessage] = useState("");
     const goBack=()=>{
         navigate(`/admin/menu`)
     }
@@ -35,9 +39,17 @@ const AdminChangePw= () => {
                 });
         }
     };
+
+    useEffect(() => {
+        if (!showModal && modalMessage === "비밀번호 변경에 성공하였습니다.") {
+            navigate('/admin/login');
+        }
+    }, [showModal, modalMessage, navigate]); 
+    
     const onSubmit = () => {
         if (pwMessage.text !== "비밀번호가 같습니다") {
-            alert("비밀번호가 다릅니다.");
+            setModalMessage("비밀번호가 다릅니다.");
+            setShowModal(true);
             return;
         }
         const data = {
@@ -51,11 +63,14 @@ const AdminChangePw= () => {
         })
         .then(res => {
             const data = res.data;
-            if (data.status === 'success') { // 조건문의 괄호 위치와 중괄호 위치 수정
-                navigate('/admin/login');
+            if (data.status === 'success') {
+                setModalMessage("비밀번호 변경에 성공하였습니다.");
+                setShowModal(true); 
             }
             else{
-                alert('비밀번호 변경이 실패했습니다');
+                setModalMessage("비밀번호 변경에 실패하였습니다. 다시 시도해주세요.");
+                setShowModal(true);
+                return;
             }
         })
         .catch(error => {
@@ -64,6 +79,12 @@ const AdminChangePw= () => {
     };
     return (
         <div>
+            <AdminChangePwModal 
+            content={modalMessage} 
+            isOpen={showModal} 
+            setIsOpen={setShowModal} 
+            closeMethod={() => setShowModal(false)}  
+        />
             <nav className="navbar">
                 <div className="container">
                     <div style = {{fontFamily: 'SansM', fontSize:'30px'}}>
@@ -100,14 +121,14 @@ const AdminChangePw= () => {
                         <div 
                         className ="btn btn-primary"
                         onClick={onSubmit}
-                        style = {{fontFamily: 'SansM', fontSize:'20px'}}
+                        style = {{fontFamily: 'SansM', fontSize:'20px', boxShadow: '0px 4px 10px rgba(0,0,0,5)'}}
                         >
                             변경
                         </div>
                         <div 
                         className ="btn btn-danger ms-2"
                         onClick={goBack}
-                        style = {{fontFamily: 'SansM', fontSize:'20px'}}
+                        style = {{fontFamily: 'SansM', fontSize:'20px',boxShadow: '0px 4px 10px rgba(0,0,0,5)'}}
                         >
                             돌아가기
                         </div>

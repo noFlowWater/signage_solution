@@ -2,10 +2,13 @@ import {useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { kiosk } from '../constants';
+import AdminLoginModal from '../components/AdminLoginModal';
 
 const AdminLogin = () => {
     const navigate = useNavigate();
     const [pwd,setPwd] = useState('');
+    const [showModal, setShowModal] = useState(false);
+    const [modalMessage, setModalMessage] = useState("");
 
     const onSubmit = () => {
         const data = {
@@ -24,7 +27,9 @@ const AdminLogin = () => {
                 navigate('/admin/menu');
             }
             else{
-                alert('비밀번호가 다릅니다');
+                setModalMessage("비밀번호가 틀렸습니다. 다시 시도해주세요.");
+                setShowModal(true);
+                return;
             }
         })
         .catch(error => {
@@ -34,6 +39,12 @@ const AdminLogin = () => {
 
     return (
         <div style = {{padding: '100px'}}>
+             <AdminLoginModal 
+            content={modalMessage} 
+            isOpen={showModal} 
+            setIsOpen={setShowModal} 
+            closeMethod={() => setShowModal(false)}  
+        />
             <div className="container d-flex align-items-center justify-content-center vh-50">
                 <div className="d-flex flex-column align-items-center">
                     <h1 style = {{fontFamily: 'SansM', fontSize:'30px'}}>관리자 로그인</h1>
@@ -56,7 +67,7 @@ const AdminLogin = () => {
                     <button
                         className="btn btn-primary mb-2 ms-2"
                         onClick ={onSubmit}
-                        style={{ textDecoration: 'none', fontFamily: 'SansM', fontSize:'15px' }}
+                        style={{ textDecoration: 'none', fontFamily: 'SansM', fontSize:'15px' ,boxShadow: '0px 4px 10px rgba(0,0,0,5)'}}
                         >
                         입력 완료
                     </button>
