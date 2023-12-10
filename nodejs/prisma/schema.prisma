@@ -19,13 +19,18 @@ model User {
   relationToAllergy Relation_user_allergy[]
 }
 
+model Admin {
+  user_id String @id @default("1")
+  password String 
+}
+
 model MenuOrderInfo {
   order_count Int
   last_order_time DateTime
   userID String  //FK
   menuID String  //FK
-  user User @relation(fields: [userID], references: [user_id])
-  menu Menu @relation(fields: [menuID], references: [menu_id])
+  user User @relation(fields: [userID], references: [user_id], onDelete: Cascade)
+  menu Menu @relation(fields: [menuID], references: [menu_id], onDelete: Cascade)
   @@id([userID, menuID])
 }
 
@@ -58,7 +63,7 @@ model Allergy{
 model Relation_user_allergy{
   userID String //FK
   allergyID String  //FK
-  users User @relation(fields: [userID], references: [user_id])
+  users User @relation(fields: [userID], references: [user_id], onDelete: Cascade)
   allergies Allergy @relation(fields: [allergyID], references: [allergy_id])
   @@id([userID, allergyID])  //PK
 }
