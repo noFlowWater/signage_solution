@@ -18,6 +18,7 @@ const HomePage = () => {
       localStorage.removeItem('userId');
       localStorage.removeItem('userCart');
       localStorage.removeItem('total');
+      localStorage.removeItem('userAl');
     };
 
     clearLocalStorage(); // 컴포넌트가 마운트될 때 localStorage 비우기

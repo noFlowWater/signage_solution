@@ -7,7 +7,7 @@ const UserNavBar = () => {
                 <ul id="nav2" className="nav container-fluid justify-content-center">
                     <li className="nav-item me-5">
                         <NavLink 
-                        activeClassName = "active"
+                        activeclassname = "active"
                         className="nav-link" 
                         aria-current="page" 
                         to="/"
@@ -17,7 +17,7 @@ const UserNavBar = () => {
                     
                     <li className="nav-item me-5">
                         <NavLink 
-                        activeClassName = "active"
+                        activeclassname = "active"
                         className="nav-link" 
                         aria-current="page" 
                         to="/user/menu/0"
@@ -27,7 +27,7 @@ const UserNavBar = () => {
 
                     <li className="nav-item me-5">
                         <NavLink 
-                        activeClassName = "active"
+                        activeclassname = "active"
                         className="nav-link" 
                         aria-current="page" 
                         to="/user/menu/1"
@@ -37,7 +37,7 @@ const UserNavBar = () => {
 
                     <li className="nav-item me-5">
                         <NavLink 
-                        activeClassName = "active"
+                        activeclassname = "active"
                         className="nav-link" 
                         aria-current="page" 
                         to="/user/menu/2"
@@ -46,7 +46,7 @@ const UserNavBar = () => {
                     </li>
                     <li className="nav-item me-5">
                     <NavLink 
-                        activeClassName = "active"
+                        activeclassname = "active"
                         className="nav-link" 
                         aria-current="page" 
                         to="/user/menu/3"
@@ -55,7 +55,7 @@ const UserNavBar = () => {
                     </li>
                     <li className="nav-item me-5">
                     <NavLink 
-                        activeClassName = "active"
+                        activeclassname = "active"
                         className="nav-link" 
                         aria-current="page" 
                         to="/user/menu/4"
@@ -64,7 +64,7 @@ const UserNavBar = () => {
                     </li>
                     <li className="nav-item">
                     <NavLink 
-                        activeClassName = "active"
+                        activeclassname = "active"
                         className="nav-link" 
                         aria-current="page" 
                         to="/user/menu/5"

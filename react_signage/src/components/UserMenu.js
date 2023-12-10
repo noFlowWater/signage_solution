@@ -77,9 +77,6 @@ const UserMenu = () => {
     };
   
     const Modal = ({ menu, onClose}) => {
-        console.log("Modal 안에서 userAl:",userAl);
-        // userAl 문자열을 JSON 객체로 파싱하고, 해당 객체 내의 배열을 추출
-        console.log("사용자 알러지",userAllergies);
         // menu.allergies와 userAllergies를 비교하여 일치하는 알러지가 있는지 확인
         const hasMatchingAllergy = menu.allergies.some(menuAllergy => {
             

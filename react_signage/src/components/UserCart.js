@@ -10,7 +10,7 @@ const OrderButton = styled.button`
   color: white;
   padding: 10px 55px;
   border-radius: 10px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5); /* 버튼에 그림자 효과 적용 */
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 5); /* 버튼에 그림자 효과 적용 */
 `;
 
 const UserCart = () => {
@@ -97,22 +97,6 @@ const UserCart = () => {
                     <img src={require('../img/CartBtn.png')} alt="Cart" height="75" width="215" />
                 </div>
             </div>
-            {/* {cart.map((item, index) => (
-                <div key={index}>
-                <div style={{ display: "flex", alignItems: "center" }}>
-                  <div style={{ fontFamily: "SansB", fontSize: "30px",marginRight: "10px" }}>{item.menu_name}</div>
-                  <button onClick={() => handleRemove(item)}>X</button>
-                </div>
-                <div style={{ fontFamily: "SansM", fontSize: "20px" }}>￦{item.price}</div>
-                <div style={{ display: "flex", alignItems: "center" }}>
-                  <button onClick={() => handleDecrease(item)}>-</button>
-                  <div style={{ fontFamily: "SansM", fontSize: "20px" }}>
-                    수량: {calculateQuantity(item)}
-                  </div>
-                  <button onClick={() => handleIncrease(item)}>+</button>
-                </div>
-              </div>              
-            ))} */}
 
             {/* 흰색 박스로 구분 */}
             {cart.map((item, index) => (
