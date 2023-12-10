@@ -8,7 +8,7 @@ import cv2
 import shutil
 import numpy as np
 import uuid
-from flask import Flask, render_template,request, jsonify
+from flask import Flask, request, jsonify
 from flask_socketio import SocketIO, emit, join_room
 from flask_cors import CORS
 import mysql.connector
@@ -28,9 +28,6 @@ user = os.getenv('user')
 password = os.getenv('password')
 host = os.getenv('host')
 database_name = os.getenv('database_name')
-sql_file_path = os.getenv('sql_file_path')
-cors_url_1 = os.getenv('CORS_URL_1')
-cors_url_2 = os.getenv('CORS_URL_2')
 korean_font_path = os.getenv('korean_font_path')
 
 # ------------------------ ------- Database 유저 세팅 ------- ------------------------
@@ -38,28 +35,6 @@ korean_font_path = os.getenv('korean_font_path')
 # root계정 연결 -> flask 전용 유저 생성 및 연결
 
 try:
-    # MySQL 서버에 연결
-    conn = mysql.connector.connect(
-        host=host,
-        user=user,
-        password=password,  # 여기에 MySQL root 계정의 비밀번호를 입력하세요.
-    )
-    print("root 유저 연결 성공!")
-
-    cursor = conn.cursor()
-    cursor.execute("SHOW DATABASES")
-    databases = [db[0] for db in cursor]
-
-    if database_name in databases:
-        print(f"{database_name} 데이터베이스가 이미 존재합니다.")
-    else:
-        cursor.execute(f"CREATE DATABASE {database_name}")
-        print(f"{database_name} 데이터베이스를 생성하였습니다.")
-    
-    if conn.is_connected():
-        cursor.close()
-        conn.close()
-
     # MySQL 서버에 연결
     conn = mysql.connector.connect(
         host=host,
@@ -78,39 +53,6 @@ except mysql.connector.Error as err:
         print("데이터베이스가 존재하지 않습니다.")
     else:
         print("연결에 실패하였습니다: {}".format(err))
-
-# ------------------------ ------- Database SQL생성 ------- ------------------------
-
-# SQL 파일 읽기
-with open(sql_file_path, 'r') as file:
-    sql_script = file.read()
-
-# SQL 명령문을 개별적으로 분할
-sql_commands = sql_script.split(';')
-
-# 각 SQL 명령문 실행
-for command in sql_commands:
-    try:
-        # 빈 명령문은 건너뛰기
-        if not command.strip():
-            continue
-
-        cursor.execute(command)
-        # 결과 처리
-        if cursor.with_rows:
-            print("> SELECT / SQL문 실행. : \n> statement : \n{}".format(command))
-            print(cursor.fetchall())
-        else:
-            print("> UPDATE / SQL문 실행. \n> statement : \n{} \n> rowcount : {}".format(
-                command, cursor.rowcount))
-        print("> Statement executed successfully :) \n")
-    except mysql.connector.Error as err:
-        print("> Error executing statement :\n{}\n> 에러메시지 : {}".format(command, err))
-
-# 변경사항 적용
-conn.commit()
-
-print(">> Database schema setting complete! :) ")
 
 # ------------------------ ------- 얼굴 인식 ------- ------------------------
 # 얼굴 인식 모델
@@ -160,6 +102,25 @@ def face_detector(img, size = 0.5):
 
     return img,roi
 
+def recognize_face_in_image(image):
+    """
+    Recognizes a face in the given image using the users_models list.
+    Returns the user ID, name, and confidence of the most recognized user.
+    """
+    highest_confidence = 0
+    recognized_user_id = None
+    recognized_user_name = ""
+
+    for user_id, user_name, model in users_models:
+        result = model.predict(image)
+        confidence = int(100 * (1 - (result[1]) / 300))
+        if confidence > highest_confidence:
+            highest_confidence = confidence
+            recognized_user_id = user_id
+            recognized_user_name = user_name
+
+    return recognized_user_id, recognized_user_name, highest_confidence
+
 def load_user_models(cursor):
     """
     Load user models from the database and add them to the global users_models list.
@@ -206,8 +167,8 @@ createFolder('./temp')
 
 # ------------------------ ------- Flask서버 셋팅 ------- ------------------------
 
-app = Flask(__name__, static_folder="./templates/static")
-CORS(app, origins=[cors_url_1, cors_url_2])
+app = Flask(__name__)
+CORS(app)
 
 socketio = SocketIO(app, cors_allowed_origins="*")
 
@@ -357,25 +318,6 @@ def determine_most_recognized_user(client_id):
         return most_common_user_id, most_common_user_name
     else:
         return None, None  # 예측된 사용자가 없는 경우
-
-def recognize_face_in_image(image):
-    """
-    Recognizes a face in the given image using the users_models list.
-    Returns the user ID, name, and confidence of the most recognized user.
-    """
-    highest_confidence = 0
-    recognized_user_id = None
-    recognized_user_name = ""
-
-    for user_id, user_name, model in users_models:
-        result = model.predict(image)
-        confidence = int(100 * (1 - (result[1]) / 300))
-        if confidence > highest_confidence:
-            highest_confidence = confidence
-            recognized_user_id = user_id
-            recognized_user_name = user_name
-
-    return recognized_user_id, recognized_user_name, highest_confidence
 
 def create_user_temp_dir(client_id):
     client_dir = os.path.join(TEMP_IMAGE_DIR, client_id)
@@ -551,16 +493,6 @@ def alternative_rec():
     else:
         # 전화번호가 데이터베이스에 없는 경우 오류 메시지를 반환합니다.
         return {"error": "존재하지 않는 전화번호입니다. 다시 입력해주세요."}, 400
-
-
-@app.route("/")
-def index():
-    """
-    The index function returns the index.html template, which is a landing page for users.
-    
-    :return: The index
-    """
-    return render_template("index.html")
 
 
 if __name__ == "__main__":
