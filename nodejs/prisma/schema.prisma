@@ -71,7 +71,7 @@ model Relation_user_allergy{
 model Relation_menu_allergy{
   menuID String  //FK
   allergyID String  //FK
-  menus Menu @relation(fields: [menuID], references: [menu_id])
+  menus Menu @relation(fields: [menuID], references: [menu_id], onDelete: Cascade)
   allergies Allergy @relation(fields: [allergyID], references: [allergy_id])
   @@id([menuID, allergyID]) //PK
 }
