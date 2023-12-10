@@ -1,14 +1,33 @@
 import React, { useEffect, useRef, useState } from 'react';
 import io from 'socket.io-client';
-import { flask } from '../constants';
+import { flask, kiosk } from '../constants';
 import { Link, useNavigate } from 'react-router-dom';
 import shortUUID from 'short-uuid';
 import UserRecResultModal from '../components/UserRecResultModal';
 import FaceRecNavBar from '../components/FaceRecNavBar';
+import axios from 'axios';
+
+// 게이지 로딩 바 컴포넌트
 
 const CLIENT_ID = shortUUID.generate();
 
+const LoadingBar = ({ progress }) => {
+    const barStyle = {
+      width: `${progress * 3.3}%`, // 10% 단위로 게이지 증가
+      height: '30px',
+      backgroundColor: '#FF4B4B',
+      maxWidth: '800px', // 가로 폭의 최대값 설정
+    };
+  
+    return (
+      <div style={{ width: '800px', height: '30px', border: '1px solid gray', maxWidth: '800px' }}>
+        <div style={barStyle}></div>
+      </div>
+    );
+  };
+
 const UserRecCam = () => {
+    
     const videoRef = useRef(null);
     const canvasRef = useRef(null);
     const [socket, setSocket] = useState(null);
@@ -19,6 +38,7 @@ const UserRecCam = () => {
     const [isModelLoaded, setIsModelLoaded] = useState(false);
     const [modalOpen, setModalOpen] = useState(false); // 모달 상태 관리
     const [recognizedUser, setRecognizedUser] = useState({ name: '', id: '' });
+    const [loadingProgress, setLoadingProgress] = useState(0);
     
     const navigate = useNavigate();
     // 웹캠 스트림 설정
@@ -57,6 +77,12 @@ const UserRecCam = () => {
             setProcessedImage(image);
             console.log('!!!');
         });
+
+        // 로딩바 초기 디자인
+        newSocket.on('send_success', (image) => {
+            setProcessedImage(image);
+            setLoadingProgress(prevProgress => prevProgress + 1);
+          });
 
         newSocket.on('user_recognized', (data) => {
             setRecognizedUser({ name: data.predicted_user_name, id: data.predicted_user_id });
@@ -137,12 +163,33 @@ const UserRecCam = () => {
 
     // 버튼에 대한 이벤트 핸들러 정의
     const handleYes = () => {
-        navigate('/user/menu/1')
+        const userId = localStorage.getItem('userId');
+        console.log("잇사에서 테스트하는 부분:",userId)
+        const data = {
+            user_id:userId
+        };
+
+        axios.post(`${kiosk}/users/all`, JSON.stringify(data),{
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+        .then(response => {
+            localStorage.setItem('userAl', JSON.stringify(response.data));
+            console.log("받아온 알러지 타입",typeof(JSON.stringify(response.data)));
+            console.log(response.data)
+            navigate('/user/menu/1')  // 추천알고리즘 완료 되면 0으로 수정해야 됨
+        })
+        .catch(error => {
+            console.error(error);
+        });
+        
         console.log("YES 클릭");
         // YES 버튼 로직 구현
     };
 
     const handleAlternative = () => {
+        localStorage.removeItem('userId');
         navigate('/user/rec/alt')
         console.log("대체인증 클릭");
         // 대체인증 버튼 로직 구현
@@ -180,27 +227,32 @@ const UserRecCam = () => {
                                 <div>Collection complete! All images have been saved.</div>
                             ) : (
                                 <div className="camera-container">
-                                    <video 
-                                        ref={videoRef} 
-                                        autoPlay 
-                                        playsInline 
-                                        width="400" 
-                                        height="300" 
-                                        style={{ transform: 'rotateY(180deg)' }} 
-                                    />
-                                    <img 
-                                        id="photo" 
-                                        src={processedImage} 
-                                        width="400" 
-                                        height="300" 
-                                        alt="Processed" 
-                                        style={{
-                                            display: processedImage ? 'block' : 'none',
-                                            transform: 'rotateY(180deg)'
-                                        }}
-                                    />
+                                    <div style={{ display: 'flex', flexDirection: 'row' }}>
+                                        <video 
+                                            ref={videoRef} 
+                                            autoPlay 
+                                            playsInline 
+                                            width="400" 
+                                            height="300" 
+                                            style={{ transform: 'rotateY(180deg)' }} 
+                                        />
+                                        <img 
+                                            id="photo" 
+                                            src={processedImage} 
+                                            width="400" 
+                                            height="300" 
+                                            alt="Processed" 
+                                            style={{
+                                                display: processedImage ? 'block' : 'none',
+                                                transform: 'rotateY(180deg)'
+                                            }}
+                                        />
+                                    </div>
                                 </div>
                             )}
+                             <div style={{ display: "flex", justifyContent: "center",paddingTop:'50px' }}>
+                                <LoadingBar progress={loadingProgress} />
+                            </div>
                         {/* The canvas is used for capturing frames but is not displayed */}
                         <canvas ref={canvasRef} style={{ display: 'none' }}></canvas>
                     </div>

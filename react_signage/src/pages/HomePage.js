@@ -14,14 +14,22 @@ const HomePage = () => {
 
   // 컴포넌트가 마운트될 때와 화면 크기가 변경될 때 이벤트 리스너 등록
   useEffect(() => {
-    const screenHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
-    const paddingTopValue = screenHeight * paddingTopRatio;
-    document.documentElement.style.setProperty('--padding-top', `${paddingTopValue}px`);
+    const clearLocalStorage = () => {
+      localStorage.removeItem('userId');
+      localStorage.removeItem('userCart');
+      localStorage.removeItem('total');
+      localStorage.removeItem('userAl');
+    };
+
+    clearLocalStorage(); // 컴포넌트가 마운트될 때 localStorage 비우기
+
+    handleResize();
+
     window.addEventListener('resize', handleResize);
     return () => {
       window.removeEventListener('resize', handleResize);
     };
-  }, [paddingTopRatio]);
+  }, [paddingTopRatio]); // 원래 의존성 배열 : paddingTopRatio 인데 []로 테스팅 해볼 것
 
   return (
     <div style={{ backgroundImage: `url(${require('../img/HomeBG.png')})`, backgroundSize: 'cover', backgroundPosition: 'center', width: '100vw', height: '100vh', overflow: 'hidden',paddingTop: 'var(--padding-top)'}}>

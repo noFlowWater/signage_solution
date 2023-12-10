@@ -10,7 +10,7 @@ const OrderButton = styled.button`
   color: white;
   padding: 10px 55px;
   border-radius: 10px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5); /* 버튼에 그림자 효과 적용 */
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 5); /* 버튼에 그림자 효과 적용 */
 `;
 
 const UserCart = () => {
@@ -97,22 +97,37 @@ const UserCart = () => {
                     <img src={require('../img/CartBtn.png')} alt="Cart" height="75" width="215" />
                 </div>
             </div>
+
+            {/* 흰색 박스로 구분 */}
             {cart.map((item, index) => (
-                <div key={index}>
-                    <h1>{item.menu_name}</h1>
-                    <p>{item.price}</p>
-                    <div>
-                        <button onClick={() => handleDecrease(item)}>-</button>
-                        수량: {calculateQuantity(item)}
-                        <button onClick={() => handleIncrease(item)}>+</button>
-                        <div><button onClick={() => handleRemove(item)}>X</button></div>
+                <div style={{ display: "flex", justifyContent: "center" }}>
+                    <div key={index} style={{ backgroundColor: "white", padding: "10px", marginBottom: "10px", borderRadius: "5px", width: "90%", height: "100%", boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.2)" }}>
+                            <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                                <div style={{ fontFamily: "SansB", fontSize: "25px", marginRight: "10px" }}>{item.menu_name}</div>
+                                <button onClick={() => handleRemove(item)}>X</button>
+                            </div>
+
+                            <div style={{ display: "flex", justifyContent: "center" }}>
+                                <div style={{ fontFamily: "SansM", fontSize: "20px" }}>￦{item.price}</div>
+                            </div>
+                            <div style={{ display: "flex", justifyContent: "center" }}>
+                                <div style={{ display: "flex", alignItems: "center" }}>
+                                    <button onClick={() => handleDecrease(item)}>-</button>
+                                    <div style={{ fontFamily: "SansM", fontSize: "20px",paddingLeft:'10px',paddingRight:'10px' }}>
+                                        수량: {calculateQuantity(item)}
+                                    </div>
+                                    <button onClick={() => handleIncrease(item)}>+</button>
+                                </div>
+                            </div>
                     </div>
                 </div>
             ))}
+
+            
             <hr style={{ borderTop: '1px solid black', width: '100%' }} />
             <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center',}}>
                 <div style={{ fontFamily: 'SansB', fontSize: '20px' }}>
-                    TOTAL: {calculateTotal()} {/* 총 금액 표시 */}
+                    TOTAL: ￦{calculateTotal()} {/* 총 금액 표시 */}
                 </div>
                 <hr style={{ borderTop: '1px solid black', width: '100%' }} />
                 <div style={{ fontFamily: 'SansM'}}>
