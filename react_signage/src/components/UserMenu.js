@@ -14,6 +14,7 @@ const UserMenu = () => {
     const userId = localStorage.getItem('userId');
     console.log("현재 사용자 : ", userId);
     const userAl = localStorage.getItem('userAl');
+    const userAllergies = JSON.parse(userAl).data;
     console.log("알러지 로컬스토리지 타입:",typeof(userAl));
     console.log("현재 사용자 알러지 : ",userAl);
   
@@ -37,8 +38,12 @@ const UserMenu = () => {
               setMenus(response.data);
             } else {
               const response = await axios.get(`${kiosk}/menu/${cid}`);
-              console.log(response.data);
-              setMenus(response.data);
+              // 메뉴 데이터에 hasAllergy 속성 추가
+              const menusWithAllergyInfo = response.data.map(menu => ({
+                  ...menu,
+                  hasAllergy: menu.allergies.some(allergy => userAllergies.includes(allergy))
+              }));
+              setMenus(menusWithAllergyInfo);
             }
           } catch (error) {
             console.log(error);
@@ -72,17 +77,13 @@ const UserMenu = () => {
     };
   
     const Modal = ({ menu, onClose}) => {
-        const userAl = localStorage.getItem('userAl');
-        console.log("Modal 안에서 userAl:",userAl);
-        // userAl 값을 배열로 변환
-        const userAllergies = JSON.parse(userAl).data;
         // menu.allergies와 userAllergies를 비교하여 일치하는 알러지가 있는지 확인
         const hasMatchingAllergy = menu.allergies.some(menuAllergy => {
             
             // userAllergies 배열에서 해당 알러지와 일치하는 객체를 찾음
             const matchingAllergy = userAllergies.find(userAllergy => {
-                console.log(userAllergy)
-                console.log(menuAllergy)
+                console.log(">> userAllergy : ",userAllergy)
+                console.log(">> menuAllergy : ",menuAllergy)
               return userAllergy == menuAllergy;
             });
           
@@ -145,8 +146,38 @@ const UserMenu = () => {
       return (
         <div style={{ display: 'flex', flexWrap: 'wrap' }}>
           {menus.map((menu, index) => (
-            <div key={index} onClick={() => addToCart(menu)} style={{ width: '33%', padding: '10px' }}>
-                <div style={{ backgroundColor: 'white', width: '100%', height: '300px', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: '20px', borderRadius: '5px', boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.2)"  }}>
+            <div key={index} onClick={() => addToCart(menu)} style={{ 
+                  width: '33%', 
+                  padding: '10px'
+              }}>
+                  <div style={{ 
+                      position: 'relative', // position: relative 추가
+                      width: '100%', 
+                      height: '300px', 
+                      display: 'flex', 
+                      flexDirection: 'column', 
+                      justifyContent: 'center', 
+                      alignItems: 'center', 
+                      padding: '20px', 
+                      borderRadius: '5px', 
+                      boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.2)",
+                      border: menu.hasAllergy ? '2px solid red' : 'none', // 알러지가 있으면 빨간 테두리 적용
+                      backgroundColor: menu.hasAllergy ? '#ffebeb' : 'white' // 알러지가 있으면 배경색 변경
+                  }}>
+                    {menu.hasAllergy && 
+                        <div style={{ 
+                            position: 'absolute', 
+                            top: '10px', 
+                            right: '10px', 
+                            backgroundColor: 'red', 
+                            color: 'white', 
+                            padding: '5px', 
+                            borderRadius: '5px',
+                            fontSize: '12px',
+                            fontWeight: 'bold',
+                            fontFamily: "SansM"
+                        }}>알러지 주의</div>
+                    }
                     <img src={`${kiosk}/${menu.file_path}`} alt={menu.menu_name} style={{ width: '60%', height: 'auto', marginBottom: '10px' }} />
                     <div style={{ fontFamily: "SansB", fontSize: '30px', textAlign: 'center' }}>{menu.menu_name}</div>
                     <div style={{ fontFamily: "SansM", fontSize: '20px', textAlign: 'center' }}>￦{menu.price}</div>

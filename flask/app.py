@@ -270,9 +270,9 @@ def handle_image_upload(client_id, data):
                     clear_temp_storage(client_id)
                 else:
                     image = putTextWithKorean(image, f"Unlocked: {recognized_user_name} / {highest_confidence}", (75, 200), korean_font_path, 20, (0, 255, 0))
-                
                     # 얼굴 인식 횟수 증가 및 임시 이미지 저장
                     client_face_counts[client_id] += 1
+                    emit("send_success", {"message": f"{client_face_counts[client_id]}send_success"}, room=client_id)
                     save_temp_image(client_id, face, recognized_user_id, recognized_user_name)
                     print("!", end="")
                     sys.stdout.flush()  # 수동으로 flush   
