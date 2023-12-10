@@ -13,10 +13,15 @@ const UserMenu = () => {
   
     const userId = localStorage.getItem('userId');
     console.log("현재 사용자 : ", userId);
+
+    // Safely getting and parsing the userAl item from localStorage
     const userAl = localStorage.getItem('userAl');
-    const userAllergies = JSON.parse(userAl).data;
-    console.log("알러지 로컬스토리지 타입:",typeof(userAl));
-    console.log("현재 사용자 알러지 : ",userAl);
+    let userAllergies = [];
+    if (userAl) {
+        userAllergies = JSON.parse(userAl).data;
+    } else {
+        console.log("No allergy data found in localStorage.");
+    }
   
     // 모달 상태 관리
     const [modalOpen, setModalOpen] = useState(false);
@@ -79,7 +84,6 @@ const UserMenu = () => {
     const Modal = ({ menu, onClose}) => {
         // menu.allergies와 userAllergies를 비교하여 일치하는 알러지가 있는지 확인
         const hasMatchingAllergy = menu.allergies.some(menuAllergy => {
-            
             // userAllergies 배열에서 해당 알러지와 일치하는 객체를 찾음
             const matchingAllergy = userAllergies.find(userAllergy => {
                 console.log(">> userAllergy : ",userAllergy)

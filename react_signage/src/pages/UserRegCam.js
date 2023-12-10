@@ -12,12 +12,12 @@ const LoadingBar = ({ progress }) => {
     const barStyle = {
       width: `${progress * 1}%`, // 10% 단위로 게이지 증가
       height: '30px',
-      backgroundColor: 'green',
-      maxWidth: '400px', // 가로 폭의 최대값 설정
+      backgroundColor: '#FF4B4B',
+      maxWidth: '800px', // 가로 폭의 최대값 설정
     };
   
     return (
-      <div style={{ width: '300px', height: '30px', border: '1px solid gray', maxWidth: '300px' }}>
+      <div style={{ width: '800px', height: '30px', border: '1px solid gray', maxWidth: '800px' }}>
         <div style={barStyle}></div>
       </div>
     );
@@ -186,33 +186,37 @@ const UserRegCam = () => {
                         {isCollectionComplete ? (
                                 <div>Collection complete! All images have been saved.</div>
                             ) : (
-                                <div className="camera-container">
+                                <div className="camera-container" >
                                     <div className="camera-info">
                                         <p>Name: {name}</p>
                                         <p>Phone Number: {phoneNumber}</p>
                                     </div>
-                                    <video 
-                                        ref={videoRef} 
-                                        autoPlay 
-                                        playsInline 
-                                        width="400" 
-                                        height="300" 
-                                        style={{ transform: 'rotateY(180deg)' }} 
-                                    />
-                                    <img 
-                                        id="photo" 
-                                        src={processedImage} 
-                                        width="400" 
-                                        height="300" 
-                                        alt="Processed" 
-                                        style={{
-                                            display: processedImage ? 'block' : 'none',
-                                            transform: 'rotateY(180deg)'
-                                        }}
-                                    />
-                                    <LoadingBar progress={loadingProgress} />
+                                    <div style={{ display: 'flex', flexDirection: 'row' }}>
+                                        <video 
+                                            ref={videoRef} 
+                                            autoPlay 
+                                            playsInline 
+                                            width="400" 
+                                            height="300" 
+                                            style={{ transform: 'rotateY(180deg)' }} 
+                                        />
+                                        <img 
+                                            id="photo" 
+                                            src={processedImage} 
+                                            width="400" 
+                                            height="300" 
+                                            alt="Processed" 
+                                            style={{
+                                                display: processedImage ? 'block' : 'none',
+                                                transform: 'rotateY(180deg)'
+                                            }}
+                                        />
+                                    </div>
                                 </div>                                
                             )}
+                            <div style={{ display: "flex", justifyContent: "center",paddingTop:'50px' }}>
+                                <LoadingBar progress={loadingProgress} />
+                            </div>
                         {/* The canvas is used for capturing frames but is not displayed */}
                         <canvas ref={canvasRef} style={{ display: 'none' }}></canvas>
                     </div>

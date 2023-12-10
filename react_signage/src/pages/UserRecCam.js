@@ -15,12 +15,12 @@ const LoadingBar = ({ progress }) => {
     const barStyle = {
       width: `${progress * 3.3}%`, // 10% 단위로 게이지 증가
       height: '30px',
-      backgroundColor: 'green',
-      maxWidth: '400px', // 가로 폭의 최대값 설정
+      backgroundColor: '#FF4B4B',
+      maxWidth: '800px', // 가로 폭의 최대값 설정
     };
   
     return (
-      <div style={{ width: '300px', height: '30px', border: '1px solid gray', maxWidth: '300px' }}>
+      <div style={{ width: '800px', height: '30px', border: '1px solid gray', maxWidth: '800px' }}>
         <div style={barStyle}></div>
       </div>
     );
@@ -178,11 +178,12 @@ const UserRecCam = () => {
             localStorage.setItem('userAl', JSON.stringify(response.data));
             console.log("받아온 알러지 타입",typeof(JSON.stringify(response.data)));
             console.log(response.data)
+            navigate('/user/menu/1')  // 추천알고리즘 완료 되면 0으로 수정해야 됨
         })
         .catch(error => {
             console.error(error);
         });
-        navigate('/user/menu/1')  // 추천알고리즘 완료 되면 0으로 수정해야 됨
+        
         console.log("YES 클릭");
         // YES 버튼 로직 구현
     };
@@ -226,28 +227,32 @@ const UserRecCam = () => {
                                 <div>Collection complete! All images have been saved.</div>
                             ) : (
                                 <div className="camera-container">
-                                    <video 
-                                        ref={videoRef} 
-                                        autoPlay 
-                                        playsInline 
-                                        width="400" 
-                                        height="300" 
-                                        style={{ transform: 'rotateY(180deg)' }} 
-                                    />
-                                    <img 
-                                        id="photo" 
-                                        src={processedImage} 
-                                        width="400" 
-                                        height="300" 
-                                        alt="Processed" 
-                                        style={{
-                                            display: processedImage ? 'block' : 'none',
-                                            transform: 'rotateY(180deg)'
-                                        }}
-                                    />
-                                    <LoadingBar progress={loadingProgress} />
+                                    <div style={{ display: 'flex', flexDirection: 'row' }}>
+                                        <video 
+                                            ref={videoRef} 
+                                            autoPlay 
+                                            playsInline 
+                                            width="400" 
+                                            height="300" 
+                                            style={{ transform: 'rotateY(180deg)' }} 
+                                        />
+                                        <img 
+                                            id="photo" 
+                                            src={processedImage} 
+                                            width="400" 
+                                            height="300" 
+                                            alt="Processed" 
+                                            style={{
+                                                display: processedImage ? 'block' : 'none',
+                                                transform: 'rotateY(180deg)'
+                                            }}
+                                        />
+                                    </div>
                                 </div>
                             )}
+                             <div style={{ display: "flex", justifyContent: "center",paddingTop:'50px' }}>
+                                <LoadingBar progress={loadingProgress} />
+                            </div>
                         {/* The canvas is used for capturing frames but is not displayed */}
                         <canvas ref={canvasRef} style={{ display: 'none' }}></canvas>
                     </div>
