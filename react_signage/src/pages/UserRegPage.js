@@ -40,12 +40,12 @@ const UserRegPage = () => {
         <div>
             <FaceRegNavBar />
             <div style={{ display: "flex", justifyContent: "center" }}>
-                <div style={{ maxWidth: '500px', margin: 'auto', paddingTop: '150px' }}>
+                <div style={{ maxWidth: '500px', margin: 'auto', paddingTop: '120px' }}>
                     <div style={{ fontFamily: 'SansM',fontSize: '30px' }}>이름과 연락처를 입력하세요</div>
                     <div style = {{paddingTop : '30px'}}>
                     <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                         <input
-                            style={{ padding: '10px', fontSize: '16px', borderRadius: '5px', border: '1px solid #ccc' }}
+                            style={{ fontFamily: 'SansM',padding: '25px', fontSize: '20px', borderRadius: '5px', border: '1px solid #ccc' }}
                             type="text"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
@@ -53,15 +53,16 @@ const UserRegPage = () => {
                             required
                         />
                         <input
-                            style={{ padding: '10px', fontSize: '16px', borderRadius: '5px', border: '1px solid #ccc' }}
+                            style={{ fontFamily: 'SansM',padding: '25px', fontSize: '20px', borderRadius: '5px', border: '1px solid #ccc' }}
                             type="tel"
                             value={phoneNumber}
                             onChange={(e) => setPhoneNumber(e.target.value)}
                             placeholder="010-XXXX-XXXX"
                             required
                         />
+                        <div style = {{paddingTop : '30px'}} />
                         <button
-                            style={{ padding: '10px 20px', fontSize: '16px', borderRadius: '5px', cursor: 'pointer', backgroundColor: '#007bff', color: 'white', border: 'none' }}
+                            style={{ fontFamily: 'SansM',padding: '25px', fontSize: '30px', borderRadius: '5px', cursor: 'pointer', backgroundColor: '#FF4B4B', color: 'white', border: 'none',boxShadow: "0px 4px 10px rgba(0, 0, 0, 5)" }}
                             type="submit"
                         >
                             등록

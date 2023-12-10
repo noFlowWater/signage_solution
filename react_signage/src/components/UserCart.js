@@ -10,7 +10,7 @@ const OrderButton = styled.button`
   color: white;
   padding: 10px 55px;
   border-radius: 10px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5); /* 버튼에 그림자 효과 적용 */
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 5); /* 버튼에 그림자 효과 적용 */
 `;
 
 const UserCart = () => {
