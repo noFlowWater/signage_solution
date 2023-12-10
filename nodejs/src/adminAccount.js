@@ -6,6 +6,7 @@ const database = require('./database')
 app.use(express.json());
 app.use(cors());
 
+//파일 이름 수정필요
 
 //db 연결
 database.$connect()
