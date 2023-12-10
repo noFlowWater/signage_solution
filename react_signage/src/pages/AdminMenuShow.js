@@ -40,14 +40,16 @@ const AdminMenuShow = () => {
                     <img src={require('../img/Logo.png')} alt="logo" height="110" width="300"/>
                 </div>
             </nav>
-            <div className="card ms-5 me-5"
-             >
-            {menus.file_path ?
-                    <img style={{ width: '15%', height: 'auto' }} src={`${kiosk}/${menus.file_path}`} class="card-img-top" alt="메뉴 이미지" />
-                    :<p class="card-text"
-                    style = {{fontFamily: 'SansM', fontSize:'40px'}}>이미지 없음</p>
-                    }
-                    <div class="card-body">
+            <div className="card ms-5 me-5">
+                <div style={{ display: 'flex' }}>
+                    <div style={{ flex: 2 }}>
+                        {menus.file_path ?
+                            <img style={{ width: '70%', height: 'auto' }} src={`${kiosk}/${menus.file_path}`} class="card-img-top" alt="메뉴 이미지" />
+                            :<p class="card-text"
+                            style = {{fontFamily: 'SansM', fontSize:'40px'}}>이미지 없음</p>
+                            }
+                    </div>
+                    <div class="card-body" style={{ flex: 1 }}>
                     <h3 class="card-title"
                     style = {{fontFamily: 'SansM', fontSize:'40px'}}>{menus.menu_name}</h3>
                     <h5 style = {{fontFamily: 'SansM', fontSize:'30px'}}>가격</h5>
@@ -73,19 +75,20 @@ const AdminMenuShow = () => {
                     <Link
                         className="btn btn-primary"
                         to={`/admin/menu/${id}/edit`}
-                        style = {{fontFamily: 'SansM', fontSize:'20px'}}
+                        style = {{fontFamily: 'SansM', fontSize:'20px',boxShadow: '0px 4px 10px rgba(0,0,0,5)'}}
                     >
                             메뉴 수정
                     </Link>
                     <div 
                         className ="btn btn-danger ms-2"
                         onClick={goBack}
-                        style = {{fontFamily: 'SansM', fontSize:'20px'}}
+                        style = {{fontFamily: 'SansM', fontSize:'20px',boxShadow: '0px 4px 10px rgba(0,0,0,5)'}}
                         >
                             돌아가기
                     </div>
                 </div>
             </div>
+        </div>
         </div>
     )
 }
