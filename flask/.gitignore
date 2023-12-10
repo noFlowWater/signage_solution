@@ -1,7 +1,9 @@
-env/
+/env/
 .env
 __pycache__
 
+/temp/
+/temp_images/
 /temp_face_imgs/
 /testreact/IPK/
 /.vscode/
