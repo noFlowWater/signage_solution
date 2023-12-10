@@ -1,6 +1,6 @@
 import React, {useState, useEffect } from 'react';
 import axios from 'axios';
-import { flask } from '../constants';
+import { flask, kiosk } from '../constants';
 import { Link, useNavigate } from 'react-router-dom';
 import AltCertNavBar from '../components/AltCertNavBar'
 import AltCertResultModal from '../components/AltCertResultModal'
@@ -25,8 +25,29 @@ const UserAltCertPage = () => {
             console.log(response.data); // 응답 데이터를 콘솔에 출력
             setUserData(response.data);
             console.log("SUCCESS!!!")
-            localStorage.setItem('userId',response.data.user_id);
-            navigate('/user/menu/1')
+
+            const userId = localStorage.setItem('userId',response.data.user_id);
+            console.log(userId)
+            if (userId) {
+                const data = {
+                    user_id:userId
+                };
+    
+                axios.post(`${kiosk}/users/all`, JSON.stringify(data),{
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                })
+                .then(response => {
+                    localStorage.setItem('userAl',JSON.stringify(response.data));
+                    console.log("받아온 알러지 타입",typeof(JSON.stringify(response.data)));
+                    console.log(response.data)
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+            }
+            navigate('/user/menu/1')  // 추천알고리즘 완료 되면 0으로 수정해야 됨
         } catch (error) {
             // 서버 응답이 실패한 경우
             setModalControl(!modalControl);

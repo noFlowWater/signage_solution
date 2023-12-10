@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link,useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { kiosk } from '../constants';
 
@@ -68,6 +68,7 @@ export const ModalView = styled.div.attrs((props) => ({
 
 export const UserPayModal = ({ content }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
 
   const openModalHandler = () => {
     setIsOpen(!isOpen);
@@ -103,6 +104,10 @@ export const UserPayModal = ({ content }) => {
       localStorage.removeItem('userCart');
       localStorage.removeItem('total');
       console.log("로컬 스토리지 비움 완료")
+
+      // 페이지 이동 및 리렌더링
+      navigate("/");
+      window.location.reload(); // 페이지 새로고침
     } catch (error) {
       console.log(error);
     }
@@ -119,11 +124,9 @@ export const UserPayModal = ({ content }) => {
             <ModalView onClick={(e) => e.stopPropagation()}>
               <img src={require('../img/Logo.png')} alt="Pay" className="pay-image" style={{ width: '150px', height: 'auto' }} />
               <div className='desc' style={{ fontFamily: 'SansM', fontSize: '20px' }}>{content}</div>
-              <Link to="/" style={{ textDecoration: 'none' }}>
                 <button className="btn btn-primary" onClick={handleConfirm}>
                   확인
                 </button>
-              </Link>
             </ModalView>
           </ModalBackdrop>
         ) : null}
