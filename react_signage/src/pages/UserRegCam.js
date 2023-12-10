@@ -8,6 +8,21 @@ import UserAllergyModal from '../components/UserAllergyModal';
 
 const CLIENT_ID = shortUUID.generate();
 
+const LoadingBar = ({ progress }) => {
+    const barStyle = {
+      width: `${progress * 1}%`, // 10% 단위로 게이지 증가
+      height: '30px',
+      backgroundColor: 'green',
+      maxWidth: '400px', // 가로 폭의 최대값 설정
+    };
+  
+    return (
+      <div style={{ width: '300px', height: '30px', border: '1px solid gray', maxWidth: '300px' }}>
+        <div style={barStyle}></div>
+      </div>
+    );
+  };
+
 const UserRegCam = () => {
     const location = useLocation();
     const { name, phoneNumber } = location.state || {};
@@ -20,6 +35,7 @@ const UserRegCam = () => {
     const [userAllergyModalOpen, setUserAllergyModalOpen] = useState(false);
     const [complete,setComplete] = useState(0);
     const [userId,setUserId] = useState('');
+    const [loadingProgress, setLoadingProgress] = useState(0);
 
     // 웹캠 스트림 설정
     useEffect(() => {
@@ -33,6 +49,7 @@ const UserRegCam = () => {
 
         newSocket.on('processed_image', (image) => {
             setProcessedImage(image);
+            setLoadingProgress(prevProgress => prevProgress + 1);
             console.log('!!!');
         });
 
@@ -193,7 +210,8 @@ const UserRegCam = () => {
                                             transform: 'rotateY(180deg)'
                                         }}
                                     />
-                                </div>
+                                    <LoadingBar progress={loadingProgress} />
+                                </div>                                
                             )}
                         {/* The canvas is used for capturing frames but is not displayed */}
                         <canvas ref={canvasRef} style={{ display: 'none' }}></canvas>
