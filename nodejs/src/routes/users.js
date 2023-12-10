@@ -4,7 +4,26 @@ const dotenv = require('dotenv')
 const prisma = require('../database')
 dotenv.config()
 
+//로그인한 사용자에게 해당 사용자의 알러지 정보 보내기
+router.post('/all', async(req,res,err) => {
+  try {
+    const all = await prisma.relation_user_allergy.findMany({
+      where : {
+        userID : req.body.user_id
+      },
+      include : {
+        allergies : true
+      }
+    })
+    const allergyNames = all.map((all) => all.allergies.allergy_name);
+    console.log("all",allergyNames)
+    res.json({"data" : allergyNames});
 
+  } catch {
+    console.log(err)
+    res.sendStatus(500)
+  }
+})
 //사용자가 주문
 router.post('/order', async (req, res) => {
     try {

@@ -82,7 +82,7 @@ async function getMostOrderedMenu(topSimilarUsers, targetUserOrders) {
     const isAlreadyRecommended = recommendedMenus.some(menu => menu.menuID === mostOrderedMenu.menuID);
 
     // 해당 사용자가 주문한 적 없는 메뉴라면 추천 목록에 추가
-    if (!isAlreadyRecommended && !targetUserOrders.some(order => order.menuID === mostOrderedMenu.menuID)) {
+    if (!isAlreadyRecommended && !targetUserOrders.some(order => order.menuID === mostOrderedMenu.menuID)&&mostOrderedMenu != null) {
       recommendedMenus.push(mostOrderedMenu);
     }
   }

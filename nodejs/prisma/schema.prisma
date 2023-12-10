@@ -63,7 +63,7 @@ model Allergy{
 model Relation_user_allergy{
   userID String //FK
   allergyID String  //FK
-  users User @relation(fields: [userID], references: [user_id])
+  users User @relation(fields: [userID], references: [user_id], onDelete: Cascade)
   allergies Allergy @relation(fields: [allergyID], references: [allergy_id])
   @@id([userID, allergyID])  //PK
 }

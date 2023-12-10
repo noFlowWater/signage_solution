@@ -3,17 +3,17 @@ const path = require('path');
 const app = express();
 const cors = require('cors');
 const database = require('./database')
-const { swaggerUi, specs } = require('./swagger/swagger');
+const dotenv = require('dotenv');
 
 app.use(express.json());
 app.use(cors());
 app.use(express.urlencoded({ extends: true}))
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
+const port = process.env.PORT || 4000;
 //db 연결
 database.$connect()
     .then(() => {
-        console.log('연결완료');
+        console.log('Connected');
     })
     .catch(err => {
         console.log(err);
@@ -31,14 +31,12 @@ app.use('/users',require('./routes/users'));
 //image처리를 위한 경로 설정 받은 이미지 uploads 폴더에 저장
 app.use(express.static('uploads'));
 app.use(express.static(path.join(__dirname, '../uploads')))
-// app.use('/api', require('./routes/api'));
-// '/api' 관련 요청은 routes/api에서 처리 -> /api는 메뉴등록,수정,삭제 등을 <요청>함
 
 app.use((error, req, res, next) => {
     res.status(error.status || 500); //express에서 제공하는 errorstatus가 있다면 그걸 클라이언트한테 보내주고 없다면 임의로 500을 보낸다
-    res.send(error.message || '서버에서 에러가 났습니다'); //지정한 error msg가 있다면 그걸 전달하고 없다면 해당 메시지를 보낸다
+    res.send(error.message || 'Error in Server'); //지정한 error msg가 있다면 그걸 전달하고 없다면 해당 메시지를 보낸다
 })
 
-app.listen(4000,'0.0.0.0', () => {
-    console.log(`4000번에서 실행이 되었습니다.`);
+app.listen(port,'0.0.0.0', () => {
+    console.log(`Server is running on port ${port}.`);
 })

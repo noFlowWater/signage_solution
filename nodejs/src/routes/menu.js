@@ -29,13 +29,16 @@ router.post('/0', async (req, res, err) => {
         last_order_time: "desc",
     },
   });
+  if(result1){
     const recentMenu = await prisma.menu.findUnique({
         where : {
         menu_id : result1.menuID
     }
     })
     console.log("recentMenu",recentMenu);
-  resultarr.push(recentMenu); // result1을 배열에 추가
+    resultarr.push(recentMenu); // result1을 배열에 추가
+  }
+    
 
   // 내가 가장 많이 먹은 메뉴
   const result2 = await prisma.menuOrderInfo.findFirst({
@@ -49,13 +52,15 @@ router.post('/0', async (req, res, err) => {
       order_count: "desc",
     },
   });
-  const countMost = await prisma.menu.findUnique({
-    where : {
-        menu_id : result2.menuID
-    }
-    })
-  console.log("countMost",countMost);
-  resultarr.push(countMost); 
+  if(result2) {
+    const countMost = await prisma.menu.findUnique({
+        where : {
+            menu_id : result2.menuID
+        }
+        })
+      console.log("countMost",countMost);
+      resultarr.push(countMost); 
+  }
 
   //추천 알고리즘
   const N = 3; // 상위 N개의 유사한 사용자 가져오기
