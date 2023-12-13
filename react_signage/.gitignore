@@ -11,6 +11,7 @@
 
 # production
 /build
+/IPK
 
 # misc
 .DS_Store
