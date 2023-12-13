@@ -282,8 +282,8 @@ export const UserAllergyModal = ({ content, isOpen, setIsOpen,userId }) => {
         
                 
               </ModalIconContainer>
-              <div style={{ paddingTop: '10px',fontFamily: 'SansM',fontSize: '15px' }}>선택한 알러지 정보 :</div> 
-              <div style={{ fontFamily: 'SansM',fontSize: '15px' }}>{selectedIcons.join(', ')}</div>
+              <div style={{fontFamily: 'SansM',fontSize: '15px' }}>선택한 알러지 정보 :</div> 
+              <div style={{ fontFamily: 'SansM',fontSize: '15px' }}>{selectedIcons.join('/')}</div>
               <ModalBtn onClick={sendSelectedIconsToServer}>선택 완료</ModalBtn>
             </ModalView>
           </ModalBackdrop>

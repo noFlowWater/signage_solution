@@ -1,7 +1,5 @@
-import { useContext, useState,useEffect,useCallback } from 'react';
+import { useContext,useEffect,useCallback } from 'react';
 import { CartContext } from './UserCartContext';
-import axios from 'axios';
-import { kiosk } from '../constants';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -15,7 +13,6 @@ const OrderButton = styled.button`
 
 const UserCart = () => {
     const { cart, dispatch } = useContext(CartContext);
-    const [isOrdering, setIsOrdering] = useState(false);
 
     const calculateQuantity = (menu) => {
         const count = cart.reduce((total, item) => {
@@ -53,30 +50,6 @@ const UserCart = () => {
         localStorage.setItem('userCart', JSON.stringify(cart));
     }, [cart]);
 
-    // const handleOrder = async () => {
-    //     try {
-    //         setIsOrdering(true);
-    //         const orderData = {
-    //             user_id: localStorage.getItem('userId'),
-    //             orders: cart.map(item => ({
-    //                 menu_id: item.menu_id,
-    //                 order_count: item.quantity,
-    //             })),
-    //         };
-    //         console.log(orderData);
-    //         await axios.post(`${kiosk}/users/order`, JSON.stringify(orderData), {
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //             },
-    //         });
-    //         dispatch({ type: 'CLEAR_CART' });
-    //         setIsOrdering(false);
-    //     } catch (error) {
-    //         console.log(error);
-    //         setIsOrdering(false);
-    //     }
-    // };
-
     const calculateTotal = useCallback(() => {
         let total = 0;
         cart.forEach(item => {
@@ -91,7 +64,7 @@ const UserCart = () => {
 
 
     return (
-        <div>
+        <div >
             <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center',}}>
                 <div style={{ paddingTop: '15px' }}>
                     <img src={require('../img/CartBtn.png')} alt="Cart" height="75" width="215" />
@@ -101,10 +74,10 @@ const UserCart = () => {
             {/* 흰색 박스로 구분 */}
             {cart.map((item, index) => (
                 <div style={{ display: "flex", justifyContent: "center" }}>
-                    <div key={index} style={{ backgroundColor: "white", padding: "10px", marginBottom: "10px", borderRadius: "5px", width: "90%", height: "100%", boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.2)" }}>
+                    <div key={index} style={{ backgroundColor: "#f8f8f8", padding: "10px", marginBottom: "10px", borderRadius: "15px", width: "90%", height: "100%", boxShadow: "0px 4px 10px rgba(0, 0, 0, 5)" }}>
                             <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
                                 <div style={{ fontFamily: "SansB", fontSize: "25px", marginRight: "10px" }}>{item.menu_name}</div>
-                                <button onClick={() => handleRemove(item)}>X</button>
+                                <button onClick={() => handleRemove(item)} style={{background: 'white',color:'#FF4B4B',width:'30px',height:'30px',borderRadius:'5px',boxShadow: "0px 2px 5px rgba(0, 0, 0, 1)"}}>X</button>
                             </div>
 
                             <div style={{ display: "flex", justifyContent: "center" }}>
@@ -112,11 +85,11 @@ const UserCart = () => {
                             </div>
                             <div style={{ display: "flex", justifyContent: "center" }}>
                                 <div style={{ display: "flex", alignItems: "center" }}>
-                                    <button onClick={() => handleDecrease(item)}>-</button>
+                                    <button onClick={() => handleDecrease(item)} style={{background: 'white',color:'#FF4B4B',width:'30px',height:'30px',borderRadius:'5px',boxShadow: "0px 2px 5px rgba(0, 0, 0, 1)"}}>-</button>
                                     <div style={{ fontFamily: "SansM", fontSize: "20px",paddingLeft:'10px',paddingRight:'10px' }}>
                                         수량: {calculateQuantity(item)}
                                     </div>
-                                    <button onClick={() => handleIncrease(item)}>+</button>
+                                    <button onClick={() => handleIncrease(item)} style={{background: 'white',color:'#FF4B4B',width:'30px',height:'30px',borderRadius:'5px',boxShadow: "0px 2px 5px rgba(0, 0, 0, 1)"}}>+</button>
                                 </div>
                             </div>
                     </div>
@@ -127,14 +100,29 @@ const UserCart = () => {
             <hr style={{ borderTop: '1px solid black', width: '100%' }} />
             <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center',}}>
                 <div style={{ fontFamily: 'SansB', fontSize: '20px' }}>
-                    TOTAL: ￦{calculateTotal()} {/* 총 금액 표시 */}
+                    합계: ￦ {calculateTotal()} {/* 총 금액 표시 */}
                 </div>
                 <hr style={{ borderTop: '1px solid black', width: '100%' }} />
                 <div style={{ fontFamily: 'SansM'}}>
-                    <Link to="/user/order">
+                    {/* <Link to="/user/order">
                         <OrderButton style={{ fontSize: '23px' }}>
                             <div style={{ fontFamily: 'SansM' }}>주문하기</div>
                         </OrderButton>
+                    </Link> */}
+                    <Link to="/user/order">
+                        {cart.length > 0 ? (
+                            <div style={{paddingBottom:'15px'}}>
+                                <OrderButton style={{ fontSize: '23px'}}>
+                                    <div style={{ fontFamily: 'SansM' }}>주문하기</div>
+                                </OrderButton>
+                            </div>
+                        ) : (
+                            <div style={{paddingBottom:'15px'}}>
+                                <OrderButton style={{ fontSize: '23px', cursor: 'not-allowed'}} disabled>
+                                    <div style={{ fontFamily: 'SansM' }}>주문하기</div>
+                                </OrderButton>
+                            </div>
+                        )}
                     </Link>
                 </div>
             </div>

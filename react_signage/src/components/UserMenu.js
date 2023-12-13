@@ -2,10 +2,9 @@ import { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import { CartContext } from './UserCartContext';
 import { kiosk } from '../constants';
-import { useLocation, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 const UserMenu = () => {
-    const location = useLocation();
     const { cid } = useParams();
   
     const [menus, setMenus] = useState([]);
@@ -16,6 +15,7 @@ const UserMenu = () => {
 
     // Safely getting and parsing the userAl item from localStorage
     const userAl = localStorage.getItem('userAl');
+    console.log("현재 사용자 알러지: ",userAl);
     let userAllergies = [];
     if (userAl) {
         userAllergies = JSON.parse(userAl).data;
@@ -39,10 +39,20 @@ const UserMenu = () => {
                     'Content-Type': 'application/json',
                   },
               });
-              console.log("추천 알고리즘",response.data);
-              setMenus(response.data);
+              console.log('받아온 추천 메뉴',response.data);
+              const menusWithAllergyInfo = response.data.map(menu => (
+                menu !== null
+                  ? {
+                      ...menu,
+                      hasAllergy: menu.allergies.some(allergy => userAllergies.includes(allergy))
+                    }
+                  : null
+              ));
+              
+              setMenus(menusWithAllergyInfo);
             } else {
               const response = await axios.get(`${kiosk}/menu/${cid}`);
+              console.log(response.data);
               // 메뉴 데이터에 hasAllergy 속성 추가
               const menusWithAllergyInfo = response.data.map(menu => ({
                   ...menu,
@@ -114,7 +124,7 @@ const UserMenu = () => {
               flexDirection: 'column',
               alignItems: 'center',
               zIndex: '9999',
-              borderRadius: '5px',
+              borderRadius: '20px',
               boxShadow: "0px 4px 10px rgba(0, 0, 0, 5)"
             }}
           >
@@ -140,64 +150,92 @@ const UserMenu = () => {
                 </div>
 
             {hasMatchingAllergy && 
-            (<div style={{ color: 'red' }}> * 주의 *</div>) && 
-            (<div style={{ color: 'red' }}>이 메뉴에 사용자의 알러지와 일치하는 알러지가 있습니다!</div>)
+            (<div style={{ color: 'red',fontFamily: "SansM", fontSize: '15px' }}>이 메뉴에 사용자의 알러지와 일치하는 알러지가 있습니다!</div>)
             }
-            <button className="btn btn-danger" onClick={onClose} style={{ marginTop: '10px', fontFamily: "SansM", fontSize: '20px' }}>닫기</button>
+            <button className="btn" onClick={onClose} style={{ background: '#FF4B4B',color:'white',marginTop: '10px', fontFamily: "SansM", fontSize: '20px',boxShadow: "0px 4px 10px rgba(0, 0, 0, 5)" }}>닫기</button>
           </div>
         );
       };
-                  
+
       return (
         <div style={{ display: 'flex', flexWrap: 'wrap' }}>
           {menus.map((menu, index) => (
-            <div key={index} onClick={() => addToCart(menu)} style={{ 
-                  width: '33%', 
-                  padding: '10px'
+            menu ? (
+              <div key={index} onClick={() => !menu.is_soldout && addToCart(menu)} style={{ 
+                width: '33%', 
+                padding: '10px'
               }}>
-                  <div style={{ 
-                      position: 'relative', // position: relative 추가
-                      width: '100%', 
-                      height: '300px', 
-                      display: 'flex', 
-                      flexDirection: 'column', 
-                      justifyContent: 'center', 
-                      alignItems: 'center', 
-                      padding: '20px', 
-                      borderRadius: '5px', 
-                      boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.2)",
-                      border: menu.hasAllergy ? '2px solid red' : 'none', // 알러지가 있으면 빨간 테두리 적용
-                      backgroundColor: menu.hasAllergy ? '#ffebeb' : 'white' // 알러지가 있으면 배경색 변경
-                  }}>
-                    {menu.hasAllergy && 
-                        <div style={{ 
-                            position: 'absolute', 
-                            top: '10px', 
-                            right: '10px', 
-                            backgroundColor: 'red', 
-                            color: 'white', 
-                            padding: '5px', 
-                            borderRadius: '5px',
-                            fontSize: '12px',
-                            fontWeight: 'bold',
-                            fontFamily: "SansM"
-                        }}>알러지 주의</div>
-                    }
-                    <img src={`${kiosk}/${menu.file_path}`} alt={menu.menu_name} style={{ width: '40%', height: 'auto', marginBottom: '10px' }} />
-                    <div style={{ fontFamily: "SansB", fontSize: '30px', textAlign: 'center' }}>{menu.menu_name}</div>
-                    <div style={{ fontFamily: "SansM", fontSize: '20px', textAlign: 'center' }}>￦{menu.price}</div>
-                    <button onClick={() => openModal(menu)} style={{ fontFamily: "SansB", fontSize: '15px', marginTop: '10px' }}>상세 정보</button>
-                    {cid === '0' && index === 0 && <div style={{ fontFamily: "SansB", fontSize: '20px', color: 'red', marginTop: '10px' }}>최근에 먹은 메뉴</div>}
-                    {cid === '0' && index === 1 && <div style={{ fontFamily: "SansB", fontSize: '20px', color: 'blue', marginTop: '10px' }}>가장 많이 먹은 메뉴</div>}
-                    {cid === '0' && index === 2 && <div style={{ fontFamily: "SansB", fontSize: '20px', color: 'green', marginTop: '10px' }}>나와 비슷한 사용자의 선호 메뉴</div>}
+                <div style={{ 
+                  position: 'relative',
+                  width: '100%', 
+                  height: '300px', 
+                  display: 'flex', 
+                  flexDirection: 'column', 
+                  justifyContent: 'center', 
+                  alignItems: 'center', 
+                  padding: '20px', 
+                  borderRadius: '20px', 
+                  boxShadow: "0px 4px 10px rgba(0, 0, 0, 5)",
+                  border: menu.hasAllergy ? '2px solid orange' : 'none',
+                  backgroundColor: menu.hasAllergy ? 'rgba(255, 165, 0, 0.1)' : '#f8f8f8'
+                }}>
+                  {menu.hasAllergy && 
+                    <div style={{ 
+                      position: 'absolute', 
+                      top: '10px', 
+                      right: '10px', 
+                      backgroundColor: '#FFA500', 
+                      color: 'white', 
+                      padding: '7px', 
+                      borderRadius: '5px',
+                      fontSize: '15px',
+                      fontWeight: 'bold',
+                      fontFamily: "SansM",
+                      textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)",
+                      boxShadow: "0px 4px 10px rgba(0, 0, 0, 5)"
+                    }}>알러지 주의</div>
+                  }
+                  {menu.is_soldout && 
+                    <div className="diagonal-line" />
+                  }
+                  <img src={`${kiosk}/${menu.file_path}`} alt={menu.menu_name} style={{ width: '40%', height: 'auto', marginBottom: '10px' }} />
+                  <div style={{ fontFamily: "SansB", fontSize: '30px', textAlign: 'center' }}>{menu.menu_name}</div>
+                  <div style={{ fontFamily: "SansM", fontSize: '20px', textAlign: 'center' }}>￦{menu.price}</div>
+                  <button onClick={() => openModal(menu)} style={{ fontFamily: "SansM", fontSize: '15px', marginTop: '10px', border: 'none', background: 'rgba(0, 0, 0, 0)',textDecoration: 'underline', }}> 상세 정보</button>
+                  {cid === '0' && index === 0 && <div style={{ fontFamily: "SansB", fontSize: '20px', color: 'red', marginTop: '10px',textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)' }}>최근에 먹은 메뉴</div>}
+                  {cid === '0' && index === 1 && <div style={{ fontFamily: "SansB", fontSize: '20px', color: 'blue', marginTop: '10px' ,textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)'}}>가장 많이 먹은 메뉴</div>}
+                  {cid === '0' && index === 2 && <div style={{ fontFamily: "SansB", fontSize: '20px', color: 'green', marginTop: '10px' ,textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)'}}>나와 비슷한 사용자의 선호 메뉴</div>}
                 </div>
-            </div>
+              </div>
+            ) : (
+              <div key={index} style={{ 
+                width: '33%', 
+                padding: '10px', 
+              }}>
+                <div style = {{
+                  position: 'relative',
+                  width: '100%', 
+                  height: '300px', 
+                  display: 'flex', 
+                  flexDirection: 'column', 
+                  justifyContent: 'center', 
+                  alignItems: 'center', 
+                  padding: '20px', 
+                  borderRadius: '20px', 
+                  boxShadow: "0px 4px 10px rgba(0, 0, 0, 5)",
+                  border: 'none',
+                  backgroundColor: 'white'
+                }}>
+                  {cid === '0' && index === 0 && <p style={{ fontFamily: "SansB", fontSize: '20px', color: 'gray' }}>최근에 먹은 추천 메뉴 없음</p>}
+                  {cid === '0' && index === 1 && <p style={{ fontFamily: "SansB", fontSize: '20px', color: 'gray' }}>가장 많이 먹은 추천 메뉴 없음</p>}
+                  {cid === '0' && index === 2 && <p style={{ fontFamily: "SansB", fontSize: '15px', color: 'gray' }}>나와 비슷한 사용자의 선호 추천 메뉴 없음</p>}
+                </div>
+              </div>
+            )
           ))}
           {modalOpen && <Modal menu={selectedMenu} onClose={closeModal} />}
         </div>
       );
-      
-      
   }
   
   export default UserMenu;

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import io from 'socket.io-client';
 import { flask, kiosk } from '../constants';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import shortUUID from 'short-uuid';
 import UserRecResultModal from '../components/UserRecResultModal';
 import FaceRecNavBar from '../components/FaceRecNavBar';
@@ -15,12 +15,13 @@ const LoadingBar = ({ progress }) => {
     const barStyle = {
       width: `${progress * 3.3}%`, // 10% 단위로 게이지 증가
       height: '30px',
-      backgroundColor: '#FF4B4B',
+      backgroundColor: 'rgb(255, 75, 75,1)',
       maxWidth: '800px', // 가로 폭의 최대값 설정
+      boxShadow: "0px 4px 10px rgba(0, 0, 0, 5)",
     };
   
     return (
-      <div style={{ width: '800px', height: '30px', border: '1px solid gray', maxWidth: '800px' }}>
+      <div style={{ width: '800px', height: '30px', border: '1px solid gray', maxWidth: '800px',boxShadow: "0px 4px 10px rgba(0, 0, 0, 5)", }}>
         <div style={barStyle}></div>
       </div>
     );
@@ -164,7 +165,6 @@ const UserRecCam = () => {
     // 버튼에 대한 이벤트 핸들러 정의
     const handleYes = () => {
         const userId = localStorage.getItem('userId');
-        console.log("잇사에서 테스트하는 부분:",userId)
         const data = {
             user_id:userId
         };
@@ -178,7 +178,7 @@ const UserRecCam = () => {
             localStorage.setItem('userAl', JSON.stringify(response.data));
             console.log("받아온 알러지 타입",typeof(JSON.stringify(response.data)));
             console.log(response.data)
-            navigate('/user/menu/1')  // 추천알고리즘 완료 되면 0으로 수정해야 됨
+            navigate('/user/menu/0')  // 추천알고리즘 완료 되면 0으로 수정해야 됨
         })
         .catch(error => {
             console.error(error);
@@ -201,11 +201,6 @@ const UserRecCam = () => {
         // HOME 버튼 로직 구현
     };
 
-    const handleRetry = () => {
-        console.log("RETRY 클릭");
-        // RETRY 버튼 로직 구현
-    };
-
     // 로그인 (userId를 로컬 스토리지에 저장)
     useEffect(() => {
         // recognizedUser.id 값을 로컬 스토리지에 저장
@@ -220,11 +215,11 @@ const UserRecCam = () => {
                     <div style={{ fontFamily: 'SansM',fontSize: '30px' }}>카메라를 응시해주세요</div>
                     <div id="container">
                         {isModelLoaded ? 
-                            <div>모델 로딩 완료</div> :
-                            <div>모델 로딩 중...</div>
+                            <div style={{ fontFamily: 'SansM',fontSize: '20px' }}>모델 로딩 완료</div> :
+                            <div style={{ fontFamily: 'SansM',fontSize: '20px' }}>모델 로딩 중...</div>
                         }
                         {isCollectionComplete ? (
-                                <div>Collection complete! All images have been saved.</div>
+                                <div style={{ fontFamily: 'SansL',fontSize: '20px' }}>Collection complete! All images have been saved.</div>
                             ) : (
                                 <div className="camera-container">
                                     <div style={{ display: 'flex', flexDirection: 'row' }}>
@@ -257,13 +252,16 @@ const UserRecCam = () => {
                         <canvas ref={canvasRef} style={{ display: 'none' }}></canvas>
                     </div>
                     <UserRecResultModal 
-                        content={`당신은 이름: ${recognizedUser.name} ID: ${recognizedUser.id}입니까?`}
+                        content={
+                            <div style={{ fontFamily: 'SansM', fontSize: '30px' }}>
+                                "{recognizedUser.name}" 님입니까?
+                            </div>
+                        }
                         isOpen={modalOpen}
                         setIsOpen={setModalOpen}
                         onYes={handleYes}
                         onAlternative={handleAlternative}
                         onHome={handleHome}
-                        onRetry={handleRetry}
                     />
                 </div>
                 
