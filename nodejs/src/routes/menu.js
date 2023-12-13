@@ -120,7 +120,7 @@ router.post('/0', async (req, res, err) => {
       //해당 메뉴 알러지 정보
     const allergyInfo = await prisma.menu.findUnique({
         where: {
-            menu_id: similarMenu.menuID
+            menu_id: similarMenu.menu_id
         },
         include : {
             relationToAllergy : {
