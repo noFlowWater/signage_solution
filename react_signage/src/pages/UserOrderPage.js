@@ -48,7 +48,6 @@ const UserOrderPage = () => {
                 <div style={{ flex: 4, backgroundColor: 'white' }}>
                     <UserCartCheck />
                 </div>
-                
                 <div style={{ flex: 1, backgroundColor: 'white',paddingRight:'15px',paddingTop:'10px'}}>
                 <div style={{ backgroundColor: '#e8e8e8', borderRadius: '20px', boxShadow: "0px 4px 10px rgba(0, 0, 0, 5)" ,display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
                     <div style={{paddingTop :'15px'}}>
