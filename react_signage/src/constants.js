@@ -1,2 +1,2 @@
-export const kiosk = 'http://localhost:4000';
-export const flask = 'http://localhost:5001';
+export const kiosk = 'http://172.20.54.89:4000';
+export const flask = 'http://172.20.54.89:5001';

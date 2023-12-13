@@ -44,11 +44,13 @@ const UserOrderPage = () => {
     return (
         <div>
             <UserOrderNavBar />
-            <div style={{ display: 'flex', paddingTop: '15px' }}>
-                <div style={{ flex: 4, borderRight: '2px solid black', backgroundColor: '#f8f8f8' }}>
+            <div style={{ display: 'flex', paddingTop: '10px' }}>
+                <div style={{ flex: 4, backgroundColor: 'white' }}>
                     <UserCartCheck />
                 </div>
-                <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', backgroundColor: '#e8e8e8' }}>
+                
+                <div style={{ flex: 1, backgroundColor: 'white',paddingRight:'15px',paddingTop:'10px'}}>
+                <div style={{ backgroundColor: '#e8e8e8', borderRadius: '20px', boxShadow: "0px 4px 10px rgba(0, 0, 0, 5)" ,display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
                     <div style={{paddingTop :'15px'}}>
                         <DineInButton style={{ fontSize: '25px' }} active={isDineIn} onClick={handleDineIn}>
                             <div style={{ fontFamily: 'SansM' }}>매장</div>
@@ -60,10 +62,11 @@ const UserOrderPage = () => {
                     </ToGoButton>
                     <hr style={{ borderTop: '1px solid black', width: '100%' }} />
                     <div style={{ paddingLeft: '10px', fontFamily: 'SansB', fontSize: '20px' }}>
-                        TOTAL : {total}
+                        합계 : ￦ {total}
                     </div>
                     <hr style={{ borderTop: '1px solid black', width: '100%' }} />
                         <UserPayModal content="결제가 완료되었습니다 :)"/>
+                </div>
                 </div>
             </div>
         </div>

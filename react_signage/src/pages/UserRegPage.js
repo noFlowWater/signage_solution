@@ -1,7 +1,7 @@
 import React, {useState } from 'react';
 import axios from 'axios';
 import { flask } from '../constants';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import FaceRegNavBar from '../components/FaceRegNavBar';
 
 const UserRegPage = () => {
@@ -62,7 +62,7 @@ const UserRegPage = () => {
                         />
                         <div style = {{paddingTop : '30px'}} />
                         <button
-                            style={{ fontFamily: 'SansM',padding: '25px', fontSize: '30px', borderRadius: '5px', cursor: 'pointer', backgroundColor: '#FF4B4B', color: 'white', border: 'none',boxShadow: "0px 4px 10px rgba(0, 0, 0, 5)" }}
+                            style={{ fontFamily: 'SansM',padding: '20px', fontSize: '25px', borderRadius: '5px', cursor: 'pointer', backgroundColor: '#FF4B4B', color: 'white', border: 'none',boxShadow: "0px 4px 10px rgba(0, 0, 0, 5)" }}
                             type="submit"
                         >
                             등록

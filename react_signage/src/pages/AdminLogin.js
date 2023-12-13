@@ -37,6 +37,10 @@ const AdminLogin = () => {
         });
     };
 
+    const goBack = () => {
+        navigate('/');
+    }
+
     return (
         <div style = {{padding: '100px'}}>
              <AdminLoginModal 
@@ -70,6 +74,13 @@ const AdminLogin = () => {
                         style={{ textDecoration: 'none', fontFamily: 'SansM', fontSize:'15px' ,boxShadow: '0px 4px 10px rgba(0,0,0,5)'}}
                         >
                         입력 완료
+                    </button>
+                    <button
+                        className="btn btn-danger mb-2 ms-2"
+                        onClick ={goBack}
+                        style={{ textDecoration: 'none', fontFamily: 'SansM', fontSize:'15px' ,boxShadow: '0px 4px 10px rgba(0,0,0,5)'}}
+                        >
+                        돌아가기
                     </button>
                 </div>
             </div>

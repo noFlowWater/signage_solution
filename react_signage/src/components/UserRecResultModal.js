@@ -1,6 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
 
 export const ModalContainer = styled.div`
   // Modal을 구현하는데 전체적으로 필요한 CSS를 구현
@@ -65,19 +64,21 @@ export const ModalView = styled.div.attrs((props) => ({
         font-size: 20px;
         color: var(--coz-purple-600);
       }
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 5); /* 버튼에 그림자 효과 적용 */
   `;
 
 export const ModalButton = styled.button`
-    background-color: #4CAF50; // 예시 색상
+    background-color: #80CC34; // 예시 색상
     color: white;
     padding: 10px 15px;
-    margin: 10px;
+    margin: 15px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     &:hover {
       background-color: #45a049;
     }
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 5); /* 버튼에 그림자 효과 적용 */
   `;
 
 export const UserRecResultModal = ({ 
@@ -87,7 +88,6 @@ export const UserRecResultModal = ({
     onYes,        // 부모 컴포넌트에서 정의된 함수
     onAlternative,// 부모 컴포넌트에서 정의된 함수
     onHome,       // 부모 컴포넌트에서 정의된 함수
-    onRetry       // 부모 컴포넌트에서 정의된 함수
 }) => {
     // 모달 상태를 내부에서 관리하는 대신 props로 받음
     useEffect(() => {
@@ -102,10 +102,9 @@ export const UserRecResultModal = ({
                             {/* ExitBtn 컴포넌트를 제거했습니다. */}
                             <div className='desc'>{content}</div>
                             <div>
-                                <ModalButton onClick={onYes}>YES</ModalButton>
-                                <ModalButton onClick={onAlternative}>대체인증</ModalButton>
-                                <ModalButton onClick={onHome}>HOME</ModalButton>
-                                <ModalButton onClick={onRetry}>RETRY</ModalButton>
+                                <ModalButton onClick={onYes} style={{ fontFamily: 'SansM',fontSize: '20px' }}>YES</ModalButton>
+                                <ModalButton onClick={onAlternative} style={{ fontFamily: 'SansM',fontSize: '20px' }}>대체인증</ModalButton>
+                                <ModalButton onClick={onHome} style={{ fontFamily: 'SansM',fontSize: '20px' }}>HOME</ModalButton>
                             </div>
                         </ModalView>
                     </ModalBackdrop>

@@ -1,5 +1,3 @@
-import { Link } from "react-router-dom";
-
 const FaceRegNavBar = () => {
     return (
         <nav className="navbar bg-transparent navbar-height" style = {{paddingTop: '15px'}}>
