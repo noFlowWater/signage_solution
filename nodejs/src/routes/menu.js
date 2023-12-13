@@ -11,7 +11,8 @@ dotenv.config()
 router.post('/0', async (req, res, err) => {
   const thisuser_id = req.body.user_id;
   console.log("user_id : ", thisuser_id);
-  resultarr = [];
+  resultarr = [null,null,null];
+  
 
   // 내가 최근에 먹은 메뉴
   const result1 = await prisma.MenuOrderInfo.findFirst({
@@ -20,24 +21,44 @@ router.post('/0', async (req, res, err) => {
       },
       select: {
           menuID: true,
-          //menu_name: true,
-          //price: true,
-          //file_path: true,
-          //is_soldout: true,
       },
       orderBy: {
         last_order_time: "desc",
     },
   });
+
   if(result1){
     const recentMenu = await prisma.menu.findUnique({
         where : {
         menu_id : result1.menuID
     }
     })
-    console.log("recentMenu",recentMenu);
-    resultarr.push(recentMenu); // result1을 배열에 추가
+    //해당 메뉴 알러지 정보
+    const allergyInfo = await prisma.menu.findUnique({
+        where: {
+            menu_id: result1.menuID
+        },
+        include : {
+            relationToAllergy : {
+                select : {
+                    allergies : {
+                        select :{
+                            allergy_name : true
+                        }
+                    }
+                }
+            }
+        }
+    });
+    //알러지 이름만 추출
+    const allergies = allergyInfo.relationToAllergy.map(names => 
+        names.allergies.allergy_name)
+    
+    //메뉴와 알러지 정보 합치기
+    const menuWithAllergy = Object.assign(recentMenu, { allergies: allergies })
+    resultarr[0] = menuWithAllergy; 
   }
+
     
 
   // 내가 가장 많이 먹은 메뉴
@@ -58,29 +79,79 @@ router.post('/0', async (req, res, err) => {
             menu_id : result2.menuID
         }
         })
-      console.log("countMost",countMost);
-      resultarr.push(countMost); 
+      //해당 메뉴 알러지 정보
+    const allergyInfo = await prisma.menu.findUnique({
+        where: {
+            menu_id: result2.menuID
+        },
+        include : {
+            relationToAllergy : {
+                select : {
+                    allergies : {
+                        select :{
+                            allergy_name : true
+                        }
+                    }
+                }
+            }
+        }
+    });
+    //알러지 이름만 추출
+    const allergies = allergyInfo.relationToAllergy.map(names => 
+        names.allergies.allergy_name)
+    
+    //메뉴와 알러지 정보 합치기
+    const menuWithAllergy = Object.assign(countMost, { allergies: allergies })
+    resultarr[1] = menuWithAllergy; 
   }
+
 
   //추천 알고리즘
   const N = 3; // 상위 N개의 유사한 사용자 가져오기
   try {
+    if(resultarr[0] != null){
       const result3 = await recommendationModule.recommendMenuForUser(thisuser_id, N);
+      console.log("result3",result3.menuID)
       const similarMenu = await prisma.menu.findUnique({
         where : {
             menu_id : result3.menuID
         }
       })
-      console.log("similarMenu", similarMenu)
+      //해당 메뉴 알러지 정보
+    const allergyInfo = await prisma.menu.findUnique({
+        where: {
+            menu_id: similarMenu.menuID
+        },
+        include : {
+            relationToAllergy : {
+                select : {
+                    allergies : {
+                        select :{
+                            allergy_name : true
+                        }
+                    }
+                }
+            }
+        }
+    });
+    //알러지 이름만 추출
+    const allergies = allergyInfo.relationToAllergy.map(names => 
+        names.allergies.allergy_name)
+    
+    //메뉴와 알러지 정보 합치기
+    const menuWithAllergy = Object.assign(similarMenu, { allergies: allergies })
+    resultarr[2] = menuWithAllergy; 
       //배열에추가
-      resultarr.push(similarMenu);
       // 여기서 resultarr을 사용하여 클라이언트에게 응답을 보낼 수 있음
-  } catch (error) {
-      console.log(error);
-  }
-  console.log(resultarr);
-  res.json(resultarr);
-});
+    }
+    else()=>{
+        resultarr[2] = null;
+    }} catch (error) {
+        console.log(error);
+    }
+    console.log(resultarr);
+    res.json(resultarr);
+    });
 
 
 //선택한 메뉴 상세보기
