@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 // navbar-dark bg-dark
 const AdminNavBar = () => {
     return (
-        <nav className="navbar navbar navbar-height">
+        <nav className="navbar navbar navbar-height" style={{ borderBottom: '2px solid #ddd' }}>
             <div className="container">
                 <ul id="nav2" className="nav container-fluid justify-content-center ">
                     <li className="nav-item me-5">
@@ -51,7 +51,7 @@ const AdminNavBar = () => {
                     </li>
                     <li className="nav-item me-5 ms-auto"> {/* ms-auto 클래스 추가 */}
                     {/* <img src={'/img/menu_reg.png'} alt="메뉴 등록" height="110" width="300"/> */}
-                    <img src={require('../img/Logo.png')} alt="logo" height="110" width="300"/>
+                    <img src={require('../img/Logo.png')} alt="logo" height="100" width="300"/>
                     </li>
                 </ul> 
             </div>
