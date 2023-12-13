@@ -9,8 +9,8 @@ const UserCartCheck = () => {
     <div  style={{ display: 'flex', flexWrap: 'wrap' }}>
       {cartItems.map((item, index) => (
         <div key={index} style={{ width: '33%', padding: '10px' }}>
-          <div style={{ backgroundColor: 'white', width: '100%', height: '300px', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: '20px', borderRadius: '5px', boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.2)"  }}>
-            <img src={`${kiosk}/${item.file_path}`}  alt={item.menu_name} style={{ width: '60%', height: 'auto', marginBottom: '10px' }} />
+          <div style={{ backgroundColor: '#f8f8f8', width: '100%', height: '300px', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: '20px', borderRadius: '20px', boxShadow: "0px 4px 10px rgba(0, 0, 0, 5)"  }}>
+            <img src={`${kiosk}/${item.file_path}`}  alt={item.menu_name} style={{ width: '40%', height: 'auto', marginBottom: '10px' }} />
             <div style={{fontFamily:"SansB",fontSize:'30px'}}>{item.menu_name}</div>
             <div style={{fontFamily:"SansM",fontSize:'20px'}}>￦{item.price}</div>
             <div style={{fontFamily:"SansM",fontSize:'20px'}}>수량: {item.quantity}</div>

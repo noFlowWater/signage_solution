@@ -85,7 +85,7 @@ const AdminMenuList = () => {
     };
 
     return (
-        <div className="nav-bar navbar-height" style={{ textAlign: "center" }}>
+        <div className="nav-bar navbar-height" style={{ textAlign: "center",paddingTop:'20px' }}>
             <h1 
             className="ms-5" 
             style={{ textAlign: "start", marginLeft: "16px", fontFamily: 'SansM', fontSize:'35px' }}

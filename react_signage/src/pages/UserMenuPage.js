@@ -1,6 +1,3 @@
-// import { useParams } from 'react-router-dom';
-// import { useEffect, useState } from 'react';
-// import axios from 'axios';
 import React, { useReducer } from 'react';
 import UserNavBar from "../components/UserNavBar";
 import UserMenu from '../components/UserMenu';
@@ -14,12 +11,14 @@ const UserMenuPage = () => {
         <CartContext.Provider value={{ cart, dispatch }}>
             <div>
                 <UserNavBar />
-                <div style={{ display: 'flex' }}>
-                    <div style={{ flex: 4, borderRight: '2px solid black', backgroundColor: '#f8f8f8' }}>
+                <div style={{ display: 'flex', paddingTop: '10px'}}>
+                    <div style={{ flex: 4, backgroundColor: 'white' }}>
                         <UserMenu />
                     </div>
-                    <div style={{ flex: 1, backgroundColor: '#e8e8e8' }}>
-                        <UserCart />
+                    <div style={{ flex: 1, backgroundColor: 'white',paddingRight:'15px',paddingTop:'10px' }}>
+                        <div style={{ backgroundColor: '#e8e8e8', borderRadius: '20px', boxShadow: "0px 4px 10px rgba(0, 0, 0, 5)"}}>
+                            <UserCart />
+                        </div>
                     </div>
                 </div>
             </div>

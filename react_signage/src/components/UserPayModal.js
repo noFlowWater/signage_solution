@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-import { Link,useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { kiosk } from '../constants';
 
@@ -35,19 +35,6 @@ export const ModalBtn = styled.button`
   cursor: grab;
 `;
 
-// export const ExitBtn = styled(ModalBtn)`
-//   background-color: #4000c7;
-//   border-radius: 10px;
-//   text-decoration: none;
-//   margin: 15px;
-//   padding: 5px 10px;
-//   width: 40px;
-//   height: 40px;
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-// `;
-
 export const ModalView = styled.div.attrs((props) => ({
   role: 'dialog',
 }))`
@@ -64,6 +51,7 @@ export const ModalView = styled.div.attrs((props) => ({
     font-size: 20px;
     color: var(--coz-purple-600);
   }
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 5); /* 버튼에 그림자 효과 적용 */
 `;
 
 export const UserPayModal = ({ content }) => {
@@ -124,7 +112,7 @@ export const UserPayModal = ({ content }) => {
             <ModalView onClick={(e) => e.stopPropagation()}>
               <img src={require('../img/Logo.png')} alt="Pay" className="pay-image" style={{ width: '150px', height: 'auto' }} />
               <div className='desc' style={{ fontFamily: 'SansM', fontSize: '20px' }}>{content}</div>
-                <button className="btn btn-primary" onClick={handleConfirm}>
+                <button className="btn" onClick={handleConfirm} style={{ background: '#FF4B4B',color:'white',fontFamily: 'SansM', fontSize: '20px',boxShadow: "0px 4px 10px rgba(0, 0, 0, 5)" }}>
                   확인
                 </button>
             </ModalView>

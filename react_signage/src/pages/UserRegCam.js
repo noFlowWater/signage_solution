@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import io from 'socket.io-client';
 import { flask } from '../constants';
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import shortUUID from 'short-uuid';
 import FaceRegNavBar from '../components/FaceRegNavBar';
 import UserAllergyModal from '../components/UserAllergyModal';
@@ -12,12 +12,13 @@ const LoadingBar = ({ progress }) => {
     const barStyle = {
       width: `${progress * 1}%`, // 10% 단위로 게이지 증가
       height: '30px',
-      backgroundColor: '#FF4B4B',
+      backgroundColor: 'rgb(255, 75, 75,1)',
       maxWidth: '800px', // 가로 폭의 최대값 설정
+      boxShadow: "0px 4px 10px rgba(0, 0, 0, 5)",
     };
   
     return (
-      <div style={{ width: '800px', height: '30px', border: '1px solid gray', maxWidth: '800px' }}>
+      <div style={{ width: '800px', height: '30px', border: '1px solid gray', maxWidth: '800px',boxShadow: "0px 4px 10px rgba(0, 0, 0, 5)", }}>
         <div style={barStyle}></div>
       </div>
     );
@@ -162,21 +163,7 @@ const UserRegCam = () => {
         return () => clearInterval(interval);
     }, [complete]);
 
-    // useEffect(() => {
-    //     const handleBeforeUnload = (e) => {
-    //         e.preventDefault();
-    //         e.returnValue = ''; 
-    //     };
-
-    //     window.addEventListener('beforeunload', handleBeforeUnload);
-
-    //     return () => {
-    //         window.removeEventListener('beforeunload', handleBeforeUnload);
-    //     };
-    // }, []);
-
-
-  return (
+    return (
         <div>
             <FaceRegNavBar />
             <div className="container d-flex align-items-center justify-content-center vh-50" style={{paddingTop:'50px'}}>
@@ -188,8 +175,8 @@ const UserRegCam = () => {
                             ) : (
                                 <div className="camera-container" >
                                     <div className="camera-info">
-                                        <p>Name: {name}</p>
-                                        <p>Phone Number: {phoneNumber}</p>
+                                        <p style={{ fontFamily: 'SansM',fontSize: '20px' }}>이름: {name}</p>
+                                        <p style={{ fontFamily: 'SansM',fontSize: '20px' }}>전화번호: {phoneNumber}</p>
                                     </div>
                                     <div style={{ display: 'flex', flexDirection: 'row' }}>
                                         <video 

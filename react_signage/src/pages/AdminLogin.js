@@ -37,8 +37,12 @@ const AdminLogin = () => {
         });
     };
 
+    const goBack = () => {
+        navigate('/');
+    }
+
     return (
-        <div style = {{padding: '100px'}}>
+        <div style = {{padding: '250px'}}>
              <AdminLoginModal 
             content={modalMessage} 
             isOpen={showModal} 
@@ -47,13 +51,14 @@ const AdminLogin = () => {
         />
             <div className="container d-flex align-items-center justify-content-center vh-50">
                 <div className="d-flex flex-column align-items-center">
-                    <h1 style = {{fontFamily: 'SansM', fontSize:'30px'}}>관리자 로그인</h1>
-                    <div>
-                        <div className="mb-3">
-                            <label className="from-label" style = {{fontFamily: 'SansM', fontSize:'14px'}}>관리자 비밀번호를 입력하세요</label>
+                    <h1 style = {{fontFamily: 'SansM', fontSize:'35px'}}>관리자 로그인</h1>
+                    <div style={{ textAlign: 'center',paddingTop:'20px' }}>
+                        <div className="mb-3" >
+                            <label className="from-label" style = {{fontFamily: 'SansM', fontSize:'20px'}}>관리자 비밀번호를 입력하세요</label>
                                 <div>
                                 <input
                                     className="form-login"
+                                    style={{ fontFamily: 'SansM',padding: '15px', fontSize: '20px', borderRadius: '5px', border: '1px solid #ccc' }}
                                     type="password"
                                     value={pwd}
                                     onChange={(e) => {
@@ -63,14 +68,23 @@ const AdminLogin = () => {
                                 </div>
                         </div>
                     </div>
-                
-                    <button
-                        className="btn btn-primary mb-2 ms-2"
-                        onClick ={onSubmit}
-                        style={{ textDecoration: 'none', fontFamily: 'SansM', fontSize:'15px' ,boxShadow: '0px 4px 10px rgba(0,0,0,5)'}}
-                        >
-                        입력 완료
-                    </button>
+                                    
+                    <div style = {{paddingTop:'20px'}}>
+                        <button
+                            className="btn btn-primary mb-2 ms-2"
+                            onClick ={onSubmit}
+                            style={{ textDecoration: 'none',padding: '10px', fontFamily: 'SansM', fontSize:'20px' ,boxShadow: '0px 4px 10px rgba(0,0,0,5)'}}
+                            >
+                            입력 완료
+                        </button>
+                        <button
+                            className="btn btn-danger mb-2 ms-2"
+                            onClick ={goBack}
+                            style={{ textDecoration: 'none',padding: '10px', fontFamily: 'SansM', fontSize:'20px' ,boxShadow: '0px 4px 10px rgba(0,0,0,5)'}}
+                            >
+                            돌아 가기
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
