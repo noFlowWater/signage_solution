@@ -15,7 +15,7 @@ npm run build
 cd build
 
 # Create appinfo.json and add content
-printf '{\n "id": "kr.ac.knu.app.signage",\n "version": "1.0.0",\n "vendor": "My Company",\n "type": "web",\n "main": "index.html",\n "title": "new app",\n "icon": "icon.png",\n "requiredPermissions": [ "time.query", "activity.operation" ]\n}' > appinfo.json
+printf '{\n "id": "kr.ac.knu.app.signage",\n "version": "1.0.0",\n "vendor": "My Company",\n "type": "web",\n "main": "index.html",\n "title": "new app",\n "icon": "icon.png",\n "allowVideoCapture": true,\n "requiredPermissions": [ "time.query", "activity.operation" ]\n}' > appinfo.json
 
 # Copy the icon.png file
 cp ../icon.png icon.png

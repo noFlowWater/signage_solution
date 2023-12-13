@@ -137,75 +137,75 @@ export const UserAllergyModal = ({ content, isOpen, setIsOpen,userId }) => {
               <div className='desc' style = {{fontFamily: 'SansM',fontSize: '20px'}}>{content}</div>
               <ModalIconContainer>
                 <ModalIcon
-                  src={require('../img/게.png')}
+                  src={require('../img/1.png')}
                   alt='게'
                   data-isselected={selectedIcons.includes('게')}
                   onClick={() => selectIconHandler('게')}
                 />
                 <ModalIcon
-                  src={require('../img/고등어.png')}
+                  src={require('../img/2.png')}
                   alt='고등어'
                   data-isselected={selectedIcons.includes('고등어')}
                   onClick={() => selectIconHandler('고등어')}
                 />
                 <ModalIcon
-                  src={require('../img/굴.png')}
+                  src={require('../img/3.png')}
                   alt='굴'
                   data-isselected={selectedIcons.includes('굴')}
                   onClick={() => selectIconHandler('굴')}
                 />
                 <ModalIcon
-                  src={require('../img/난류(가금류).png')}
+                  src={require('../img/4.png')}
                   alt='난류(가금류)'
                   data-isselected={selectedIcons.includes('난류(가금류)')}
                   onClick={() => selectIconHandler('난류(가금류)')}
                 />
         
                 <ModalIcon
-                  src={require('../img/닭고기.png')}
+                  src={require('../img/5.png')}
                   alt='닭고기'
                   data-isselected={selectedIcons.includes('닭고기')}
                   onClick={() => selectIconHandler('닭고기')}
                 />
                 <ModalIcon
-                  src={require('../img/대두.png')}
+                  src={require('../img/6.png')}
                   alt='대두'
                   data-isselected={selectedIcons.includes('대두')}
                   onClick={() => selectIconHandler('대두')}
                 />
                 <ModalIcon
-                  src={require('../img/돼지고기.png')}
+                  src={require('../img/7.png')}
                   alt='돼지고기'
                   data-isselected={selectedIcons.includes('돼지고기')}
                   onClick={() => selectIconHandler('돼지고기')}
                 />
                 <ModalIcon
-                  src={require('../img/땅콩.png')}
+                  src={require('../img/8.png')}
                   alt='땅콩'
                   data-isselected={selectedIcons.includes('땅콩')}
                   onClick={() => selectIconHandler('땅콩')}
                 />
 
                 <ModalIcon
-                  src={require('../img/메밀.png')}
+                  src={require('../img/9.png')}
                   alt='메밀'
                   data-isselected={selectedIcons.includes('메밀')}
                   onClick={() => selectIconHandler('메밀')}
                 />
                 <ModalIcon
-                  src={require('../img/밀.png')}
+                  src={require('../img/10.png')}
                   alt='밀'
                   data-isselected={selectedIcons.includes('밀')}
                   onClick={() => selectIconHandler('밀')}
                 />
                 <ModalIcon
-                  src={require('../img/복숭아.png')}
+                  src={require('../img/11.png')}
                   alt='복숭아'
                   data-isselected={selectedIcons.includes('복숭아')}
                   onClick={() => selectIconHandler('복숭아')}
                 />
                 <ModalIcon
-                  src={require('../img/새우.png')}
+                  src={require('../img/12.png')}
                   alt='새우'
                   data-isselected={selectedIcons.includes('새우')}
                   onClick={() => selectIconHandler('새우')}
@@ -214,25 +214,25 @@ export const UserAllergyModal = ({ content, isOpen, setIsOpen,userId }) => {
 
 
                 <ModalIcon
-                  src={require('../img/쇠고기.png')}
+                  src={require('../img/13.png')}
                   alt='쇠고기'
                   data-isselected={selectedIcons.includes('쇠고기')}
                   onClick={() => selectIconHandler('쇠고기')}
                 />
                 <ModalIcon
-                  src={require('../img/아황산류.png')}
+                  src={require('../img/14.png')}
                   alt='아황산류'
                   data-isselected={selectedIcons.includes('아황산 포함식품')}
                   onClick={() => selectIconHandler('아황산 포함식품')}
                 />
                 <ModalIcon
-                  src={require('../img/오징어.png')}
+                  src={require('../img/15.png')}
                   alt='오징어'
                   data-isselected={selectedIcons.includes('오징어')}
                   onClick={() => selectIconHandler('오징어')}
                 />
                 <ModalIcon
-                  src={require('../img/우유.png')}
+                  src={require('../img/16.png')}
                   alt='우유'
                   data-isselected={selectedIcons.includes('우유')}
                   onClick={() => selectIconHandler('우유')}
@@ -241,25 +241,25 @@ export const UserAllergyModal = ({ content, isOpen, setIsOpen,userId }) => {
 
            
                 <ModalIcon
-                  src={require('../img/잣.png')}
+                  src={require('../img/17.png')}
                   alt='잣'
                   data-isselected={selectedIcons.includes('잣')}
                   onClick={() => selectIconHandler('잣')}
                 />
                 <ModalIcon
-                  src={require('../img/전복.png')}
+                  src={require('../img/18.png')}
                   alt='전복'
                   data-isselected={selectedIcons.includes('전복')}
                   onClick={() => selectIconHandler('전복')}
                 />
                 <ModalIcon
-                  src={require('../img/조개류.png')}
+                  src={require('../img/19.png')}
                   alt='조개류'
                   data-isselected={selectedIcons.includes('조개류')}
                   onClick={() => selectIconHandler('조개류')}
                 />
                 <ModalIcon
-                  src={require('../img/토마토.png')}
+                  src={require('../img/20.png')}
                   alt='토마토'
                   data-isselected={selectedIcons.includes('토마토')}
                   onClick={() => selectIconHandler('토마토')}
@@ -268,13 +268,13 @@ export const UserAllergyModal = ({ content, isOpen, setIsOpen,userId }) => {
 
           
                 <ModalIcon
-                  src={require('../img/호두.png')}
+                  src={require('../img/21.png')}
                   alt='호두'
                   data-isselected={selectedIcons.includes('호두')}
                   onClick={() => selectIconHandler('호두')}
                 />
                 <ModalIcon
-                  src={require('../img/홍합.png')}
+                  src={require('../img/22.png')}
                   alt='홍합'
                   data-isselected={selectedIcons.includes('홍합')}
                   onClick={() => selectIconHandler('홍합')}
