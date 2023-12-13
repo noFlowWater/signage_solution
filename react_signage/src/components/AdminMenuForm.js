@@ -201,7 +201,7 @@ const AdminMenuForm = ({editing}) => {
                         {editing ? '메뉴 수정' : '메뉴 등록'}
                     </div>
                     {/* <img src={'/img/menu_reg.png'} alt="메뉴 등록" height="110" width="300"/> */}
-                    <img src={require('../img/Logo.png')} alt="logo" height="110" width="300"/>
+                    <img src={require('../img/Logo.png')} alt="logo" height="100" width="300"/>
                 </div>
             </nav>
             <div className="form-control">
