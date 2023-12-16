@@ -71,7 +71,15 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+<p align="center" style="display: flex; justify-content: space-between;">
+    <img src="https://github.com/noFlowWater/signage_solution/assets/112642604/92e7cb81-0ae1-4640-b070-065fe28a68ec" 
+         alt="User Facial Registration" 
+         style="width: 49%;">
+    <img src="https://github.com/noFlowWater/signage_solution/assets/112642604/2d5b2a51-5d45-4f89-b81d-2b106f5fe7af" 
+         alt="User Menu Recommendation Algorithm" 
+         style="width: 49%;">
+</p>
+
 
 ### Background
 Small-scale business owners often face financial constraints that make it challenging to afford expensive signage solutions. Therefore, there is a growing need for an affordable, open-source-based signage solution that can be easily implemented without the high costs associated with traditional signage products. This proposal aims to develop a user-customized kiosk that recognizes users to recommend menus and dynamically update menu lists.
@@ -90,6 +98,14 @@ Menu Recommendations and Reconfiguration through Web App:
 - Menu recommendations will operate using a **user collaborative filtering algorithm** based on the order history of registered users.
 
 > Note: Payment processing is not included in the scope of this project.
+
+### System Architecture
+<img src="https://github.com/noFlowWater/signage_solution/assets/112642604/248f7596-9c3f-4de7-a14a-638547a09816" alt="System Architecture" >
+
+
+### Database ERD
+<img src="https://github.com/noFlowWater/signage_solution/assets/112642604/db15a09a-faa7-4797-8f58-b865d7965681" alt="Database ERD">
+
 
 
 ### Built With
