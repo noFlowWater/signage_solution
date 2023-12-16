@@ -175,42 +175,164 @@ Each step is detailed in the `README.md` file of the respective folder, allowing
 
 
 <!-- USAGE EXAMPLES -->
-## Usage
+## Usage Screenshot 
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples, and demos work well in this space. You may also link to more resources.
-
-_For more examples, please refer to the [Documentation](https://example.com)_
 
 <details>
-<summary>🖼️ Admin ScreenShot</summary>
+  <summary>🖼️ Home</summary>
+  <p align="center" style="display: flex; justify-content: space-between;">
+    <img style="width: 49%;" alt="1  키오스크 홈" src="https://github.com/noFlowWater/signage_solution/assets/112642604/d7ec989f-a11a-486e-aeab-b2098ea92554">
+  </p>
+</details>
+<details>
+<summary>🖼️ Admin</summary>
 <br>
 
-### Home Screen
-1. Home Screen Picture
-   ![Home Screen](<link-to-home-screen-image>)
-
 ### Administrator Login
-1. Administrator Login
-   ![Administrator Login](<link-to-admin-login-image>)
-2. Administrator Login Failure
-   ![Administrator Login Failure](<link-to-admin-login-fail-image>)
+
+<details>
+  <summary>🖼️ 1. Administrator Login</summary>
+  <p align="center" style="display: flex; justify-content: space-between;">
+    <img style="width: 49%;" alt="관리자 로그인" src="https://github.com/noFlowWater/signage_solution/assets/112642604/e73aef73-ac9e-4c6e-b058-7fe5dcd4463c">
+  </p>
+</details>
+
+<details>
+  <summary>🖼️ 2. Administrator Login Failure</summary>
+  <p align="center" style="display: flex; justify-content: space-between;">
+    <img style="width: 49%;" alt="관리자 비밀번호 체크" src="https://github.com/noFlowWater/signage_solution/assets/112642604/83ae69bb-9e44-4482-bb19-297c15e288d5">
+  </p>
+</details>
 
 ### Administrator Menu Management
-1. Administrator Menu List
-   ![Administrator Menu List](<link-to-admin-menu-list-image>)
-2. Administrator Menu Details
-   ![Administrator Menu Details](<link-to-admin-menu-detail-image>)
-3. Administrator Menu Registration and Deletion
-   ![Administrator Menu Registration and Deletion](<link-to-admin-menu-add-delete-image>)
+
+<details>
+  <summary>🖼️ 1. Administrator Menu List</summary>
+  <p align="center" style="display: flex; justify-content: space-between;">
+    <img style="width: 49%;" alt="관리자 홈" src="https://github.com/noFlowWater/signage_solution/assets/112642604/6d8d6f01-440e-4b0c-96f8-2c8d2ba21fc9">
+  </p>
+</details>
+
+<details>
+  <summary>🖼️ 2. Administrator Menu Details</summary>
+  <p align="center" style="display: flex; justify-content: space-between;">
+    <img style="width: 49%;" alt="관리자 메뉴 상세보기" src="https://github.com/noFlowWater/signage_solution/assets/112642604/5bca34f5-1ab6-49a9-8e0b-bdf6257eb0b2">
+  </p>
+</details>
+
+
+<details>
+  <summary>🖼️ 3. Administrator Menu Registration and Deletion</summary>
+  <p align="center" style="display: flex; justify-content: space-between;">
+    <img src="https://github.com/noFlowWater/signage_solution/assets/112642604/bdb89e7e-4208-4aea-9f93-90c3daece562" 
+           alt="관리자 메뉴 등록" 
+           style="width: 49%;">
+    <img src="https://github.com/noFlowWater/signage_solution/assets/112642604/4433ee82-b9fa-43dd-a325-8b84be381131"    
+           alt="관리자 메뉴 수정"
+           style="width: 49%;">
+  </p>
+</details>
 
 ### Administrator Password Change
-1. Before Changing Password
-   ![Before Changing Password](<link-to-admin-password-change-before-image>)
-2. Changing Password
-   ![Changing Password](<link-to-admin-password-changing-image>)
-3. After Changing Password
-   ![After Changing Password](<link-to-admin-password-change-after-image>)
 
+<details>
+  <summary>🖼️ 1. Changing Password (fail 1)</summary>
+  <p align="center" style="display: flex; justify-content: space-between;">
+    <img style="width: 49%;" alt="admin_change_password_1" src="https://github.com/noFlowWater/signage_solution/assets/112642604/3e66a0d8-ec91-4464-9f4a-6c32f2c897e7">
+  </p>
+</details>
+
+<details>
+  <summary>🖼️ 2. Changing Password (fail 2)</summary>
+  <p align="center" style="display: flex; justify-content: space-between;">
+    <img style="width: 49%;" alt="admin_change_password_2" src="https://github.com/noFlowWater/signage_solution/assets/112642604/435dae5a-4e51-480d-8a18-9c6921775a97">
+  </p>
+</details>
+
+<details>
+  <summary>🖼️ 3. Changing Password (success)</summary>
+  <p align="center" style="display: flex; justify-content: space-between;">
+    <img style="width: 49%;" alt="admin_change_password_3" src="https://github.com/noFlowWater/signage_solution/assets/112642604/73223ce7-e487-4bbc-80ba-ffc505fd58c3">
+  </p>
+</details>
+
+</details>
+<details>
+<summary>🖼️ User</summary>
+<br>
+
+### Select User Mode
+<details>
+  <summary>🖼️ 1. Select User Mode</summary>
+  <p align="center" style="display: flex; justify-content: space-between;">
+    <img style="width: 49%;" alt="사용자 모드 선택" src="https://github.com/noFlowWater/signage_solution/assets/112642604/211d6ba5-61ba-488c-bff9-eb5d333f68a8">
+  </p>
+</details>
+
+### User Registration
+
+<details>
+  <summary>🖼️ 1. Enter User Basic Information</summary>
+  <p align="center" style="display: flex; justify-content: space-between;">
+    <img style="width: 49%;" alt="사용자 기본정보 입력" src="https://github.com/noFlowWater/signage_solution/assets/112642604/142c1e9f-d351-465c-b968-f7da5d178d3a">
+  </p>
+</details>
+
+<details>
+  <summary>🖼️ 2. Register user's face</summary>
+  <p align="center" style="display: flex; justify-content: space-between;">
+    <img style="width: 49%;" alt="사용자 얼굴 등록" src="https://github.com/noFlowWater/signage_solution/assets/112642604/f4fa27ea-f77b-4dc8-8914-bfe9d90eddf7">
+  </p>
+</details>
+
+<details>
+  <summary>🖼️ 3. Select User Allergy</summary>
+  <p align="center" style="display: flex; justify-content: space-between;">
+    <img style="width: 49%;" alt="사용자 알러지 선택" src="https://github.com/noFlowWater/signage_solution/assets/112642604/c4d73443-6c36-4eb9-8caf-a15b70af8eae">
+  </p>
+</details>
+
+### User Login
+
+<details>
+  <summary>🖼️ 1. User Authentication</summary>
+  <p align="center" style="display: flex; justify-content: space-between;">
+    <img style="width: 49%;" alt="사용자 인식" src="https://github.com/noFlowWater/signage_solution/assets/112642604/999e78e4-031e-4ee0-885a-2683735138b9">
+    <img style="width: 49%;" alt="사용자 확인" src="https://github.com/noFlowWater/signage_solution/assets/112642604/f8ba2823-7dd0-420a-8adc-106e66505853">
+  </p>
+</details>
+
+<details>
+  <summary>🖼️ 2. User Alternate Authentication</summary>
+  <p align="center" style="display: flex; justify-content: space-between;">
+    <img style="width: 49%;" alt="대체 인증" src="https://github.com/noFlowWater/signage_solution/assets/112642604/05f5b522-1237-4f15-a699-8b89271df2d8">
+  </p>
+</details>
+
+### Menu 
+
+<details>
+  <summary>🖼️ 1. Menu recommendation</summary>
+  <p align="center" style="display: flex; justify-content: space-between;">
+    <img style="width: 49%;" alt="메뉴 추천" src="https://github.com/noFlowWater/signage_solution/assets/112642604/101989ca-4f2f-42ef-be41-31651c4bacf6">
+  </p>
+</details>
+
+<details>
+  <summary>🖼️ 2. Check Menu Allergy/Soldout, Detail</summary>
+  <p align="center" style="display: flex; justify-content: space-between;">
+    <img style="width: 49%;" alt="알러지:매진 확인" src="https://github.com/noFlowWater/signage_solution/assets/112642604/40395041-7485-4749-878e-212477655be5">
+    <img style="width: 49%;" alt="알러지 확인창" src="https://github.com/noFlowWater/signage_solution/assets/112642604/0bd82e2d-221d-4d94-ad35-da4a7d5be4f0">
+  </p>
+</details>
+
+<details>
+  <summary>🖼️ 3. Check Shopping Cart & Buy</summary>
+  <p align="center" style="display: flex; justify-content: space-between;">
+    <img style="width: 49%;" alt="장바구니 확인" src="https://github.com/noFlowWater/signage_solution/assets/112642604/58823132-e6b8-4b13-a667-04b4f535ec82">
+    <img style="width: 49%;" alt="결제 완료" src="https://github.com/noFlowWater/signage_solution/assets/112642604/a0d01536-a62a-4bc7-aac4-8cc9555f21dd">
+  </p>
+</details>
 
 </details>
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
