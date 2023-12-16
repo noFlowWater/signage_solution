@@ -14,7 +14,6 @@
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
 
 
 
@@ -29,8 +28,6 @@
 
   <p align="center">
     It is a webOS-based signage solution kiosk example project that recognizes the face of registered users and makes custom recommendations.
-    <br />
-    <a href="https://github.com/noFlowWater/signage_solution"><strong>Explore the docs »</strong></a>
     <br />
     <br />
     <a href="https://github.com/noFlowWater/signage_solution">View Demo</a>
@@ -131,36 +128,31 @@ Client Environment
 
 
 <!-- GETTING STARTED -->
-## Getting Started
+# Getting Started
 
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
+This guide will help you set up and run the project in your local environment. Follow these steps to get started.
 
-### Prerequisites
+## Installation
 
-This is an example of how to list things you need to use the software and how to install them.
-* npm
-  ```sh
-  npm install npm@latest -g
-  ```
+The process for installing and setting up the project is as follows. This template does not rely on any external dependencies or services.
 
-### Installation
-
-_Below is an example of how you can instruct your audience on installing and setting up your app. This template doesn't rely on any external dependencies or services._
-
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
+1. Clone the repository.
    ```sh
-   git clone https://github.com/your_username_/Project-Name.git
+   git clone https://github.com/noFlowWater/signage_solution.git
    ```
-3. Install NPM packages
+2. Move into the cloned directory.
    ```sh
-   npm install
+   cd signage_solution
    ```
-4. Enter your API in `config.js`
-   ```js
-   const API_KEY = 'ENTER YOUR API';
-   ```
+After cloning and moving into the directory, you will find three folders in the project directory: `react`, `flask`, `nodejs`.
+
+Proceed with the project in the following order:
+- First, Get Start for [`nodejs`](<Link to nodejs README>)
+- Then, Get Start for [`flask`](<Link to flask README>)
+- Finally, Get Start for [`react`](<Link to react README>)
+
+Each step is detailed in the `README.md` file of the respective folder, allowing you to sequentially progress and gather the necessary information.
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -262,8 +254,6 @@ Use this space to list resources you find helpful and would like to give credit 
 [issues-url]: https://github.com/noFlowWater/signage_solution/issues
 [license-shield]: https://img.shields.io/github/license/noFlowWater/signage_solution.svg?style=for-the-badge
 [license-url]: https://github.com/noFlowWater/signage_solution/blob/master/LICENSE.txt
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/othneildrew
 [product-screenshot]: images/screenshot.png
 
 [React.js]: https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=000
