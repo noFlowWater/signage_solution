@@ -22,7 +22,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/noFlowWater/signage_solution">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+    <img src="https://github.com/noFlowWater/signage_solution/assets/112642604/90eb71d4-8519-4dff-ad7f-22d3c60d18a1" alt="Logo">
   </a>
 
   <h3 align="center">Face Recognize Kiosk Using webOS</h3>
@@ -76,45 +76,55 @@
 
 [![Product Name Screen Shot][product-screenshot]](https://example.com)
 
-There are many great README templates available on GitHub; however, I didn't find one that really suited my needs so I created this enhanced one. I want to create a README template so amazing that it'll be the last one you ever need -- I think this is it.
+### Background
+Small-scale business owners often face financial constraints that make it challenging to afford expensive signage solutions. Therefore, there is a growing need for an affordable, open-source-based signage solution that can be easily implemented without the high costs associated with traditional signage products. This proposal aims to develop a user-customized kiosk that recognizes users to recommend menus and dynamically update menu lists.
 
-Here's why:
-* Your time should be focused on creating something amazing. A project that solves a problem and helps others
-* You shouldn't be doing the same tasks over and over like creating a README from scratch
-* You should implement DRY principles to the rest of your life :smile:
+### Project Objectives and Content
+User Recognition:
+- The kiosk will utilize a camera to identify users and check if they are returning visitors with payment records.
+- Images captured by the kiosk camera will be sent to an image recognition server for user identification.
+- The server will verify if the recognized user is a returning visitor.
+- In cases where user recognition is unsuccessful, an alternative authentication method is provided.
 
-Of course, no one template will serve all projects since your needs may be different. So I'll be adding more in the near future. You may also suggest changes by forking this repo and creating a pull request or opening an issue. Thanks to all the people have contributed to expanding this template!
+Menu Recommendations and Reconfiguration through Web App:
+- User data registration will be facilitated both at the kiosk and in the server's database.
+- The web app will offer menu recommendations based on user information.
+- Menus will be dynamically altered based on user data (considering factors like allergies, etc.).
+- Menu recommendations will operate using a **user collaborative filtering algorithm** based on the order history of registered users.
 
-Use the `BLANK_README.md` to get started.
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
+> Note: Payment processing is not included in the scope of this project.
 
 
 ### Built With
+Frontend
+<br/><br/>
+[![React][React.js]][React-url][![npm][npm]][npm-url][![Bootstrap][Bootstrap.com]][Bootstrap-url][![JavaScript][JavaScript.js]][JavaScript-url][![Figma][Figma]][Figma-url]
+<br/>
 
-This section should list any major frameworks/libraries used to bootstrap your project. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
+Face Identify Server 
+<br/><br/>
+[![Flask][Flask]][Flask-url][![OpenCV][OpenCV]][OpenCV-url][![Python][Python.org]][Python-url]
+<br/>
 
-
-Framework
-* [![React][React.js]][React-url]
-* [![Bootstrap][Bootstrap.com]][Bootstrap-url]
-* [![Flask][Flask]][Flask-url]
-* [![Nodejs][Nodejs]][Nodejs-url]
-* [![Prisma][Prisma]][Prisma-url]
+Kiosk API Server
+<br/><br/>
+[![Nodejs][Nodejs]][Nodejs-url][![npm][npm]][npm-url][![Prisma][Prisma]][Prisma-url][![JavaScript][JavaScript.js]][JavaScript-url]
+<br/>
   
 Database
-* [![MySQL][MySQL]][MySQL-url]
+<br/><br/>
+[![MySQL][MySQL]][MySQL-url][![Prisma][Prisma]][Prisma-url]
+<br/>
 
 Development Environment
-* [![macOS][macOS]][macOS-url]
-  
-Langueage
-* [![Python][Python.org]][Python-url]
-* [![JavaScript][JavaScript.js]][JavaScript-url]
+<br/><br/>
+[![macOS][macOS]][macOS-url]
+<br/>
 
-webOS
-* [![LG][LG]][LG-url]
+Client Environment
+<br/><br/>
+[![LG][LG]][LG-url][![Raspberry][Raspberry]][Raspberry-url]
+<br/>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -256,11 +266,14 @@ Use this space to list resources you find helpful and would like to give credit 
 [linkedin-url]: https://linkedin.com/in/othneildrew
 [product-screenshot]: images/screenshot.png
 
-[React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
+[React.js]: https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=000
 [React-url]: https://reactjs.org/
 
 [Bootstrap.com]: https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white
 [Bootstrap-url]: https://getbootstrap.com
+
+[Figma]: https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=figma&logoColor=fff
+[Figma-url]: https://www.figma.com/
 
 [Flask]: https://img.shields.io/badge/Flask-000?style=for-the-badge&logo=flask&logoColor=fff
 [Flask-url]: https://flask.palletsprojects.com/en/3.0.x/
@@ -271,6 +284,12 @@ Use this space to list resources you find helpful and would like to give credit 
 [Prisma]: https://img.shields.io/badge/Prisma-2D3748?style=for-the-badge&logo=prisma&logoColor=fff
 [Prisma-url]: https://www.prisma.io/
 
+[OpenCV]: https://img.shields.io/badge/OpenCV-5C3EE8?style=for-the-badge&logo=opencv&logoColor=fff
+[OpenCV-url]: https://opencv.org/
+
+[npm]: https://img.shields.io/badge/npm-CB3837?style=for-the-badge&logo=npm&logoColor=fff
+[npm-url]: https://www.npmjs.com/
+
 [MySQL]: https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=fff
 [MySQL-url]: https://www.mysql.com/
 
@@ -280,8 +299,11 @@ Use this space to list resources you find helpful and would like to give credit 
 [JavaScript.js]: https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black
 [JavaScript-url]: https://developer.mozilla.org/ko/docs/Learn/JavaScript
 
-[LG]: https://img.shields.io/badge/LG-A50034?style=for-the-badge&logo=lg&logoColor=fff
+[LG]: https://img.shields.io/badge/webOS-A50034?style=for-the-badge&logo=lg&logoColor=fff
 [LG-url]: https://www.webosose.org/
+
+[Raspberry]: https://img.shields.io/badge/Raspberry%20Pi-A22846?style=for-the-badge&logo=raspberrypi&logoColor=fff
+[Raspberry-url]: https://www.raspberrypi.com/
 
 [macOS]: https://img.shields.io/badge/macOS-000?style=for-the-badge&logo=macOS&logoColor=fff
 [macOS-url]: https://support.apple.com/ko-kr/macOS
