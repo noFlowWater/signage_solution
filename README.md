@@ -177,10 +177,42 @@ Each step is detailed in the `README.md` file of the respective folder, allowing
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+Use this space to show useful examples of how a project can be used. Additional screenshots, code examples, and demos work well in this space. You may also link to more resources.
 
 _For more examples, please refer to the [Documentation](https://example.com)_
 
+<details>
+<summary>🖼️ Admin ScreenShot</summary>
+<br>
+
+### Home Screen
+1. Home Screen Picture
+   ![Home Screen](<link-to-home-screen-image>)
+
+### Administrator Login
+1. Administrator Login
+   ![Administrator Login](<link-to-admin-login-image>)
+2. Administrator Login Failure
+   ![Administrator Login Failure](<link-to-admin-login-fail-image>)
+
+### Administrator Menu Management
+1. Administrator Menu List
+   ![Administrator Menu List](<link-to-admin-menu-list-image>)
+2. Administrator Menu Details
+   ![Administrator Menu Details](<link-to-admin-menu-detail-image>)
+3. Administrator Menu Registration and Deletion
+   ![Administrator Menu Registration and Deletion](<link-to-admin-menu-add-delete-image>)
+
+### Administrator Password Change
+1. Before Changing Password
+   ![Before Changing Password](<link-to-admin-password-change-before-image>)
+2. Changing Password
+   ![Changing Password](<link-to-admin-password-changing-image>)
+3. After Changing Password
+   ![After Changing Password](<link-to-admin-password-change-after-image>)
+
+
+</details>
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
