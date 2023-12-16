@@ -181,7 +181,7 @@ Each step is detailed in the `README.md` file of the respective folder, allowing
 <details>
   <summary>🖼️ Home</summary>
   <p align="center" style="display: flex; justify-content: space-between;">
-    <img style="width: 49%;" alt="1  키오스크 홈" src="https://github.com/noFlowWater/signage_solution/assets/112642604/d7ec989f-a11a-486e-aeab-b2098ea92554">
+    <img style="width: 49%;" alt="홈 화면" src="https://github.com/noFlowWater/signage_solution/assets/112642604/966af761-2f10-447f-90cb-241577823e90">
   </p>
 </details>
 <details>
