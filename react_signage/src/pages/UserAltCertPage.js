@@ -79,7 +79,7 @@ const UserAltCertPage = () => {
     return (
         <div>
             <AltCertNavBar />
-            <div style={{ maxWidth: '300px', margin: 'auto', paddingTop: '150px' }}>
+            <div style={{ maxWidth: '300px', margin: 'auto', paddingTop: '70px' }}>
                 <div style={{ fontFamily: 'SansM',fontSize: '30px' }}>전화번호를 입력하세요</div>
                 <div style = {{paddingTop : '30px'}}>
                 <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>

@@ -34,7 +34,7 @@ export const ModalBtn = styled.button`
   border-radius: 30px;
   cursor: grab;
   font-family: 'SansM'; /* 원하는 폰트 패밀리를 지정합니다. */
-  font-size: 20px; /* 원하는 폰트 크기를 지정합니다. */
+  font-size: 10px; /* 원하는 폰트 크기를 지정합니다. */
 `;
 
 
@@ -58,8 +58,8 @@ export const ModalView = styled.div.attrs((props) => ({
   align-items: center;
   flex-direction: column;
   border-radius: 20px;
-  width: 600px;
-  height: 730px;
+  width: 400px;
+  height: 500px;
   background-color: #EBF6EE;
   > div.desc {
     margin: 20px;
@@ -79,9 +79,9 @@ export const ModalIconContainer = styled.div`
 
 
 export const ModalIcon = styled.img`
-  width: 75px;
-  height: 70px;
-  margin: 10px;
+  width: 50px;
+  height: 45px;
+  margin: 7px;
   cursor: pointer;
   opacity: ${({ 'data-isselected': isSelected }) => (isSelected ? 1 : 0.5)};
 `;
@@ -134,7 +134,7 @@ export const UserAllergyModal = ({ content, isOpen, setIsOpen,userId }) => {
         <ModalContainer>
           <ModalBackdrop>
             <ModalView onClick={(e) => e.stopPropagation()}>
-              <div className='desc' style = {{fontFamily: 'SansM',fontSize: '20px'}}>{content}</div>
+              <div className='desc' style = {{fontFamily: 'SansM',fontSize: '15px'}}>{content}</div>
               <ModalIconContainer>
                 <ModalIcon
                   src={require('../img/1.png')}
@@ -282,8 +282,8 @@ export const UserAllergyModal = ({ content, isOpen, setIsOpen,userId }) => {
         
                 
               </ModalIconContainer>
-              <div style={{fontFamily: 'SansM',fontSize: '15px' }}>선택한 알러지 정보 :</div> 
-              <div style={{ fontFamily: 'SansM',fontSize: '15px' }}>{selectedIcons.join('/')}</div>
+              <div style={{fontFamily: 'SansM',fontSize: '10px' }}>선택한 알러지 정보 :</div> 
+              <div style={{ fontFamily: 'SansM',fontSize: '10px' }}>{selectedIcons.join('/')}</div>
               <ModalBtn onClick={sendSelectedIconsToServer}>선택 완료</ModalBtn>
             </ModalView>
           </ModalBackdrop>

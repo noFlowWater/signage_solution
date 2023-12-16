@@ -72,21 +72,22 @@ const UserCart = () => {
             </div>
 
             {/* 흰색 박스로 구분 */}
+            <div style={{ maxHeight: '200px', overflowY: 'auto' }}>
             {cart.map((item, index) => (
                 <div style={{ display: "flex", justifyContent: "center" }}>
                     <div key={index} style={{ backgroundColor: "#f8f8f8", padding: "10px", marginBottom: "10px", borderRadius: "15px", width: "90%", height: "100%", boxShadow: "0px 4px 10px rgba(0, 0, 0, 5)" }}>
                             <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-                                <div style={{ fontFamily: "SansB", fontSize: "25px", marginRight: "10px" }}>{item.menu_name}</div>
+                                <div style={{ fontFamily: "SansB", fontSize: "20px", marginRight: "10px" }}>{item.menu_name}</div>
                                 <button onClick={() => handleRemove(item)} style={{background: 'white',color:'#FF4B4B',width:'30px',height:'30px',borderRadius:'5px',boxShadow: "0px 2px 5px rgba(0, 0, 0, 1)"}}>X</button>
                             </div>
 
                             <div style={{ display: "flex", justifyContent: "center" }}>
-                                <div style={{ fontFamily: "SansM", fontSize: "20px" }}>￦{item.price}</div>
+                                <div style={{ fontFamily: "SansM", fontSize: "15px" }}>￦{item.price}</div>
                             </div>
                             <div style={{ display: "flex", justifyContent: "center" }}>
                                 <div style={{ display: "flex", alignItems: "center" }}>
                                     <button onClick={() => handleDecrease(item)} style={{background: 'white',color:'#FF4B4B',width:'30px',height:'30px',borderRadius:'5px',boxShadow: "0px 2px 5px rgba(0, 0, 0, 1)"}}>-</button>
-                                    <div style={{ fontFamily: "SansM", fontSize: "20px",paddingLeft:'10px',paddingRight:'10px' }}>
+                                    <div style={{ fontFamily: "SansM", fontSize: "15px",paddingLeft:'10px',paddingRight:'10px' }}>
                                         수량: {calculateQuantity(item)}
                                     </div>
                                     <button onClick={() => handleIncrease(item)} style={{background: 'white',color:'#FF4B4B',width:'30px',height:'30px',borderRadius:'5px',boxShadow: "0px 2px 5px rgba(0, 0, 0, 1)"}}>+</button>
@@ -95,7 +96,7 @@ const UserCart = () => {
                     </div>
                 </div>
             ))}
-
+            </div>
             
             <hr style={{ borderTop: '1px solid black', width: '100%' }} />
             <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center',}}>

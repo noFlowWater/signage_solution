@@ -158,82 +158,84 @@ const UserMenu = () => {
       };
 
       return (
-        <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-          {menus.map((menu, index) => (
-            menu ? (
-              <div key={index} onClick={() => !menu.is_soldout && addToCart(menu)} style={{ 
-                width: '33%', 
-                padding: '10px'
-              }}>
-                <div style={{ 
-                  position: 'relative',
-                  width: '100%', 
-                  height: '300px', 
-                  display: 'flex', 
-                  flexDirection: 'column', 
-                  justifyContent: 'center', 
-                  alignItems: 'center', 
-                  padding: '20px', 
-                  borderRadius: '20px', 
-                  boxShadow: "0px 4px 10px rgba(0, 0, 0, 5)",
-                  border: menu.hasAllergy ? '2px solid orange' : 'none',
-                  backgroundColor: menu.hasAllergy ? 'rgba(255, 165, 0, 0.1)' : '#f8f8f8'
+        <div style={{ maxHeight: '500px', overflowY: 'auto' }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+            {menus.map((menu, index) => (
+              menu ? (
+                <div key={index} onClick={() => !menu.is_soldout && addToCart(menu)} style={{ 
+                  width: '33%', 
+                  padding: '10px'
                 }}>
-                  {menu.hasAllergy && 
-                    <div style={{ 
-                      position: 'absolute', 
-                      top: '10px', 
-                      right: '10px', 
-                      backgroundColor: '#FFA500', 
-                      color: 'white', 
-                      padding: '7px', 
-                      borderRadius: '5px',
-                      fontSize: '15px',
-                      fontWeight: 'bold',
-                      fontFamily: "SansM",
-                      textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)",
-                      boxShadow: "0px 4px 10px rgba(0, 0, 0, 5)"
-                    }}>알러지 주의</div>
-                  }
-                  {menu.is_soldout && 
-                    <div className="diagonal-line" />
-                  }
-                  <img src={`${kiosk}/${menu.file_path}`} alt={menu.menu_name} style={{ width: '40%', height: 'auto', marginBottom: '10px' }} />
-                  <div style={{ fontFamily: "SansB", fontSize: '30px', textAlign: 'center' }}>{menu.menu_name}</div>
-                  <div style={{ fontFamily: "SansM", fontSize: '20px', textAlign: 'center' }}>￦{menu.price}</div>
-                  <button onClick={() => openModal(menu)} style={{ fontFamily: "SansM", fontSize: '15px', marginTop: '10px', border: 'none', background: 'rgba(0, 0, 0, 0)',textDecoration: 'underline', }}> 상세 정보</button>
-                  {cid === '0' && index === 0 && <div style={{ fontFamily: "SansB", fontSize: '20px', color: 'red', marginTop: '10px',textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)' }}>최근에 먹은 메뉴</div>}
-                  {cid === '0' && index === 1 && <div style={{ fontFamily: "SansB", fontSize: '20px', color: 'blue', marginTop: '10px' ,textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)'}}>가장 많이 먹은 메뉴</div>}
-                  {cid === '0' && index === 2 && <div style={{ fontFamily: "SansB", fontSize: '20px', color: 'green', marginTop: '10px' ,textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)'}}>나와 비슷한 사용자의 선호 메뉴</div>}
+                  <div style={{ 
+                    position: 'relative',
+                    width: '100%', 
+                    height: '250px', 
+                    display: 'flex', 
+                    flexDirection: 'column', 
+                    justifyContent: 'center', 
+                    alignItems: 'center', 
+                    padding: '20px', 
+                    borderRadius: '20px', 
+                    boxShadow: "0px 4px 10px rgba(0, 0, 0, 5)",
+                    border: menu.hasAllergy ? '2px solid orange' : 'none',
+                    backgroundColor: menu.hasAllergy ? 'rgba(255, 165, 0, 0.1)' : '#f8f8f8'
+                  }}>
+                    {menu.hasAllergy && 
+                      <div style={{ 
+                        position: 'absolute', 
+                        top: '10px', 
+                        right: '10px', 
+                        backgroundColor: '#FFA500', 
+                        color: 'white', 
+                        padding: '3px', 
+                        borderRadius: '5px',
+                        fontSize: '12px',
+                        fontWeight: 'bold',
+                        fontFamily: "SansM",
+                        textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)",
+                        boxShadow: "0px 4px 10px rgba(0, 0, 0, 5)"
+                      }}>알러지 주의</div>
+                    }
+                    {menu.is_soldout && 
+                      <div className="diagonal-line" />
+                    }
+                    <img src={`${kiosk}/${menu.file_path}`} alt={menu.menu_name} style={{ width: '40%', height: 'auto', marginBottom: '10px' }} />
+                    <div style={{ fontFamily: "SansB", fontSize: '30px', textAlign: 'center' }}>{menu.menu_name}</div>
+                    <div style={{ fontFamily: "SansM", fontSize: '20px', textAlign: 'center' }}>￦{menu.price}</div>
+                    <button onClick={() => openModal(menu)} style={{ fontFamily: "SansM", fontSize: '15px', marginTop: '10px', border: 'none', background: 'rgba(0, 0, 0, 0)',textDecoration: 'underline', }}> 상세 정보</button>
+                    {cid === '0' && index === 0 && <div style={{ fontFamily: "SansM", fontSize: '20px', color: 'red', marginTop: '10px',textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)' }}>최근에 먹은 메뉴</div>}
+                    {cid === '0' && index === 1 && <div style={{ fontFamily: "SansM", fontSize: '20px', color: 'blue', marginTop: '10px' ,textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)'}}>가장 많이 먹은 메뉴</div>}
+                    {cid === '0' && index === 2 && <div style={{ fontFamily: "SansM", fontSize: '13px', color: 'green', marginTop: '10px' ,textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)'}}>나와 비슷한 사용자의 선호 메뉴</div>}
+                  </div>
                 </div>
-              </div>
-            ) : (
-              <div key={index} style={{ 
-                width: '33%', 
-                padding: '10px', 
-              }}>
-                <div style = {{
-                  position: 'relative',
-                  width: '100%', 
-                  height: '300px', 
-                  display: 'flex', 
-                  flexDirection: 'column', 
-                  justifyContent: 'center', 
-                  alignItems: 'center', 
-                  padding: '20px', 
-                  borderRadius: '20px', 
-                  boxShadow: "0px 4px 10px rgba(0, 0, 0, 5)",
-                  border: 'none',
-                  backgroundColor: 'white'
+              ) : (
+                <div key={index} style={{ 
+                  width: '33%', 
+                  padding: '10px', 
                 }}>
-                  {cid === '0' && index === 0 && <p style={{ fontFamily: "SansB", fontSize: '20px', color: 'gray' }}>최근에 먹은 추천 메뉴 없음</p>}
-                  {cid === '0' && index === 1 && <p style={{ fontFamily: "SansB", fontSize: '20px', color: 'gray' }}>가장 많이 먹은 추천 메뉴 없음</p>}
-                  {cid === '0' && index === 2 && <p style={{ fontFamily: "SansB", fontSize: '15px', color: 'gray' }}>나와 비슷한 사용자의 선호 추천 메뉴 없음</p>}
+                  <div style = {{
+                    position: 'relative',
+                    width: '100%', 
+                    height: '250px', 
+                    display: 'flex', 
+                    flexDirection: 'column', 
+                    justifyContent: 'center', 
+                    alignItems: 'center', 
+                    padding: '20px', 
+                    borderRadius: '20px', 
+                    boxShadow: "0px 4px 10px rgba(0, 0, 0, 5)",
+                    border: 'none',
+                    backgroundColor: 'white'
+                  }}>
+                    {cid === '0' && index === 0 && <p style={{ fontFamily: "SansM", fontSize: '15px', color: 'gray' }}>최근에 먹은 추천 메뉴 없음</p>}
+                    {cid === '0' && index === 1 && <p style={{ fontFamily: "SansM", fontSize: '15px', color: 'gray' }}>가장 많이 먹은 추천 메뉴 없음</p>}
+                    {cid === '0' && index === 2 && <p style={{ fontFamily: "SansM", fontSize: '10px', color: 'gray' }}>나와 비슷한 사용자의 선호 추천 메뉴 없음</p>}
+                  </div>
                 </div>
-              </div>
-            )
-          ))}
-          {modalOpen && <Modal menu={selectedMenu} onClose={closeModal} />}
+              )
+            ))}
+            {modalOpen && <Modal menu={selectedMenu} onClose={closeModal} />}
+          </div>
         </div>
       );
   }

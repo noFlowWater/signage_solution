@@ -188,143 +188,145 @@ const AdminMenuForm = ({editing}) => {
     
 
     return (
-        <div>
-            <AdminLoginModal 
-            content={modalMessage} 
-            isOpen={showModal} 
-            setIsOpen={setShowModal} 
-            closeMethod={() => setShowModal(false)}  
-        />
-            <nav className="navbar">
-                <div className="container">
-                    <div style = {{fontFamily: 'SansM', fontSize:'30px'}}>
-                        {editing ? '메뉴 수정' : '메뉴 등록'}
-                    </div>
-                    {/* <img src={'/img/menu_reg.png'} alt="메뉴 등록" height="110" width="300"/> */}
-                    <img src={require('../img/Logo.png')} alt="logo" height="100" width="300"/>
-                </div>
-            </nav>
-            <div className="form-control">
-                <div className="ms-5">
-                    <div className ="mb-4">
-                        <label className="from-label mb-1"
-                        style = {{fontFamily: 'SansM', fontSize:'30px'}}
-                        >메뉴 이름</label>
-                        <input
-                            className="form-control"
-                            value={name}
-                            onChange={(e)=>{
-                                setName(e.target.value);
-                            }}
-                            style={{ width: "150px" }}
-                        />
-                    </div>
-                    <div className ="mb-4">
-                        <label className="from-label mb-1"
-                        style = {{fontFamily: 'SansM', fontSize:'30px'}}>상세 설명</label>
-                        <textarea
-                            className="form-control"
-                            value={explan}
-                            onChange={(e)=>{
-                                setExplan(e.target.value);
-                            }}
-                            style={{ width: "600px" }}
-                        />
-                    </div>
-                    <div className="mb-4">
-                        <label className="form-label mb-1"
-                        style = {{fontFamily: 'SansM', fontSize:'30px'}}>사진 등록(사진 필수)</label>
-                        <div className="mb-3">
-                        <input 
-                            type="file" 
-                            onChange={handleFileChange}  // 파일 선택 핸들러 변경
-                        />
-                        </div>
-                    </div>
-                    <div className="mb-4">
-                        <label className="form-label mb-1"
-                        style = {{fontFamily: 'SansM', fontSize:'30px'}}>사진 미리보기</label>
-                        <div className="mb-3">
-                            { preview && (
-                                <img src={preview} alt="Preview" style={{width: '15%', height: 'auto'}}/>
-                            )}
-                        </div>
-                    </div>
-                    <div className="mb-4">
-                        <label className="from-label mb-1"
-                        style = {{fontFamily: 'SansM', fontSize:'30px'}}>메뉴 가격</label>
-                        <input
-                            className="form-control"
-                            value={cost}
-                            onChange={(e)=>{
-                                setCost(e.target.value);
-                            }}
-                            style={{ width: "150px" }}
-                        />
-                    </div>
-                    <div className="mb-4">
-                        <label className="from-label mb-1"
-                        style = {{fontFamily: 'SansM', fontSize:'30px'}}>카테고리 ID</label>
-                        <select
-                            className="form-control"
-                            value={cid}
-                            onChange={(e)=>{
-                                setCid(e.target.value);
-                            }}
-                            style={{ width: "100px" , fontFamily: 'SansM', fontSize:'20px'}}
-                        >
-                            <option value="1">김밥</option>
-                            <option value="2">라면</option>
-                            <option value="3">떡볶이</option>
-                            <option value="4">돈가스</option>
-                            <option value="5">사이드</option>
-                        </select>
-                    </div>
-                    <div className="mb-4">
-                        <label className="form-label mb-1"
-                        style = {{fontFamily: 'SansM', fontSize:'30px'}}>알레르기 정보</label>
-                            <div 
-                                style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' ,fontFamily: 'SansM', fontSize:'15px'}}>
-                                {["없음", "메밀", "밀", "잣","대두", "호두", "땅콩", "복숭아", "토마토", "돼지고기", "난류(가금류)", "우유", "닭고기", "쇠고기", "새우", "고등어", "홍합", "전복", "굴", "조개류", "게", "오징어", "아황산 포함식품"].map((item, index) => (
-                                    <div key={index} style={{ marginRight: '15px', width: '14%' }}>
-                                        <input
-                                            type="checkbox"
-                                            id={`allergy${index}`}
-                                            name="allergy"
-                                            value={item}
-                                            checked={allergy.includes(item)} // 해당 항목이 선택된 알레르기 항목에 포함되어 있는지 확인
-                                            onChange={handleAllergyChange}
-                                        />
-                                        <label htmlFor={`allergy${index}`}>{item}</label>
-                                    </div>
-                                ))}
-                            </div>
-                    </div>
-                    <div className="mb-4">
-                        <label className="form-label mb-1"
-                        style = {{fontFamily: 'SansM', fontSize:'30px'}}>매진 여부(체크 하면 매진, 체크 하지 않으면 매진 X)</label>
-                        <div>
-                            <input
-                                type="checkbox"
-                                checked={isChecked}  // 체크 상태 설정
-                                onChange={handleCheckboxChange}
-                            />
-                        </div>
-                    </div>
-                    <div className="mb-4">
-                        <div 
-                        className ="btn btn-primary"
-                        onClick={onSubmit}
-                        style = {{fontFamily: 'SansM', fontSize:'20px',boxShadow: '0px 4px 10px rgba(0,0,0,5)'}}
-                        >
+        <div style={{ maxHeight: '600px', overflowY: 'auto' }}>
+            <div>
+                <AdminLoginModal 
+                content={modalMessage} 
+                isOpen={showModal} 
+                setIsOpen={setShowModal} 
+                closeMethod={() => setShowModal(false)}  
+            />
+                <nav className="navbar">
+                    <div className="container">
+                        <div style = {{fontFamily: 'SansM', fontSize:'30px'}}>
                             {editing ? '메뉴 수정' : '메뉴 등록'}
                         </div>
-                        <div 
-                        className ="btn btn-danger ms-2"
-                        onClick={goBack}
-                        style = {{fontFamily: 'SansM', fontSize:'20px',boxShadow: '0px 4px 10px rgba(0,0,0,5)'}}
-                        >
-                            돌아가기
+                        {/* <img src={'/img/menu_reg.png'} alt="메뉴 등록" height="110" width="300"/> */}
+                        <img src={require('../img/Logo.png')} alt="logo" height="100" width="300"/>
+                    </div>
+                </nav>
+                <div className="form-control">
+                    <div className="ms-5">
+                        <div className ="mb-4">
+                            <label className="from-label mb-1"
+                            style = {{fontFamily: 'SansM', fontSize:'30px'}}
+                            >메뉴 이름</label>
+                            <input
+                                className="form-control"
+                                value={name}
+                                onChange={(e)=>{
+                                    setName(e.target.value);
+                                }}
+                                style={{ width: "150px" }}
+                            />
+                        </div>
+                        <div className ="mb-4">
+                            <label className="from-label mb-1"
+                            style = {{fontFamily: 'SansM', fontSize:'30px'}}>상세 설명</label>
+                            <textarea
+                                className="form-control"
+                                value={explan}
+                                onChange={(e)=>{
+                                    setExplan(e.target.value);
+                                }}
+                                style={{ width: "600px" }}
+                            />
+                        </div>
+                        <div className="mb-4">
+                            <label className="form-label mb-1"
+                            style = {{fontFamily: 'SansM', fontSize:'30px'}}>사진 등록(사진 필수)</label>
+                            <div className="mb-3">
+                            <input 
+                                type="file" 
+                                onChange={handleFileChange}  // 파일 선택 핸들러 변경
+                            />
+                            </div>
+                        </div>
+                        <div className="mb-4">
+                            <label className="form-label mb-1"
+                            style = {{fontFamily: 'SansM', fontSize:'30px'}}>사진 미리보기</label>
+                            <div className="mb-3">
+                                { preview && (
+                                    <img src={preview} alt="Preview" style={{width: '15%', height: 'auto'}}/>
+                                )}
+                            </div>
+                        </div>
+                        <div className="mb-4">
+                            <label className="from-label mb-1"
+                            style = {{fontFamily: 'SansM', fontSize:'30px'}}>메뉴 가격</label>
+                            <input
+                                className="form-control"
+                                value={cost}
+                                onChange={(e)=>{
+                                    setCost(e.target.value);
+                                }}
+                                style={{ width: "150px" }}
+                            />
+                        </div>
+                        <div className="mb-4">
+                            <label className="from-label mb-1"
+                            style = {{fontFamily: 'SansM', fontSize:'30px'}}>카테고리 ID</label>
+                            <select
+                                className="form-control"
+                                value={cid}
+                                onChange={(e)=>{
+                                    setCid(e.target.value);
+                                }}
+                                style={{ width: "100px" , fontFamily: 'SansM', fontSize:'20px'}}
+                            >
+                                <option value="1">김밥</option>
+                                <option value="2">라면</option>
+                                <option value="3">떡볶이</option>
+                                <option value="4">돈가스</option>
+                                <option value="5">사이드</option>
+                            </select>
+                        </div>
+                        <div className="mb-4">
+                            <label className="form-label mb-1"
+                            style = {{fontFamily: 'SansM', fontSize:'30px'}}>알레르기 정보</label>
+                                <div 
+                                    style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' ,fontFamily: 'SansM', fontSize:'15px'}}>
+                                    {["없음", "메밀", "밀", "잣","대두", "호두", "땅콩", "복숭아", "토마토", "돼지고기", "난류(가금류)", "우유", "닭고기", "쇠고기", "새우", "고등어", "홍합", "전복", "굴", "조개류", "게", "오징어", "아황산 포함식품"].map((item, index) => (
+                                        <div key={index} style={{ marginRight: '15px', width: '14%' }}>
+                                            <input
+                                                type="checkbox"
+                                                id={`allergy${index}`}
+                                                name="allergy"
+                                                value={item}
+                                                checked={allergy.includes(item)} // 해당 항목이 선택된 알레르기 항목에 포함되어 있는지 확인
+                                                onChange={handleAllergyChange}
+                                            />
+                                            <label htmlFor={`allergy${index}`}>{item}</label>
+                                        </div>
+                                    ))}
+                                </div>
+                        </div>
+                        <div className="mb-4">
+                            <label className="form-label mb-1"
+                            style = {{fontFamily: 'SansM', fontSize:'30px'}}>매진 여부(체크 하면 매진, 체크 하지 않으면 매진 X)</label>
+                            <div>
+                                <input
+                                    type="checkbox"
+                                    checked={isChecked}  // 체크 상태 설정
+                                    onChange={handleCheckboxChange}
+                                />
+                            </div>
+                        </div>
+                        <div className="mb-4">
+                            <div 
+                            className ="btn btn-primary"
+                            onClick={onSubmit}
+                            style = {{fontFamily: 'SansM', fontSize:'20px',boxShadow: '0px 4px 10px rgba(0,0,0,5)'}}
+                            >
+                                {editing ? '메뉴 수정' : '메뉴 등록'}
+                            </div>
+                            <div 
+                            className ="btn btn-danger ms-2"
+                            onClick={goBack}
+                            style = {{fontFamily: 'SansM', fontSize:'20px',boxShadow: '0px 4px 10px rgba(0,0,0,5)'}}
+                            >
+                                돌아가기
+                            </div>
                         </div>
                     </div>
                 </div>

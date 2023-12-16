@@ -40,16 +40,19 @@ const AdminLogin = () => {
     const goBack = () => {
         navigate('/');
     }
+    const calculateSize = (originalSize, ratio) => {
+        return Math.round(window.innerWidth * ratio) || originalSize;
+      };
 
     return (
-        <div style = {{padding: '250px'}}>
+        <div style = {{padding: '140px'}}>
              <AdminLoginModal 
             content={modalMessage} 
             isOpen={showModal} 
             setIsOpen={setShowModal} 
             closeMethod={() => setShowModal(false)}  
         />
-            <div className="container d-flex align-items-center justify-content-center vh-50">
+            <div className="container d-flex justify-content-center vh-50" style={{ width: calculateSize(500, 0.4), height: calculateSize(100, 0.3) }}>
                 <div className="d-flex flex-column align-items-center">
                     <h1 style = {{fontFamily: 'SansM', fontSize:'35px'}}>관리자 로그인</h1>
                     <div style={{ textAlign: 'center',paddingTop:'20px' }}>
