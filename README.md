@@ -133,7 +133,7 @@ Client Environment
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
-
+<!--SPECIFICATIONS-->
 # Specifications
 
 ### Development Environment Specifications
@@ -163,6 +163,7 @@ Ensure that you have all these components available before proceeding with the s
 
 > [webOS Offitial Docs](https://www.webosose.org/docs/guides/setup/system-requirements/)
 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- GETTING STARTED -->
 # Getting Started
