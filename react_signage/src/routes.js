@@ -10,7 +10,6 @@ import UserRegPage from './pages/UserRegPage';
 import AdminMenuEdit from './pages/AdminMenuEdit';
 import UserRegCam from './pages/UserRegCam';
 import UserRecCam from './pages/UserRecCam';
-import UserAllergySelectPage from './pages/UserAllergySelectPage';
 import UserOrderPage from './pages/UserOrderPage';
 import AdminMenuShow from './pages/AdminMenuShow';
 import UserAltCertPage from './pages/UserAltCertPage';
@@ -40,10 +39,6 @@ const routes = [
     {
         path : '/user/reg/cam',
         component : UserRegCam
-    },
-    {
-        path : '/user/reg/allergy',
-        component : UserAllergySelectPage
     },
     {
         path : '/user/menu/:cid',
