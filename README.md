@@ -144,7 +144,7 @@ Our project was developed in an Apple Silicon environment, which provided us wit
 - **Memory**: 8GB RAM or more
 - **Storage**: 256GB SSD or higher
 
-We recommend using a similar Apple Silicon-based environment for development to ensure compatibility and optimal performance.
+We recommend using a similar Apple Silicon-based environment for development to ensure compatibility
 
 ### Hardware Requirements for Client Device
 
