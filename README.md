@@ -24,10 +24,10 @@
     <img src="https://github.com/noFlowWater/signage_solution/assets/112642604/90eb71d4-8519-4dff-ad7f-22d3c60d18a1" alt="Logo">
   </a>
 
-  <h3 align="center">Face Recognize Kiosk Using webOS</h3>
+  <h3 align="center">Face Certification Kiosk Using webOS</h3>
 
   <p align="center">
-    It's a webOS-based signage solution kiosk example project that recognizes the face of registered users and makes custom recommendations.
+    It's a webOS-based signage solution kiosk example project that verification the face of registered users and makes custom recommendations.
     <br />
     <br />
     <a href="https://github.com/noFlowWater/signage_solution">View Demo</a>
@@ -77,11 +77,11 @@
 Small-scale business owners often face financial constraints that make it challenging to afford expensive signage solutions. Therefore, there is a growing need for an affordable, open-source-based signage solution that can be easily implemented without the high costs associated with traditional signage products. This proposal aims to develop a user-customized kiosk that recognizes users to recommend menus and dynamically update menu lists.
 
 ### Project Objectives and Content
-User Recognition:
+User Verification:
 - The kiosk will utilize a camera to identify users and check if they are returning visitors with payment records.
-- Images captured by the kiosk camera will be sent to an image recognition server for user identification.
+- Images captured by the kiosk camera will be sent to an image process server for user identification.
 - The server will verify if the recognized user is a returning visitor.
-- In cases where user recognition is unsuccessful, an alternative authentication method is provided.
+- In cases where user verification is unsuccessful, an alternative authentication method is provided.
 
 Custom Menu Recommendations and Reconfiguration through Web App:
 - User data registration will be facilitated both at the kiosk and in the server's database.
@@ -161,7 +161,7 @@ After cloning and moving into the directory, you will find three folders in the 
 Proceed with the project in the following order:
 - First, [Get Start for Kiosk API Server & Init Database](nodejs/README.md)
 - Then, [Get Start for Face Authentication Server](flask/README.md)
-- Finally, [Get Start for React for Deploy to webOS Client Device](react-signage/README.md)
+- Finally, [Get Start for React for Deploy to webOS Client Device](react_signage/README.md)
 
 Each step is detailed in the `README.md` file of the respective folder, allowing you to sequentially progress and gather the necessary information.
 
