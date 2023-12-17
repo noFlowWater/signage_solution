@@ -179,79 +179,6 @@ Each step is detailed in the `README.md` file of the respective folder, allowing
   </p>
 </details>
 <details>
-<summary>🖼️ Admin</summary>
-<br>
-
-### Administrator Login
-
-<details>
-  <summary>🖼️ 1. Administrator Login</summary>
-  <p align="center" style="display: flex; justify-content: space-between;">
-    <img style="width: 49%;" alt="관리자 로그인" src="https://github.com/noFlowWater/signage_solution/assets/112642604/e73aef73-ac9e-4c6e-b058-7fe5dcd4463c">
-  </p>
-</details>
-
-<details>
-  <summary>🖼️ 2. Administrator Login Failure</summary>
-  <p align="center" style="display: flex; justify-content: space-between;">
-    <img style="width: 49%;" alt="관리자 비밀번호 체크" src="https://github.com/noFlowWater/signage_solution/assets/112642604/83ae69bb-9e44-4482-bb19-297c15e288d5">
-  </p>
-</details>
-
-### Administrator Menu Management
-
-<details>
-  <summary>🖼️ 1. Administrator Menu List</summary>
-  <p align="center" style="display: flex; justify-content: space-between;">
-    <img style="width: 49%;" alt="관리자 홈" src="https://github.com/noFlowWater/signage_solution/assets/112642604/6d8d6f01-440e-4b0c-96f8-2c8d2ba21fc9">
-  </p>
-</details>
-
-<details>
-  <summary>🖼️ 2. Administrator Menu Details</summary>
-  <p align="center" style="display: flex; justify-content: space-between;">
-    <img style="width: 49%;" alt="관리자 메뉴 상세보기" src="https://github.com/noFlowWater/signage_solution/assets/112642604/5bca34f5-1ab6-49a9-8e0b-bdf6257eb0b2">
-  </p>
-</details>
-
-
-<details>
-  <summary>🖼️ 3. Administrator Menu Registration and Deletion</summary>
-  <p align="center" style="display: flex; justify-content: space-between;">
-    <img src="https://github.com/noFlowWater/signage_solution/assets/112642604/bdb89e7e-4208-4aea-9f93-90c3daece562" 
-           alt="관리자 메뉴 등록" 
-           style="width: 49%;">
-    <img src="https://github.com/noFlowWater/signage_solution/assets/112642604/4433ee82-b9fa-43dd-a325-8b84be381131"    
-           alt="관리자 메뉴 수정"
-           style="width: 49%;">
-  </p>
-</details>
-
-### Administrator Password Change
-
-<details>
-  <summary>🖼️ 1. Changing Password (fail 1)</summary>
-  <p align="center" style="display: flex; justify-content: space-between;">
-    <img style="width: 49%;" alt="admin_change_password_1" src="https://github.com/noFlowWater/signage_solution/assets/112642604/3e66a0d8-ec91-4464-9f4a-6c32f2c897e7">
-  </p>
-</details>
-
-<details>
-  <summary>🖼️ 2. Changing Password (fail 2)</summary>
-  <p align="center" style="display: flex; justify-content: space-between;">
-    <img style="width: 49%;" alt="admin_change_password_2" src="https://github.com/noFlowWater/signage_solution/assets/112642604/435dae5a-4e51-480d-8a18-9c6921775a97">
-  </p>
-</details>
-
-<details>
-  <summary>🖼️ 3. Changing Password (success)</summary>
-  <p align="center" style="display: flex; justify-content: space-between;">
-    <img style="width: 49%;" alt="admin_change_password_3" src="https://github.com/noFlowWater/signage_solution/assets/112642604/73223ce7-e487-4bbc-80ba-ffc505fd58c3">
-  </p>
-</details>
-
-</details>
-<details>
 <summary>🖼️ User</summary>
 <br>
 
@@ -329,6 +256,80 @@ Each step is detailed in the `README.md` file of the respective folder, allowing
 </details>
 
 </details>
+<details>
+<summary>🖼️ Admin</summary>
+<br>
+
+### Administrator Login
+
+<details>
+  <summary>🖼️ 1. Administrator Login</summary>
+  <p align="center" style="display: flex; justify-content: space-between;">
+    <img style="width: 49%;" alt="관리자 로그인" src="https://github.com/noFlowWater/signage_solution/assets/112642604/e73aef73-ac9e-4c6e-b058-7fe5dcd4463c">
+  </p>
+</details>
+
+<details>
+  <summary>🖼️ 2. Administrator Login Failure</summary>
+  <p align="center" style="display: flex; justify-content: space-between;">
+    <img style="width: 49%;" alt="관리자 비밀번호 체크" src="https://github.com/noFlowWater/signage_solution/assets/112642604/83ae69bb-9e44-4482-bb19-297c15e288d5">
+  </p>
+</details>
+
+### Administrator Menu Management
+
+<details>
+  <summary>🖼️ 1. Administrator Menu List</summary>
+  <p align="center" style="display: flex; justify-content: space-between;">
+    <img style="width: 49%;" alt="관리자 홈" src="https://github.com/noFlowWater/signage_solution/assets/112642604/6d8d6f01-440e-4b0c-96f8-2c8d2ba21fc9">
+  </p>
+</details>
+
+<details>
+  <summary>🖼️ 2. Administrator Menu Details</summary>
+  <p align="center" style="display: flex; justify-content: space-between;">
+    <img style="width: 49%;" alt="관리자 메뉴 상세보기" src="https://github.com/noFlowWater/signage_solution/assets/112642604/5bca34f5-1ab6-49a9-8e0b-bdf6257eb0b2">
+  </p>
+</details>
+
+
+<details>
+  <summary>🖼️ 3. Administrator Menu Registration and Deletion</summary>
+  <p align="center" style="display: flex; justify-content: space-between;">
+    <img src="https://github.com/noFlowWater/signage_solution/assets/112642604/bdb89e7e-4208-4aea-9f93-90c3daece562" 
+           alt="관리자 메뉴 등록" 
+           style="width: 49%;">
+    <img src="https://github.com/noFlowWater/signage_solution/assets/112642604/4433ee82-b9fa-43dd-a325-8b84be381131"    
+           alt="관리자 메뉴 수정"
+           style="width: 49%;">
+  </p>
+</details>
+
+### Administrator Password Change
+
+<details>
+  <summary>🖼️ 1. Changing Password (fail 1)</summary>
+  <p align="center" style="display: flex; justify-content: space-between;">
+    <img style="width: 49%;" alt="admin_change_password_1" src="https://github.com/noFlowWater/signage_solution/assets/112642604/3e66a0d8-ec91-4464-9f4a-6c32f2c897e7">
+  </p>
+</details>
+
+<details>
+  <summary>🖼️ 2. Changing Password (fail 2)</summary>
+  <p align="center" style="display: flex; justify-content: space-between;">
+    <img style="width: 49%;" alt="admin_change_password_2" src="https://github.com/noFlowWater/signage_solution/assets/112642604/435dae5a-4e51-480d-8a18-9c6921775a97">
+  </p>
+</details>
+
+<details>
+  <summary>🖼️ 3. Changing Password (success)</summary>
+  <p align="center" style="display: flex; justify-content: space-between;">
+    <img style="width: 49%;" alt="admin_change_password_3" src="https://github.com/noFlowWater/signage_solution/assets/112642604/73223ce7-e487-4bbc-80ba-ffc505fd58c3">
+  </p>
+</details>
+
+</details>
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
