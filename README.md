@@ -21,7 +21,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/noFlowWater/signage_solution">
-    <img src="https://github.com/noFlowWater/signage_solution/assets/112642604/90eb71d4-8519-4dff-ad7f-22d3c60d18a1" alt="Logo">
+    <img src="https://github.com/noFlowWater/signage_solution/assets/112642604/90eb71d4-8519-4dff-ad7f-22d3c60d18a1" alt="Logo" style="width: 70%;">
   </a>
 
   <h3 align="center">Face Certification Kiosk Using webOS</h3>
