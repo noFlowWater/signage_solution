@@ -148,6 +148,10 @@ Client Environment
 
 This guide will help you set up and run the project in your local environment. Follow these steps to get started.
 
+> **Note:** This guide is tailored for a setup on **a single local PC**. It can also be adapted for multi-server environments, accommodating both centralized and distributed systems efficiently.
+
+> **Note:** For effective data processing, we recommend hosting both the **Flask application and database on the same system**. This setup reduces latency and improves operational efficiency, especially for large, user-specific models.
+
 ## Installation
 
 The process for installing and setting up the project is as follows. This template does not rely on any external dependencies or services.
