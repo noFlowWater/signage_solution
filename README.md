@@ -159,9 +159,9 @@ The process for installing and setting up the project is as follows. This templa
 After cloning and moving into the directory, you will find three folders in the project directory: `react`, `flask`, `nodejs`.
 
 Proceed with the project in the following order:
-- First, Get Start for [`nodejs`](<Link to nodejs README>)
-- Then, Get Start for [`flask`](<Link to flask README>)
-- Finally, Get Start for [`react`](<Link to react README>)
+- First, [Get Start for Kiosk API Server & Init Database](nodejs/README.md)
+- Then, [Get Start for Face Authentication Server](flask/README.md)
+- Finally, [Get Start for React for Deploy to webOS Client Device](react-signage/README.md)
 
 Each step is detailed in the `README.md` file of the respective folder, allowing you to sequentially progress and gather the necessary information.
 
