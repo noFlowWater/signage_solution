@@ -1,6 +1,12 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const AltCertNavBar = () => {
+    const navigate = useNavigate();
+
+    const handleClickLogo = () => {
+        navigate('/');
+    };
+
     return (
         <nav className="navbar bg-transparent navbar-height" style = {{paddingTop: '15px'}}>
             <div className="container">
@@ -8,7 +14,7 @@ const AltCertNavBar = () => {
                 <div style = {{
                     flexDirection: 'row'
                 }} >
-                <img src={require('../img/Logo.png')} alt="Logo" height="100" width="300"/>
+                <img src={require('../img/Logo.png')} alt="Logo" height="100" width="300" onClick={handleClickLogo}/>
                 </div>
             </div>
         </nav>

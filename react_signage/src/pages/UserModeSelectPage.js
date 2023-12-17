@@ -15,7 +15,7 @@ const ButtonContainer = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 50px; /* 버튼 간의 여백 설정 */
+    gap: 30px; /* 버튼 간의 여백 설정 */
 `;
 
 const LeftButton = styled.button`
@@ -41,18 +41,18 @@ const UserModeSelectPage = () => {
     <div style={{ backgroundImage: `url(${require('../img/UserModeBG.png')})`, backgroundSize: 'cover', backgroundPosition: 'center',width: '100vw', height: '100vh'}}>
         <PageContainer>
             <ButtonContainer>
-            <div style={{ fontFamily: 'SansM',fontSize: '50px' }}>첫 방문이라면</div>
+            <div style={{ fontFamily: 'SansM',fontSize: '30px' }}>첫 방문이라면</div>
             <Link className="user-reg" to="/user/reg">
-                <LeftButton style={{fontSize:'50px'}}>
+                <LeftButton style={{fontSize:'30px'}}>
                     <div style={{fontFamily: 'SansM',textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)'}}>사용자 등록</div>
                 </LeftButton>
             </Link>
             </ButtonContainer>
             
             <ButtonContainer>
-            <div style={{ fontFamily: 'SansM',fontSize: '50px' }}>이미 등록되어있다면</div>
+            <div style={{ fontFamily: 'SansM',fontSize: '30px' }}>이미 등록되어있다면</div>
                 <Link className="user-face" to="/user/rec/cam">
-                    <RightButton style={{fontSize:'50px'}}> 
+                    <RightButton style={{fontSize:'30px'}}> 
                     <div style={{fontFamily: 'SansM',textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)'}}>사용자 인증</div>
                     </RightButton>
                 </Link>

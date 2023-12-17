@@ -166,9 +166,9 @@ const UserRegCam = () => {
     return (
         <div>
             <FaceRegNavBar />
-            <div className="container d-flex align-items-center justify-content-center vh-50" style={{paddingTop:'50px'}}>
+            <div className="container d-flex align-items-center justify-content-center vh-50" style={{paddingTop:'10px'}}>
                 <div className="d-flex flex-column align-items-center">
-                    <div style={{ fontFamily: 'SansM',fontSize: '30px' }}>카메라를 응시해주세요</div>
+                    <div style={{ fontFamily: 'SansM',fontSize: '25px' }}>카메라를 응시해주세요</div>
                     <div id="container">
                         {isCollectionComplete ? (
                                 <div>Collection complete! All images have been saved.</div>
@@ -201,7 +201,7 @@ const UserRegCam = () => {
                                     </div>
                                 </div>                                
                             )}
-                            <div style={{ display: "flex", justifyContent: "center",paddingTop:'50px' }}>
+                            <div style={{ display: "flex", justifyContent: "center",paddingTop:'20px' }}>
                                 <LoadingBar progress={loadingProgress} />
                             </div>
                         {/* The canvas is used for capturing frames but is not displayed */}

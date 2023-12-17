@@ -100,6 +100,11 @@ export const UserPayModal = ({ content }) => {
       console.log(error);
     }
   };
+
+  const handleClickLogo = () => {
+      navigate('/');
+  };
+
   return (
     <>
       <ModalContainer>
@@ -110,7 +115,7 @@ export const UserPayModal = ({ content }) => {
         {isOpen ? (
           <ModalBackdrop onClick={openModalHandler}>
             <ModalView onClick={(e) => e.stopPropagation()}>
-              <img src={require('../img/Logo.png')} alt="Pay" className="pay-image" style={{ width: '150px', height: 'auto' }} />
+              <img src={require('../img/Logo.png')} alt="Pay" className="pay-image" style={{ width: '150px', height: 'auto' }} onClick={handleClickLogo} />
               <div className='desc' style={{ fontFamily: 'SansM', fontSize: '20px' }}>{content}</div>
                 <button className="btn" onClick={handleConfirm} style={{ background: '#FF4B4B',color:'white',fontFamily: 'SansM', fontSize: '20px',boxShadow: "0px 4px 10px rgba(0, 0, 0, 5)" }}>
                   확인

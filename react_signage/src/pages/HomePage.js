@@ -3,9 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 
 const HomePage = () => {
   const navigate = useNavigate();
-  const [paddingTopRatio, setPaddingTopRatio] = useState(0.12); // 화면 높이의 30%로 설정
+  const [paddingTopRatio, setPaddingTopRatio] = useState(0.12);
 
-  // 컴포넌트가 마운트될 때와 화면 크기가 변경될 때 이벤트 리스너 등록
   useEffect(() => {
     const clearLocalStorage = () => {
       localStorage.removeItem('userId');
@@ -14,29 +13,34 @@ const HomePage = () => {
       localStorage.removeItem('userAl');
     };
 
-    clearLocalStorage(); // 컴포넌트가 마운트될 때 localStorage 비우기
-  }, [paddingTopRatio]); // 원래 의존성 배열 : paddingTopRatio 인데 []로 테스팅 해볼 것
+    clearLocalStorage(); 
+  }, [paddingTopRatio]); 
+
+  // 화면 크기에 따른 픽셀 값 계산
+  const calculateSize = (originalSize, ratio) => {
+    return Math.round(window.innerWidth * ratio) || originalSize;
+  };
 
   return (
-    <div style={{ backgroundImage: `url(${require('../img/HomeBG.png')})`, backgroundSize: 'cover', backgroundPosition: 'center', width: '100vw', height: '100vh', overflow: 'hidden',paddingTop: '120px'}}>
+    <div style={{ backgroundImage: `url(${require('../img/HomeBG.png')})`, backgroundSize: 'cover', backgroundPosition: 'center', width: '100vw', height: '100vh', overflow: 'hidden',paddingTop: 'px'}}>
       <div className="container d-flex align-items-center justify-content-center vh-50">
         <div className="d-flex flex-column align-items-center">
-          <div className="logo-container" style={{ width: '720px', height: '220px' }}>
+          <div className="logo-container" style={{ width: calculateSize(720, 0.52), height: calculateSize(220, 0.3) }}>
             <img src={require('../img/Logo.png')} alt="Logo" className="logo-image" />
           </div>
 
-          <div style={{ paddingTop: '40px' }}>
-            <div className="logo-container" style={{ width: '613px', height: '130px' }}>
+          <div>
+            <div className="logo-container" style={{ width: calculateSize(613, 0.45), height: calculateSize(130, 0.05) }}>
               <Link to="/user/mode" style={{ textDecoration: 'none' }}>
-                <button type="button" style={{ background: 'transparent', border: 'none', paddingTop: '30px' }}>
+                <button type="button" style={{ background: 'transparent', border: 'none'}}>
                   <img src={require('../img/StartBtn.png')} alt="" className="logo-image"/>
                 </button>
               </Link>
             </div>
           </div>
 
-          <div style={{ paddingTop: '80px' }}>
-            <div className="logo-container" style={{ width: '143px', height: '40px' }}>
+          <div>
+            <div className="logo-container" style={{ width: calculateSize(143, 0.2), height: calculateSize(40, 0.2) }}>
               <Link to="/admin/login" style={{ textDecoration: 'none' }}>
                 <button type="button" style={{ background: 'transparent', border: 'none' }}>
                   <img src={require('../img/AdminBtn.png')} alt="" className="logo-image"/>

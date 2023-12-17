@@ -28,7 +28,6 @@ const LoadingBar = ({ progress }) => {
   };
 
 const UserRecCam = () => {
-    
     const videoRef = useRef(null);
     const canvasRef = useRef(null);
     const [socket, setSocket] = useState(null);
@@ -40,8 +39,8 @@ const UserRecCam = () => {
     const [modalOpen, setModalOpen] = useState(false); // 모달 상태 관리
     const [recognizedUser, setRecognizedUser] = useState({ name: '', id: '' });
     const [loadingProgress, setLoadingProgress] = useState(0);
-    
     const navigate = useNavigate();
+    
     // 웹캠 스트림 설정
     useEffect(() => {
         const newSocket = io(flask, {
@@ -210,16 +209,16 @@ const UserRecCam = () => {
     return (
         <div>
             <FaceRecNavBar />
-            <div className="container d-flex align-items-center justify-content-center vh-50" style={{paddingTop:'50px'}}>
+            <div className="container d-flex align-items-center justify-content-center vh-50" style={{paddingTop:'20px'}}>
                 <div className="d-flex flex-column align-items-center">
-                    <div style={{ fontFamily: 'SansM',fontSize: '30px' }}>카메라를 응시해주세요</div>
+                    <div style={{ fontFamily: 'SansM',fontSize: '20px' }}>카메라를 응시해주세요</div>
                     <div id="container">
                         {isModelLoaded ? 
-                            <div style={{ fontFamily: 'SansM',fontSize: '20px' }}>모델 로딩 완료</div> :
-                            <div style={{ fontFamily: 'SansM',fontSize: '20px' }}>모델 로딩 중...</div>
+                            <div style={{ fontFamily: 'SansM',fontSize: '15px' }}>모델 로딩 완료</div> :
+                            <div style={{ fontFamily: 'SansM',fontSize: '15px' }}>모델 로딩 중...</div>
                         }
                         {isCollectionComplete ? (
-                                <div style={{ fontFamily: 'SansL',fontSize: '20px' }}>Collection complete! All images have been saved.</div>
+                                <div style={{ fontFamily: 'SansL',fontSize: '15px' }}>Collection complete! All images have been saved.</div>
                             ) : (
                                 <div className="camera-container">
                                     <div style={{ display: 'flex', flexDirection: 'row' }}>
@@ -245,7 +244,7 @@ const UserRecCam = () => {
                                     </div>
                                 </div>
                             )}
-                             <div style={{ display: "flex", justifyContent: "center",paddingTop:'50px' }}>
+                             <div style={{ display: "flex", justifyContent: "center",paddingTop:'20px' }}>
                                 <LoadingBar progress={loadingProgress} />
                             </div>
                         {/* The canvas is used for capturing frames but is not displayed */}

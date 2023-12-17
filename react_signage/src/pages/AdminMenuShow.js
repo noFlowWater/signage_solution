@@ -40,25 +40,25 @@ const AdminMenuShow = () => {
                     <img src={require('../img/Logo.png')} alt="logo" height="110" width="300"/>
                 </div>
             </nav>
-            <div className="card ms-5 me-5">
+            <div className="ms-5 me-5" style={{height: '470px', overflowY: 'auto'}}>
                 <div style={{ display: 'flex' }}>
                     <div style={{ flex: 2 }}>
                         {menus.file_path ?
-                            <img style={{ width: '70%', height: 'auto' }} src={`${kiosk}/${menus.file_path}`} class="card-img-top" alt="메뉴 이미지" />
+                            <img style={{ width: '60%', height: 'auto' }} src={`${kiosk}/${menus.file_path}`} class="card-img-top" alt="메뉴 이미지" />
                             :<p class="card-text"
                             style = {{fontFamily: 'SansM', fontSize:'40px'}}>이미지 없음</p>
                             }
                     </div>
                     <div class="card-body" style={{ flex: 1 }}>
                     <h3 class="card-title"
-                    style = {{fontFamily: 'SansM', fontSize:'40px'}}>{menus.menu_name}</h3>
-                    <h5 style = {{fontFamily: 'SansM', fontSize:'30px'}}>가격</h5>
+                    style = {{fontFamily: 'SansM', fontSize:'35px'}}>{menus.menu_name}</h3>
+                    <h5 style = {{fontFamily: 'SansM', fontSize:'25px'}}>가격</h5>
                     <p class="card-text"
                     style = {{fontFamily: 'SansM', fontSize:'20px'}}>{menus.price}</p>
-                    <h5 style = {{fontFamily: 'SansM', fontSize:'30px'}}>상세 설명</h5>
+                    <h5 style = {{fontFamily: 'SansM', fontSize:'25px'}}>상세 설명</h5>
                     <p class="card-text"
                     style = {{fontFamily: 'SansM', fontSize:'20px'}}>{menus.menu_description}</p>
-                    <h5 style = {{fontFamily: 'SansM', fontSize:'30px'}}>카테고리 ID</h5>
+                    <h5 style = {{fontFamily: 'SansM', fontSize:'25px'}}>카테고리 ID</h5>
                     <p class="card-text"
                     style = {{fontFamily: 'SansM', fontSize:'20px'}}>
                         {menus.category_id === "1" ? '김밥' :
@@ -67,7 +67,7 @@ const AdminMenuShow = () => {
                         menus.category_id === "4" ? '돈가스' :
                         menus.category_id === "5" ? '사이드' : '카테고리 없음'}
                         </p>
-                    <h5 style = {{fontFamily: 'SansM', fontSize:'30px'}}>알레르기</h5>
+                    <h5 style = {{fontFamily: 'SansM', fontSize:'25px'}}>알레르기</h5>
                     <p class="card-text"
                     style={{fontFamily: 'SansM', fontSize:'20px'}}>
                     {menus && menus.allergies && menus.allergies.length > 0 ? menus.allergies.join('/') : '없음'}
