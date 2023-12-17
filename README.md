@@ -27,7 +27,7 @@
   <h3 align="center">Face Recognize Kiosk Using webOS</h3>
 
   <p align="center">
-    It is a webOS-based signage solution kiosk example project that recognizes the face of registered users and makes custom recommendations.
+    It's a webOS-based signage solution kiosk example project that recognizes the face of registered users and makes custom recommendations.
     <br />
     <br />
     <a href="https://github.com/noFlowWater/signage_solution">View Demo</a>
