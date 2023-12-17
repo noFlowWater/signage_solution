@@ -11,13 +11,13 @@ This guide provides step-by-step instructions for setting up and running the fac
 ## Setting Up Python3.9 on Your Local PC & Virtual Environment
 
 1. Check if Python 3.9 is installed by running:
-   ```plaintext
+   ```sh
    python3.9 -V
    ```
 
    If Python 3.9 is not installed, you can install it using Homebrew on MacOS or download it from the Python website for Windows users:<br/><br/>
    For MacOS:
-   ```plaintext
+   ```sh
    brew install python@3.9
    ```
    For Windows:
@@ -56,7 +56,7 @@ This guide provides step-by-step instructions for setting up and running the fac
    korean_font_path=<path to Korean font file> e.g. /System/Library/Fonts/AppleSDGothicNeo.ttc
    ```
 6. Setting Complete! if you want to deactivate the `env` virtual environment, run:
-   ```plaintext
+   ```sh
    deactivate
    ```
 ## Getting Started
@@ -69,12 +69,12 @@ This guide provides step-by-step instructions for setting up and running the fac
    ```sh
    env\Scripts\activate
    ```
-2. run:
+2. Run:
    ```sh
    python app.py
    ```
 
 3. Complete! if you want to quit server and deactivate the `env` virtual environment, `Ctrl+c` and run:
-   ```plaintext
+   ```sh
    deactivate
    ```
