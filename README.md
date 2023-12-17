@@ -327,7 +327,7 @@ Each step is detailed in the `README.md` file of the respective folder, allowing
 </details>
 
 <details>
-  <summary>🖼️ 3. Check Shopping Cart & Buy</summary>
+  <summary>🖼️ 3. Check Shopping Cart & Pay</summary>
   <p align="center" style="display: flex; justify-content: space-between;">
     <img style="width: 49%;" alt="장바구니 확인" src="https://github.com/noFlowWater/signage_solution/assets/112642604/58823132-e6b8-4b13-a667-04b4f535ec82">
     <img style="width: 49%;" alt="결제 완료" src="https://github.com/noFlowWater/signage_solution/assets/112642604/a0d01536-a62a-4bc7-aac4-8cc9555f21dd">
