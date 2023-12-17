@@ -62,9 +62,6 @@ Before getting started, make sure you have the following software installed on y
    ```
    After successfully generating dummy data using the `npm run seed` command, you may need to terminate the seed command to proceed with other tasks or steps. Follow the step below to gracefully stop the running process:
    In your command-line interface where the seed command is running, press `Ctrl + C`.
-   ```sh
-   Ctrl + C
-   ```
 
 7. To run the program, use the following command:
    ```sh
