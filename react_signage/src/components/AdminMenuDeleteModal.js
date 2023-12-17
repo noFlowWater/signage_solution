@@ -101,8 +101,8 @@ export const AdminMenuDeleteModal = ({
                         <ModalView onClick={(e) => e.stopPropagation()}>
                             <div className='desc'>{content}</div>
                             <div>
-                                <ModalButton onClick={closeMethod}>예</ModalButton>
-                                <ModalButton onClick={onHome}>아니오</ModalButton>
+                                <ModalButton onClick={closeMethod}>YES</ModalButton>
+                                <ModalButton onClick={onHome}>NO</ModalButton>
                             </div>
                         </ModalView>
                     </ModalBackdrop>

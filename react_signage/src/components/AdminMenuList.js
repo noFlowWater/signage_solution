@@ -52,6 +52,7 @@ const AdminMenuList = () => {
 
     const renderMenuList = () => {
         return (
+            <div style={{ maxHeight: '350px', overflowY: 'auto' }}>
             <div style={{ marginTop: "16px" }}>
                 {menus.map(menu => (
                 <AdminMenuCard
@@ -79,6 +80,7 @@ const AdminMenuList = () => {
                 closeMethod={confirmDelete} // '예'를 선택하면 호출되는 함수
                 onHome={closeDeleteModal} // '아니오'를 선택하면 호출되는 함수
             />
+            </div>
             </div>
         );
     
