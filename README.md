@@ -154,7 +154,8 @@ The process for installing and setting up the project is as follows. This templa
    ```sh
    cd signage_solution
    ```
-After cloning and moving into the directory, you will find three folders in the project directory: `react`, `flask`, `nodejs`.
+After cloning and moving into the directory, you will find three folders in the project directory:<br/>
+`react`, `flask`, `nodejs`.
 
 Proceed with the project in the following order:
 - First, [Get Start for Kiosk API Server & Init Database](nodejs/README.md)
