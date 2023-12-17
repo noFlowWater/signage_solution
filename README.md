@@ -308,7 +308,7 @@ Each step is detailed in the `README.md` file of the respective folder, allowing
 ### Menu 
 
 <details>
-  <summary>🖼️ 1. Menu recommendation</summary>
+  <summary>🖼️ 1. Custom Menu recommendation</summary>
   <p align="center" style="display: flex; justify-content: space-between;">
     <img style="width: 49%;" alt="메뉴 추천" src="https://github.com/noFlowWater/signage_solution/assets/112642604/101989ca-4f2f-42ef-be41-31651c4bacf6">
   </p>
