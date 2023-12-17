@@ -335,14 +335,6 @@ Each step is detailed in the `README.md` file of the respective folder, allowing
 
 
 
-<!-- LICENSE -->
-## License
-
-Distributed under the Apache2.0 License. See `LICENSE.txt` for more information.
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
 
 <!-- CONTACT -->
 ## Contact
