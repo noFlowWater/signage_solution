@@ -14,6 +14,7 @@
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
+[![webos][webos-shield]][webos-url]
 
 
 
@@ -30,11 +31,11 @@
     It's a webOS-based signage solution kiosk example project that verification the face of registered users and makes custom recommendations.
     <br />
     <br />
-    <a href="https://github.com/noFlowWater/signage_solution">View Demo</a>
+    <a href="https://youtu.be/V7H0JUiSZ7Y">🎥 View Demo</a>
     ·
-    <a href="https://github.com/noFlowWater/signage_solution/issues">Report Bug</a>
+    <a href="https://github.com/noFlowWater/signage_solution/issues">🐞 Report Bug</a>
     ·
-    <a href="https://github.com/noFlowWater/signage_solution/issues">Request Feature</a>
+    <a href="https://github.com/noFlowWater/signage_solution/issues">💬 Request Feature</a>
   </p>
 </div>
 
@@ -405,6 +406,8 @@ Each step is detailed in the `README.md` file of the respective folder, allowing
 [issues-url]: https://github.com/noFlowWater/signage_solution/issues
 [license-shield]: https://img.shields.io/github/license/noFlowWater/signage_solution.svg?style=for-the-badge
 [license-url]: https://github.com/noFlowWater/signage_solution/blob/master/LICENSE.txt
+[webos-shield]: https://img.shields.io/badge/webos%20official%20example-A50034?style=for-the-badge&logo=lg
+[webos-url]: https://github.com/noFlowWater/signage_solution
 [product-screenshot]: images/screenshot.png
 
 [React.js]: https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=000
