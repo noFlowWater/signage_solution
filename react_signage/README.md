@@ -105,8 +105,6 @@ The `deploy.sh` script performs the following actions:
 - Opens the app inspector for debugging purposes.
 - Cleans up by removing the build and IPK directories.
 
-**Note:** When the `deploy.sh` script removes any existing installation of the app, you may encounter an error message in the console during the initial deployment, or if the app corresponding to the `APP_ID` does not exist on the device. This error is not a major concern and does not impede the deployment process.
-
 #### Script Usage
 The script takes five arguments:
 
@@ -132,4 +130,9 @@ The script takes five arguments:
 
 <br/>
 This script simplifies the deployment process, ensuring that your application is built, packaged, and deployed efficiently to your target device.
+<br/>
+<br/>
+
+**Note:** When the `deploy.sh` script removes any existing installation of the app, you may encounter an error message in the console during the initial deployment, or if the app corresponding to the `APP_ID` does not exist on the device. This error is not a major concern and does not impede the deployment process.
+
 
