@@ -83,11 +83,9 @@ Before starting the setup process, ensure the following requirements are met:
 
 <br/>This will list all the devices that have been set up and are ready for development.<br/>
 
-
 ### Deployment Script: deploy.sh
 
 Before running the `deploy.sh` script, ensure you are in the root directory of the React project, which is the parent directory where the `build` will be created. The `deploy.sh` script automates the building and deploying process of the project.
-
 
 #### Requirements
 - The `deploy.sh` script should be located in the react project's root directory.
@@ -106,6 +104,8 @@ The `deploy.sh` script performs the following actions:
 - Installs and launches the new version of the app on the device.
 - Opens the app inspector for debugging purposes.
 - Cleans up by removing the build and IPK directories.
+
+**Note:** When the `deploy.sh` script removes any existing installation of the app, you may encounter an error message in the console during the initial deployment, or if the app corresponding to the `APP_ID` does not exist on the device. This error is not a major concern and does not impede the deployment process.
 
 #### Script Usage
 The script takes five arguments:
