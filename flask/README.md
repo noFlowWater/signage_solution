@@ -10,6 +10,9 @@ This guide provides step-by-step instructions for setting up and running the fac
    
 ## Setting Up Python3.9 on Your Local PC & Virtual Environment
 
+**Note**: It is important to use Python 3.9 for this setup. Using different versions, such as Python 3.11, has been known to cause errors, particularly during the Flask execution phase. To ensure compatibility and avoid potential issues, please stick to Python 3.9.
+
+
 1. Check if Python 3.9 is installed by running:
    ```sh
    python3.9 -V
