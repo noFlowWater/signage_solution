@@ -86,7 +86,8 @@ Before starting the setup process, ensure the following requirements are met:
 
 ### Deployment Script: deploy.sh
 
-Before running the `deploy.sh` script, ensure you are in the react project's root directory, which is the parent directory where the `build` will be created. The `deploy.sh` script automates the building and deploying process of the project.
+Before running the `deploy.sh` script, ensure you are in the root directory of the React project, which is the parent directory where the `build` will be created. The `deploy.sh` script automates the building and deploying process of the project.
+
 
 #### Requirements
 - The `deploy.sh` script should be located in the react project's root directory.
@@ -97,64 +98,36 @@ Before running the `deploy.sh` script, ensure you are in the react project's roo
 #### deploy.sh Script
 
 The `deploy.sh` script performs the following actions:
-- Removes existing build and IPK directories.
-- Creates a new build of the react project.
-- Generates the `appinfo.json` file and copies the `icon.png` file into the build directory.
+
+- Builds the React project.
+- Creates the appinfo.json file and copies the icon.png file into the build directory.
 - Packages the application into an IPK file.
-- Installs and launches the app on the specified device.
+- Removes any existing installation of the app on the specified device.
+- Installs and launches the new version of the app on the device.
+- Opens the app inspector for debugging purposes.
+- Cleans up by removing the build and IPK directories.
 
-```bash
-#!/bin/bash
-# bash 자동화 스크립트 실행 전, 디렉토리는 build를 생성할 상위 디렉토리이어야 한다.
-# deploy.sh는 프로젝트 디렉토리에서 실행해야 한다.
+#### Script Usage
+The script takes five arguments:
 
-# Remove build file.
-rm -rf build
+- Device name
+- App ID
+- App version
+- Vendor name
+- App title
 
-# Remove IPK file.
-rm -rf IPK
-
-# Build the project
-npm run build
-
-# Change to the build directory
-cd build
-
-# Create appinfo.json and add content
-printf '{\n "id": "kr.ac.knu.app.signage",\n "version": "1.0.0",\n "vendor": "My Company",\n "type": "web",\n "main": "index.html",\n "title": "new app",\n "icon": "icon.png",\n "allowVideoCapture": true,\n "requiredPermissions": [ "time.query", "activity.operation" ]\n}' > appinfo.json
-
-# Copy the icon.png file
-cp ../icon.png icon.png
-
-# Package the application
-ares-package . -o ../IPK
-
-# Change to the IPK directory
-cd ../IPK
-
-# Remove existing installation
-ares-install -d jongmal -r kr.ac.knu.app.signage
-
-# Install the new package
-ares-install -d jongmal kr.ac.knu.app.signage_1.0.0_all.ipk
-
-# Launch the app
-ares-launch -d jongmal kr.ac.knu.app.signage
-
-# Open inspector
-ares-inspect -d jongmal —app kr.ac.knu.app.signage
-
-# Change directory
-cd ..
-```
 
 5. Change its execution permission with the following command:
    ```sh
    chmod +x deploy.sh
    ```
-6. To deploy your project, Execute the `deploy.sh` script from the react-signage directory:
+6. To deploy your project, execute the deploy.sh script from the root directory of your React project:
    ```sh
-   ./deploy.sh
+   ./deploy.sh {DEVICE_NAME} {APP_ID} {APP_VERSION} {VENDOR_NAME} {APP_TITLE}
+   ```
+   example usage:
+   ```sh
+   ./deploy.sh jongmal kr.ac.knu.app.signage 1.0.0 "My Company" "new app"
    ```
 
 <br/>
