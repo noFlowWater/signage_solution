@@ -109,12 +109,12 @@ Custom Menu Recommendations and Reconfiguration through Web App:
 ### Built With
 Frontend
 <br/><br/>
-[![React][React.js]][React-url][![npm][npm]][npm-url][![Bootstrap][Bootstrap.com]][Bootstrap-url][![JavaScript][JavaScript.js]][JavaScript-url][![Figma][Figma]][Figma-url]
+[![React][React.js]][React-url][![npm][npm]][npm-url][![Bootstrap][Bootstrap.com]][Bootstrap-url][![Socket.io][Socket.io]][Socket.io-url][![JavaScript][JavaScript.js]][JavaScript-url][![Figma][Figma]][Figma-url]
 <br/>
 
 Face Identify Server 
 <br/><br/>
-[![Flask][Flask]][Flask-url][![OpenCV][OpenCV]][OpenCV-url][![Python][Python.org]][Python-url]
+[![Flask][Flask]][Flask-url][![OpenCV][OpenCV]][OpenCV-url][![Socket.io][Socket.io]][Socket.io-url][![Python][Python.org]][Python-url]
 <br/>
 
 Kiosk API Server
@@ -421,6 +421,9 @@ Each step is detailed in the `README.md` file of the respective folder, allowing
 
 [Flask]: https://img.shields.io/badge/Flask-000?style=for-the-badge&logo=flask&logoColor=fff
 [Flask-url]: https://flask.palletsprojects.com/en/3.0.x/
+
+[Socket.io]: https://img.shields.io/badge/Socket.io-010101?style=for-the-badge&logo=socketdotio&logoColor=fff
+[Socket.io-url]: https://socket.io/
 
 [Nodejs]: https://img.shields.io/badge/Node.js-393?style=for-the-badge&logo=nodedotjs&logoColor=fff
 [Nodejs-url]: https://nodejs.org/en
