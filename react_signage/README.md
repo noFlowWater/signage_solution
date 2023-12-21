@@ -115,11 +115,15 @@ The script takes five arguments:
 - App title
 
 
-5. Change its execution permission with the following command:
+5. Install Dependencies
+   ```sh
+   npm install
+   ```
+6. Change its execution permission with the following command:
    ```sh
    chmod +x deploy.sh
    ```
-6. To deploy your project, execute the deploy.sh script from the root directory of your React project:
+7. To deploy your project, execute the deploy.sh script from the root directory of your React project:
    ```sh
    ./deploy.sh {DEVICE_NAME} {APP_ID} {APP_VERSION} {VENDOR_NAME} {APP_TITLE}
    ```
