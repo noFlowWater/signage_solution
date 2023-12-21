@@ -94,7 +94,7 @@ Custom Menu Recommendations and Reconfiguration through Web App:
 <details>
   <summary>🖼️ System Architecture 🖼️</summary>
   <p align="center" style="display: flex; justify-content: space-between;">
-    <img src="https://github.com/noFlowWater/signage_solution/assets/112642604/248f7596-9c3f-4de7-a14a-638547a09816" alt="System Architecture" style="width: 99%;">
+    <img src="https://github.com/noFlowWater/signage_solution/assets/112642604/7e142fd6-f8c1-4aeb-afb7-12106b938a5f" alt="System Architecture" style="width: 99%;">
   </p>
 </details>
 
